@@ -1,0 +1,436 @@
+@inproceedings{Eslami2016,
+abstract = {We present a framework for efficient inference in structured image models that explicitly reason about objects. We achieve this by performing probabilistic inference using a recurrent neural network that attends to scene elements and processes them one at a time. Crucially, the model itself learns to choose the appropriate number of inference steps. We use this scheme to learn to perform inference in partially specified 2D models (variable-sized variational auto-encoders) and fully specified 3D models (probabilistic renderers). We show that such models learn to identify multiple objects - counting, locating and classifying the elements of a scene - without any supervision, e.g., decomposing 3D images with various numbers of objects in a single forward pass of a neural network. We further show that the networks produce accurate inferences when compared to supervised counterparts, and that their structure leads to improved generalization.},
+archivePrefix = {arXiv},
+arxivId = {1603.08575},
+author = {Eslami, S. M. Ali and Heess, Nicolas and Weber, Theophane and Tassa, Yuval and Szepesvari, David and Kavukcuoglu, Koray and Hinton, Geoffrey E.},
+booktitle = {NIPS},
+eprint = {1603.08575},
+issn = {10495258},
+title = {{Attend, Infer, Repeat: Fast Scene Understanding with Generative Models}},
+url = {http://arxiv.org/abs/1603.08575},
+year = {2016}
+}
+@inproceedings{Gael2009,
+abstract = {We introduce a new probability distribution over a potentially infinite number of binary Markov chains which we call the Markov Indian buffet process. This process extends the IBP to allow temporal dependencies in the hidden variables. We use this stochastic process to build a nonparametric extension of the factorial hidden Markov model. After constructing an inference scheme which combines slice sampling and dynamic programming we demonstrate how the infinite factorial hidden Markov model can be used for blind source separation.},
+author = {Gael, Jurgen Van and Teh, Yee Whye and Ghahramani, Zoubin},
+booktitle = {NIPS},
+file = {:Users/adam/Documents/Mendeley/Gael, Teh, Ghahramani - 2009 - The Infinite Factorial Hidden Markov Model.pdf:pdf},
+isbn = {9781605609492},
+pages = {1697--1704},
+title = {{The Infinite Factorial Hidden Markov Model}},
+url = {https://papers.nips.cc/paper/3518-the-infinite-factorial-hidden-markov-model},
+year = {2009}
+}
+@article{Graves2016,
+abstract = {Artificial neural networks are remarkably adept at sensory processing, sequence learning and reinforcement learning, but are limited in their ability to represent variables and data structures and to store data over long timescales, owing to the lack of an external memory. Here we introduce a machine learning model called a differentiable neural computer (DNC), which consists of a neural network that can read from and write to an external memory matrix, analogous to the random-access memory in a conventional computer. Like a conventional computer, it can use its memory to represent and manipulate complex data structures, but, like a neural network, it can learn to do so from data. When trained with supervised learning, we demonstrate that a DNC can successfully answer synthetic questions designed to emulate reasoning and inference problems in natural language. We show that it can learn tasks such as finding the shortest path between specified points and inferring the missing links in randomly generated graphs, and then generalize these tasks to specific graphs such as transport networks and family trees. When trained with reinforcement learning, a DNC can complete a moving blocks puzzle in which changing goals are specified by sequences of symbols. Taken together, our results demonstrate that DNCs have the capacity to solve complex, structured tasks that are inaccessible to neural networks without external read–write memory.},
+author = {Graves, Alex and Wayne, Greg and Reynolds, Malcolm and Harley, Tim and Danihelka, Ivo and Grabska-Barwi{\'{n}}ska, Agnieszka and Colmenarejo, Sergio G{\'{o}}mez and Grefenstette, Edward and Ramalho, Tiago and Agapiou, John and Badia, Adri{\`{a}} Puigdom{\`{e}}nech and Hermann, Karl Moritz and Zwols, Yori and Ostrovski, Georg and Cain, Adam and King, Helen and Summerfield, Christopher and Blunsom, Phil and Kavukcuoglu, Koray and Hassabis, Demis},
+issn = {0028-0836},
+journal = {Nature},
+month = oct,
+number = {7626},
+pages = {471--476},
+publisher = {Macmillan Publishers Limited, part of Springer Nature. All rights reserved.},
+title = {{Hybrid computing using a neural network with dynamic external memory}},
+url = {http://dx.doi.org/10.1038/nature20101 http://10.0.4.14/nature20101 http://www.nature.com/nature/journal/v538/n7626/abs/nature20101.html{\#}supplementary-information},
+volume = {538},
+year = {2016}
+}
+@inproceedings{Jaderberg2015,
+abstract = {Convolutional Neural Networks define an exceptionally powerful class of models, but are still limited by the lack of ability to be spatially invariant to the input data in a computationally and parameter efficient manner. In this work we introduce a new learnable module, the Spatial Transformer, which explicitly allows the spatial manipulation of data within the network. This differentiable module can be inserted into existing convolutional architectures, giving neural networks the ability to actively spatially transform feature maps, conditional on the feature map itself, without any extra training supervision or modification to the optimisation process. We show that the use of spatial transformers results in models which learn invariance to translation, scale, rotation and more generic warping, resulting in state-of-the-art performance on several benchmarks, and for a number of classes of transformations.},
+archivePrefix = {arXiv},
+arxivId = {arXiv:1506.02025v1},
+author = {Jaderberg, Max and Simonyan, Karen and Zisserman, Andrew and Kavukcuoglu, Koray},
+booktitle = {NIPS},
+doi = {10.1038/nbt.3343},
+eprint = {1506.02025v1},
+isbn = {9781627480031},
+issn = {1087-0156},
+pmid = {26571099},
+title = {{Spatial Transformer Networks}},
+year = {2015}
+}
+@inproceedings{kosiorek2017hierch,
+abstract = {Class-agnostic object tracking is particularly difficult in cluttered environments as target specific discriminative models cannot be learned a priori. Inspired by how the human visual cortex employs spatial attention and separate "where" and "what" processing pathways to actively suppress irrelevant visual features, this work develops a hierarchical attentive recurrent model for single object tracking in videos. The first layer of attention discards the majority of background by selecting a region containing the object of interest, while the subsequent layers tune in on visual features particular to the tracked object. This framework is fully differentiable and can be trained in a purely data driven fashion by gradient methods. To improve training convergence, we augment the loss function with terms for a number of auxiliary tasks relevant for tracking. Evaluation of the proposed model is performed on two datasets of increasing difficulty: pedestrian tracking on the KTH activity recognition dataset and the KITTI object tracking dataset.},
+archivePrefix = {arXiv},
+arxivId = {1706.09262},
+author = {Kosiorek, Adam R. and Bewley, Alex and Posner, Ingmar},
+booktitle = {NIPS},
+eprint = {1706.09262},
+month = jun,
+title = {{Hierarchical Attentive Recurrent Tracking}},
+url = {http://arxiv.org/abs/1706.09262},
+year = {2017}
+}
+@inproceedings{Mnih2014,
+abstract = {Highly expressive directed latent variable models, such as sigmoid belief networks, are difficult to train on large datasets because exact inference in them is intractable and none of the approximate inference methods that have been applied to them scale well. We propose a fast non-iterative approximate inference method that uses a feedforward network to implement efficient exact sampling from the variational posterior. The model and this inference network are trained jointly by maximizing a variational lower bound on the log-likelihood. Although the naive estimator of the inference model gradient is too high-variance to be useful, we make it practical by applying several straightforward model-independent variance reduction techniques. Applying our approach to training sigmoid belief networks and deep autoregressive networks, we show that it outperforms the wake-sleep algorithm on MNIST and achieves state-of-the-art results on the Reuters RCV1 document dataset.},
+archivePrefix = {arXiv},
+arxivId = {arXiv:1402.0030v2},
+author = {Mnih, Andriy and Gregor, Karol},
+booktitle = {ICML},
+eprint = {1402.0030v2},
+isbn = {9781634393973},
+keywords = {belief networks,deep learning,variational inference},
+month = jan,
+title = {{Neural Variational Inference and Learning in Belief Networks}},
+url = {http://arxiv.org/abs/1402.0030},
+year = {2014}
+}
+@inproceedings{Santoro2017,
+abstract = {Relational reasoning is a central component of generally intelligent behavior, but has proven difficult for neural networks to learn. In this paper we describe how to use Relation Networks (RNs) as a simple plug-and-play module to solve problems that fundamentally hinge on relational reasoning. We tested RN-augmented networks on three tasks: visual question answering using a challenging dataset called CLEVR, on which we achieve state-of-the-art, super-human performance; text-based question answering using the bAbI suite of tasks; and complex reasoning about dynamic physical systems. Then, using a curated dataset called Sort-of-CLEVR we show that powerful convolutional networks do not have a general capacity to solve relational questions, but can gain this capacity when augmented with RNs. Our work shows how a deep learning architecture equipped with an RN module can implicitly discover and learn to reason about entities and their relations.},
+archivePrefix = {arXiv},
+arxivId = {1706.01427},
+author = {Santoro, Adam and Raposo, David and Barrett, David G.T. and Malinowski, Mateusz and Pascanu, Razvan and Battaglia, Peter and Lillicrap, Timothy},
+eprint = {1706.01427},
+booktitle = {NIPS},
+month = jun,
+title = {{A simple neural network module for relational reasoning}},
+url = {http://arxiv.org/abs/1706.01427 https://arxiv.org/abs/1706.01427},
+year = {2017}
+}
+@inproceedings{Mnih2016,
+abstract = {Recent progress in deep latent variable models has largely been driven by the development of flexible and scalable variational inference methods. Variational training of this type involves maximizing a lower bound on the log-likelihood, using samples from the variational posterior to compute the required gradients. Recently, Burda et al. (2016) have derived a tighter lower bound using a multi-sample importance sampling estimate of the likelihood and showed that optimizing it yields models that use more of their capacity and achieve higher likelihoods. This development showed the importance of such multi-sample objectives and explained the success of several related approaches. We extend the multi-sample approach to discrete latent variables and analyze the difficulty encountered when estimating the gradients involved. We then develop the first unbiased gradient estimator designed for importance-sampled objectives and evaluate it at training generative and structured output prediction models. The resulting estimator, which is based on low-variance per-sample learning signals, is both simpler and more effective than the NVIL estimator proposed for the single-sample variational objective, and is competitive with the currently used biased estimators.},
+archivePrefix = {arXiv},
+arxivId = {1602.06725},
+author = {Mnih, Andriy and Rezende, Danilo J.},
+booktitle = {ICML},
+eprint = {1602.06725},
+issn = {1938-7228},
+month = feb,
+title = {{Variational inference for Monte Carlo objectives}},
+url = {http://arxiv.org/abs/1602.06725},
+year = {2016}
+}
+@inproceedings{Burda2016,
+abstract = {The variational autoencoder (VAE; Kingma, Welling (2014)) is a recently proposed generative model pairing a top-down generative network with a bottom-up recognition network which approximates posterior inference. It typically makes strong assumptions about posterior inference, for instance that the posterior distribution is approximately factorial, and that its parameters can be approximated with nonlinear regression from the observations. As we show empirically, the VAE objective can lead to overly simplified representations which fail to use the network's entire modeling capacity. We present the importance weighted autoencoder (IWAE), a generative model with the same architecture as the VAE, but which uses a strictly tighter log-likelihood lower bound derived from importance weighting. In the IWAE, the recognition network uses multiple samples to approximate the posterior, giving it increased flexibility to model complex posteriors which do not fit the VAE modeling assumptions. We show empirically that IWAEs learn richer latent space representations than VAEs, leading to improved test log-likelihood on density estimation benchmarks.},
+archivePrefix = {arXiv},
+eprint = {1509.00519},
+author = {Burda, Yuri and Grosse, Roger and Salakhutdinov, Ruslan},
+booktitle = {ICLR},
+issn = {1312.6114v10},
+month = sep,
+title = {{Importance Weighted Autoencoders}},
+url = {http://arxiv.org/abs/1509.00519},
+year = {2016}
+}
+@inproceedings{Chung2015,
+abstract = {In this paper, we explore the inclusion of latent random variables into the dynamic hidden state of a recurrent neural network (RNN) by combining elements of the variational autoencoder. We argue that through the use of high-level latent random variables, the variational RNN (VRNN)1 can model the kind of variability observed in highly structured sequential data such as natural speech. We empirically evaluate the proposed model against related sequential models on four speech datasets and one handwriting dataset. Our results show the important roles that latent random variables can play in the RNN dynamic hidden state.},
+archivePrefix = {arXiv},
+arxivId = {1506.02216},
+author = {Chung, Junyoung and Kastner, Kyle and Dinh, Laurent and Goel, Kratarth and Courville, Aaron and Bengio, Yoshua},
+booktitle = {NIPS},
+eprint = {1506.02216},
+issn = {10495258},
+month = jun,
+title = {{A Recurrent Latent Variable Model for Sequential Data}},
+url = {http://arxiv.org/abs/1506.02216},
+year = {2015}
+}
+@inproceedings{Krizhevsky2012,
+author = {{A. Krizhevsky} and {I. Sutskever} and Hinton, Geoffrey E.},
+booktitle = {NIPS},
+pages = {1097--1105},
+title = {{ImageNet Classification with Deep Convolutional Neural Networks}},
+url = {https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks},
+year = {2012}
+}
+@article{lecun2015deep,
+  title={Deep learning},
+  author={LeCun, Yann and Bengio, Yoshua and Hinton, Geoffrey},
+  journal={Nature},
+  volume={521},
+  number={7553},
+  pages={436},
+  year={2015},
+  publisher={Nature Publishing Group}
+}
+@article{kemp2008discovery,
+  title={The discovery of structural form},
+  author={Kemp, Charles and Tenenbaum, Joshua B},
+  journal={Proceedings of the National Academy of Sciences},
+  volume={105},
+  number={31},
+  pages={10687--10692},
+  year={2008},
+  publisher={National Acad Sciences}
+}
+@article{lecun1989backpropagation,
+  title={Backpropagation applied to handwritten zip code recognition},
+  author={LeCun, Yann and Boser, Bernhard and Denker, John S and Henderson, Donnie and Howard, Richard E and Hubbard, Wayne and Jackel, Lawrence D},
+  journal={Neural computation},
+  volume={1},
+  number={4},
+  pages={541--551},
+  year={1989},
+  publisher={MIT Press}
+}
+@article{cho2015unsupervised,
+  title={Unsupervised object discovery and localization in the wild: Part-based matching with bottom-up region proposals},
+  author={Cho, Minsu and Kwak, Suha and Schmid, Cordelia and Ponce, Jean},
+  journal={CoRR},
+%   volume={abs/1501.06170},
+  archivePrefix = {arXiv},
+  eprint = {1501.06170},
+  year={2015}
+}
+@inproceedings{kwak2015unsupervised,
+  title={Unsupervised object discovery and tracking in video collections},
+  author={Kwak, Suha and Cho, Minsu and Laptev, Ivan and Ponce, Jean and Schmid, Cordelia},
+  booktitle={ICCV},
+  pages={3173--3181},
+  year={2015},
+  organization={IEEE}
+}
+@inproceedings{xiao2016track,
+  title={Track and segment: An iterative unsupervised approach for video object proposals},
+  author={Xiao, Fanyi and Jae Lee, Yong},
+  booktitle={CVPR},
+  pages={933--942},
+  year={2016}
+}
+@article{babaeizadeh2017stochastic,
+  title={Stochastic Variational Video Prediction},
+  author={Mohammad Babaeizadeh and Chelsea Finn and Dumitru Erhan and Roy H. Campbell and Sergey Levine},
+  journal={CoRR},
+  year={2017},
+    archivePrefix = {arXiv},
+    eprint = {1710.11252},
+}
+
+@article{tulyakov2017mocogan,
+  title={Mocogan: Decomposing motion and content for video generation},
+  author={Tulyakov, Sergey and Liu, Ming-Yu and Yang, Xiaodong and Kautz, Jan},
+  journal={CVPR},
+  year={2018}
+}
+@inproceedings{denton2017unsupervised,
+  title={Unsupervised learning of disentangled representations from video},
+  author={Denton, Emily and Birodkar, Vighnesh},
+  booktitle={NIPS},
+  pages={4417--4426},
+  year={2017}
+}
+@inproceedings{denton2018stochastic,
+  title={Stochastic Video Generation with a Learned Prior},
+  author={Denton, Emily and Fergus, Rob},
+  booktitle={ICML},
+  year={2018}
+}
+
+@article{ranzato2014video,
+  title={Video (language) modeling: a baseline for generative models of natural videos},
+  author={Ranzato, MarcAurelio and Szlam, Arthur and Bruna, Joan and Mathieu, Michael and Collobert, Ronan and Chopra, Sumit},
+  journal={CoRR},
+    archivePrefix = {arXiv},
+eprint = {1412.6604},
+  year={2014}
+}
+@inproceedings{srivastava2015unsupervised,
+  title={Unsupervised learning of video representations using lstms},
+  author={Srivastava, Nitish and Mansimov, Elman and Salakhudinov, Ruslan},
+  booktitle={ICML},
+  pages={843--852},
+  year={2015}
+}
+@article{neiswanger2012unsupervised,
+  title={Unsupervised Detection and Tracking of Arbitrary Objects with Dependent Dirichlet Process Mixtures},
+  author={Neiswanger, Willie and Wood, Frank},
+  journal={CoRR},
+    archivePrefix = {arXiv},
+eprint = {1210.3288},
+  year={2012}
+}
+@inproceedings{weber2017imagination,
+  title={Imagination-augmented agents for deep reinforcement learning},
+  author={Weber, Th{\'e}ophane and Racani{\`e}re, S{\'e}bastien and Reichert, David P and Buesing, Lars and Guez, Arthur and Rezende, Danilo Jimenez and Badia, Adria Puigdom{\`e}nech and Vinyals, Oriol and Heess, Nicolas and Li, Yujia and others},
+  booktitle={NIPS},
+  year={2017}
+}
+@article{kingma2013auto,
+  title={Auto-encoding variational bayes},
+  author={Kingma, Diederik P and Welling, Max},
+  journal={arXiv preprint arXiv:1312.6114},
+  year={2013}
+}
+@inproceedings{ristani2016performance,
+  title={Performance measures and a data set for multi-target, multi-camera tracking},
+  author={Ristani, Ergys and Solera, Francesco and Zou, Roger and Cucchiara, Rita and Tomasi, Carlo},
+  booktitle={ECCV},
+  pages={17--35},
+  year={2016},
+  organization={Springer}
+}
+@misc{tieleman2012rms,
+  title={{Lecture 6.5---RmsProp: Divide the gradient by a running average of its recent magnitude}},
+  author={Tieleman, T. and Hinton, G.},
+  howpublished={COURSERA: Neural Networks for Machine Learning},
+  year={2012}
+}
+@inproceedings{maddison2017filtering,
+  title={Filtering Variational Objectives},
+  author={Maddison, Chris J and Lawson, John and Tucker, George and Heess, Nicolas and Norouzi, Mohammad and Mnih, Andriy and Doucet, Arnaud and Teh, Yee},
+  booktitle={Advances in Neural Information Processing Systems},
+  pages={6576--6586},
+  year={2017}
+}
+@article{gulrajani2016pixelvae,
+  title={Pixelvae: A latent variable model for natural images},
+  author={Gulrajani, Ishaan and Kumar, Kundan and Ahmed, Faruk and Taiga, Adrien Ali and Visin, Francesco and Vazquez, David and Courville, Aaron},
+  journal={CoRR},
+    archivePrefix = {arXiv},
+eprint = {1611.05013},
+  year={2016}
+}
+@inproceedings{kim2018disentangling,
+  title={Disentangling by factorising},
+  author={Kim, Hyunjik and Mnih, Andriy},
+  booktitle={ICML},
+    archivePrefix = {arXiv},
+eprint = {1802.05983},
+  year={2018}
+}
+@misc{itseez2015opencv,
+  title={Open Source Computer Vision Library},
+  author={Itseez},
+  year={2015},
+  howpublished = {\url{https://github.com/itseez/opencv}}
+}
+@article{Clevert2015elu,
+  title={Fast and Accurate Deep Network Learning by Exponential Linear Units (ELUs)},
+  author={Djork-Arn{\'e} Clevert and Thomas Unterthiner and Sepp Hochreiter},
+  journal={CoRR},
+  year={2015},
+%   volume={abs/1511.07289}
+  archivePrefix = {arXiv},
+eprint = {1511.07289},
+  
+}
+@inproceedings{schulter2017deepnf,
+  title={Deep Network Flow for Multi-object Tracking},
+  author={Samuel Schulter and Paul Vernaza and Wongun Choi and Manmohan Krishna Chandraker},
+  booktitle={CVPR},
+  year={2017},
+  pages={2730-2739}
+}
+@inproceedings{bewley2016sort,
+  title={Simple online and realtime tracking},
+  author={Alex Bewley and ZongYuan Ge and Lionel Ott and Fabio Tozeto Ramos and Ben Upcroft},
+  booktitle={ICIP},
+  year={2016},
+  pages={3464-3468}
+}
+@inproceedings{valmadre2017end,
+abstract = {The Correlation Filter is an algorithm that trains a linear template to discriminate between images and their translations. It is well suited to object tracking because its formulation in the Fourier domain provides a fast solution, enabling the detector to be re-trained once per frame. Previous works that use the Correlation Filter, however, have adopted features that were either manually designed or trained for a different task. This work is the first to overcome this limitation by interpreting the Correlation Filter learner, which has a closed-form solution, as a differentiable layer in a deep neural network. This enables learning deep features that are tightly coupled to the Correlation Filter. Experiments illustrate that our method has the important practical benefit of allowing lightweight architectures to achieve state-of-the-art performance at high framerates.},
+archivePrefix = {arXiv},
+arxivId = {1704.06036},
+author = {Valmadre, Jack and Bertinetto, Luca and Henriques, Jo{\~{a}}o F. and Vedaldi, Andrea and Torr, Philip H. S.},
+booktitle = {CVPR},
+eprint = {1704.06036},
+title = {{End-to-end representation learning for Correlation Filter based tracking}},
+opturl = {http://arxiv.org/abs/1704.06036},
+year = {2017}
+}
+@inproceedings{karl2017dvbf,
+abstract = {We introduce Deep Variational Bayes Filters (DVBF), a new methhttps://arxiv.org/pdf/1605.06432.pdfod for unsupervised learning of latent Markovian state space models. Leveraging recent advances in Stochastic Gradient Variational Bayes, DVBF can overcome intractable inference distributions by means of variational inference. Thus, it can handle highly nonlinear input data with temporal and spatial dependencies such as image sequences without domain knowledge. Our experiments show that enabling backpropagation through transitions enforces state space assumptions and significantly improves information content of the latent embedding. This also enables realistic long-term prediction.},
+archivePrefix = {arXiv},
+arxivId = {1605.06432},
+author = {Karl, Maximilian and Soelch, Maximilian and Bayer, Justin and van der Smagt, Patrick},
+booktitle = {ICLR},
+eprint = {1605.06432},
+file = {:Users/adam/Documents/Mendeley/Karl et al. - 2017 - Deep Variational Bayes Filters Unsupervised Learning of State Space Models from Raw Data.pdf:pdf},
+title = {{Deep Variational Bayes Filters: Unsupervised Learning of State Space Models from Raw Data}},
+opturl = {http://arxiv.org/abs/1605.06432 https://arxiv.org/pdf/1605.06432.pdf},
+year = {2017}
+}
+@inproceedings{ondruska2016deepts,
+  title={Deep Tracking: Seeing Beyond Seeing Using Recurrent Neural Networks},
+  author={Peter Ondruska and Ingmar Posner},
+  booktitle={AAAI},
+  year={2016}
+}
+@article{shi2016subpixel,
+  title={Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network},
+  author={Wenzhe Shi and Jose Caballero and Ferenc Huszar and Johannes Totz and Andrew P. Aitken and Rob Bishop and Daniel Rueckert and Zehan Wang},
+  journal={CVPR},
+  year={2016},
+  pages={1874-1883}
+}
+@article{kingma2015adam,
+  title={Adam: A Method for Stochastic Optimization},
+  author={Diederik P. Kingma and Jimmy Ba},
+  journal={ICLR},
+  year={2015},
+%   volume={abs/1412.6980}
+    archivePrefix = {arXiv},
+eprint = {1412.6980},
+}
+@inproceedings{zaheer2017deeps,
+  title={Deep Sets},
+  author={Manzil Zaheer and Satwik Kottur and Siamak Ravanbakhsh and Barnab{\'a}s P{\'o}czos and Ruslan R. Salakhutdinov and Alexander J. Smola},
+  booktitle={NIPS},
+  year={2017}
+}
+@article{ha2018worldm,
+  title={World Models},
+  author={David Ha and J{\"u}rgen Schmidhuber},
+  journal={CoRR},
+  year={2018},
+%   volume={abs/1803.10122}
+    archivePrefix = {arXiv},
+eprint = {1603.10122},
+}
+@inproceedings{jacobsen2016struc,
+abstract = {Learning powerful feature representations with CNNs is hard when training data are limited. Pre-training is one way to overcome this, but it requires large datasets suffi-ciently similar to the target domain. Another option is to de-sign priors into the model, which can range from tuned hy-perparameters to fully engineered representations like Scat-tering Networks. We combine these ideas into structured receptive field networks, a model which has a fixed filter basis and yet retains the flexibility of CNNs. This flexibil-ity is achieved by expressing receptive fields in CNNs as a weighted sum over a fixed basis which is similar in spirit to Scattering Networks. The key difference is that we learn arbitrary effective filter sets from the basis rather than mod-eling the filters. This approach explicitly connects clas-sical multiscale image analysis with general CNNs. With structured receptive field networks, we improve consider-ably over unstructured CNNs for small and medium dataset scenarios as well as over Scattering for large datasets. We validate our findings on ILSVRC2012, Cifar-10, Cifar-100 and MNIST. As a realistic small dataset example, we show state-of-the-art classification results on popular 3D MRI brain-disease datasets where pre-training is difficult due to a lack of large public datasets in a similar domain.},
+author = {Jacobsen, J{\"{o}}rn-Henrik and {Van Gemert}, Jan and Lou, Zhongyou and Smeulders, Arnold W M},
+booktitle = {CVPR},
+file = {:Users/adam/Documents/Mendeley/Jacobsen et al. - 2016 - Structured Receptive Fields in CNNs.pdf:pdf},
+title = {{Structured Receptive Fields in CNNs}},
+url = {https://www.cv-foundation.org/openaccess/content{\_}cvpr{\_}2016/papers/Jacobsen{\_}Structured{\_}Receptive{\_}Fields{\_}CVPR{\_}2016{\_}paper.pdf},
+year = {2016}
+}
+@inproceedings{oord2016cond,
+abstract = {This work explores conditional image generation with a new image density model based on the PixelCNN architecture. The model can be conditioned on any vector, including descriptive labels or tags, or latent embeddings created by other networks. When conditioned on class labels from the ImageNet database, the model is able to generate diverse, realistic scenes representing distinct animals, objects, landscapes and structures. When conditioned on an embedding produced by a convolutional network given a single image of an unseen face, it generates a variety of new portraits of the same person with different facial expressions, poses and lighting conditions. We also show that conditional PixelCNN can serve as a powerful decoder in an image autoencoder. Additionally, the gated convolutional layers in the proposed model improve the log-likelihood of PixelCNN to match the state-of-the-art performance of PixelRNN on ImageNet, with greatly reduced computational cost.},
+archivePrefix = {arXiv},
+arxivId = {1606.05328},
+author = {van den Oord, Aaron and Kalchbrenner, Nal and Vinyals, Oriol and Espeholt, Lasse and Graves, Alex and Kavukcuoglu, Koray},
+booktitle = {NIPS},
+eprint = {1606.05328},
+month = {jun},
+title = {{Conditional Image Generation with PixelCNN Decoders}},
+url = {http://arxiv.org/abs/1606.05328},
+year = {2016}
+}
+
+@inproceedings{Greff2017neuralem,
+  title={Neural Expectation Maximization},
+  author={Klaus Greff and Sjoerd van Steenkiste and J{\"u}rgen Schmidhuber},
+  booktitle={NIPS},
+  year={2017}
+}
+
+@inproceedings{Steenkiste2018relationalnem,
+  title={Relational Neural Expectation Maximization: Unsupervised Discovery of Objects and their Interactions},
+  author={Sjoerd van Steenkiste and Michael Chang and Klaus Greff and J{\"u}rgen Schmidhuber},
+  booktitle={ICLR},
+  year={2018},
+}
+
+@inproceedings{Greff2016tagger,
+  title={Tagger: Deep Unsupervised Perceptual Grouping},
+  author={Klaus Greff and Antti Rasmus and Mathias Berglund and Tele Hotloo Hao and Harri Valpola and J{\"u}rgen Schmidhuber},
+  booktitle={NIPS},
+  year={2016}
+}
+
+@inproceedings{Ilin2017recurrentln,
+  title={Recurrent Ladder Networks},
+  author={Alexander Ilin and Isabeau Pr{\'e}mont-Schwarz and Tele Hotloo Hao and Antti Rasmus and Rinu Boney and Harri Valpola},
+  booktitle={NIPS},
+  year={2017}
+}
+
+@inproceedings{Hsieh2018ddpae,
+  title={Learning to Decompose and Disentangle Representations for Video Prediction},
+  author={Jun-Ting Hsieh and Bingbin Liu and De-An Huang and Li Fei-Fei and Juan Carlos Niebles},
+  booktitle={NIPS},
+  year={2018},
+}

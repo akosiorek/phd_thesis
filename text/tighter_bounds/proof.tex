@@ -1,0 +1,134 @@
+% !Tex root=tb_icml_2018.tex
+
+\section{Proof of SNR Convergence Rates}
+\label{sec:proof}
+
+\begin{theoremApp}
+	\label{the:app:snr}
+	Assume that when $M=K=1$, the expected gradients; the variances of the gradients; and the 
+	first four moments of  $w_{1,1}$, $\nabla_{\theta} w_{1,1}$, and 
+	$\nabla_{\phi} w_{1,1}$ are all finite and the variances are
+	also non-zero.
+	Then the signal-to-noise ratios of the gradient estimates converge at the following rates
+	\begin{align}
+	\SNR_{M,K} (\theta) &= 
+	\sqrt{M}\left|\frac{ \sqrt{K} \; 
+		\nabla_{\theta} Z -\frac{1}{2Z\sqrt{K}}\nabla_{\theta} \left(\frac{\textnormal{Var} \left[w_{1,1}\right]}{Z^2}\right)+ O\left(\frac{1}{K^{3/2}}\right) }
+	{\sqrt{\E \left[w_{1,1}^2\left(\nabla_{\theta} \log w_{1,1}-\nabla_{\theta} \log Z\right)^2\right]} + O\left(\frac{1}{K}\right)}\right| \\
+	\SNR_{M,K} (\phi) & =\sqrt{M} \left|\frac{
+		\nabla_{\phi} \textnormal{Var} \left[w_{1,1}\right] + O\left(\frac{1}{K}\right) }
+	{2 Z\sqrt{K} \; \sigma\left[\nabla_{\phi} w_{1,1}\right] +O\left(\frac{1}{\sqrt{K}}\right)}\right|
+	\end{align}
+	where $Z := p_{\theta}(x)$ is the true marginal likelihood.
+\end{theoremApp}
+
+\begin{proof}
+We start by considering the variance of the estimators.   We will first exploit the 
+fact that each $\hat{Z}_{m,K}$ is independent and identically distributed and then apply
+Taylor's theorem\footnote{This approach follows similar lines
+	to the derivation of nested Monte Carlo convergence bounds in~\cite{rainforth2017thesis,rainforth2017opportunities,fort2017mcmc}
+and the derivation of the mean squared error for self-normalized
+importance sampling, see e.g.~\cite{hesterberg1988advances}.}
+%\footnote{Note the significance of using Taylor's theorem
+%rather than a Taylor expansion as this allows us to provide a precise form for
+%the remainder, rather than having to worry about an infinite series.}  
+to 
+$\log \hat{Z}_{m,K}$ about $Z$, using $R_1(\cdot)$ to indicate the remainder term, as
+follows.
+\begin{align*}
+M& \cdot \text{Var} \left[\Delta_{M,K}\right] = \text{Var} \left[\Delta_{1,K}\right]
+=\text{Var} \left[\nabla_{\theta,\phi} \left( 
+\log Z + \frac{\hat{Z}_{1,K}-Z}{Z} + R_1\left(\hat{Z}_{1,K}\right)
+\right)\right] \displaybreak[0] \\
+=& \text{Var} \left[\nabla_{\theta,\phi} \left( 
+\frac{\hat{Z}_{1,K}-Z}{Z} + R_1\left(\hat{Z}_{1,K}\right)
+\right)\right] \displaybreak[0] \\
+=& \E \left[\left(\nabla_{\theta,\phi} \left( 
+\frac{\hat{Z}_{1,K}-Z}{Z} + R_1\left(\hat{Z}_{1,K}\right)
+\right)\right)^2\right] -  \left(\E \left[\nabla_{\theta,\phi} \left( 
+\frac{\hat{Z}_{1,K}-Z}{Z} + R_1\left(\hat{Z}_{1,K}\right)
+\right)\right]\right)^2 \displaybreak[0]\\
+=&\E \left[\left(\frac{1}{K} \sum_{k=1}^{K} \frac{Z \nabla_{\theta,\phi} w_{1,k}-w_{1,k}\nabla_{\theta,\phi} Z}{Z^2}
++ \nabla_{\theta, \phi} R_1\left(\hat{Z}_{1,K}\right)\right)^2\right]
+-  \left(\nabla_{\theta,\phi} \cancelto{0}{\E \left[
+	\frac{\hat{Z}_{1,K}-Z}{Z}\right]} + \E \left[ \nabla_{\theta, \phi} R_1\left(\hat{Z}_{1,K}\right)\right]\right)^2 \displaybreak[0]\\
+=&\frac{1}{KZ^4} \E \left[\left(Z \nabla_{\theta,\phi} w_{1,1}-w_{1,1}\nabla_{\theta,\phi} Z\right)^2\right] + \text{Var} \left[ \nabla_{\theta, \phi} R_1\left(\hat{Z}_{1,K}\right)\right] \\
+&+ 2\E \left[\left(\nabla_{\theta, \phi} R_1\left(\hat{Z}_{1,K}\right)\right)
+\left(\frac{1}{K} \sum_{k=1}^{K} \frac{Z \nabla_{\theta,\phi} w_{1,k}-w_{1,k}\nabla_{\theta,\phi} Z}{Z^2}\right)\right]
+\end{align*}
+Now we have by the mean-value form of the remainder that for some
+$\tilde{Z}$ between $Z$ and $\hat{Z}_{1,K}$
+\begin{align*}
+R_1\left(\hat{Z}_{1,K}\right) = -\frac{\left(\hat{Z}_{1,K}-Z\right)^2}{2 \tilde{Z}^2}
+\end{align*}
+and therefore
+\begin{align*}
+\nabla_{\theta,\phi} R_1\left(\hat{Z}_{1,K}\right)
+=-\frac{\tilde{Z}\left(\hat{Z}_{1,K}-Z\right)\nabla_{\theta,\phi} \left(\hat{Z}_{1,K}-Z\right)
+	-\left(\hat{Z}_{1,K}-Z\right)^2 \nabla_{\theta,\phi}\tilde{Z}}{\tilde{Z}^3}.
+\end{align*}
+It follows that the $\nabla_{\theta,\phi} R_1\left(\hat{Z}_{1,K}\right)$ terms are
+dominated as each of $\left(\hat{Z}_{1,K}-Z\right)\nabla_{\theta,\phi} \left(\hat{Z}_{1,K}-Z\right)$
+and $\left(\hat{Z}_{1,K}-Z\right)^2$ vary with the square of the estimator error, whereas
+other comparable terms vary only with the unsquared difference.  The assumptions on
+moments of the weights and their derivatives further guarantee that these terms are finite.
+More precisely, we have $\tilde{Z} = Z+\alpha (\hat{Z}_{1,K}-Z)$ for some
+$0<\alpha<1$ where $\nabla_{\theta,\phi} \alpha$ must be bounded with 
+probability $1$ as $K\to\infty$ to
+maintain our assumptions.  It follows that $\nabla_{\theta,\phi} R_1(\hat{Z}_{1,K}) = O((\hat{Z}_{1,K}-Z)^2)$ and thus that
+\begin{align}
+\label{eq:var}
+\text{Var} \left[\Delta_{M,K}\right] = 
+\frac{1}{MKZ^4} \E \left[\left(Z \nabla_{\theta,\phi} w_{1,1}-w_{1,1}\nabla_{\theta,\phi} Z\right)^2\right]
++\frac{1}{M}O\left(\frac{1}{K^2}\right)
+\end{align}
+using the  fact that the third and fourth order moments of a Monte Carlo 
+estimator both decrease at a rate $O(1/K^2)$.
+
+Considering now the expected gradient estimate and again using Taylor's theorem, this
+time to a higher number of terms,
+\begin{align}
+\E \left[\Delta_{M,K}\right] &= \E \left[\Delta_{1,K}\right]
+= \E \left[\Delta_{1,K}-\nabla_{\theta,\phi} \log Z\right] +
+\nabla_{\theta,\phi} \log Z\displaybreak[0] \nonumber \\ &= 
+\nabla_{\theta,\phi} \E \left[\log Z + \frac{\hat{Z}_{1,K}-Z}{Z} 
+- \frac{\left(\hat{Z}_{1,K}-Z\right)^2}{2Z^2} + R_2\left(\hat{Z}_{1,K}\right)-\log Z\right]
++
+\nabla_{\theta,\phi} \log Z \displaybreak[0] \nonumber \\
+&= 
+-\frac{1}{2}\nabla_{\theta,\phi} \E \left[\left(\frac{\hat{Z}_{1,K}-Z}{Z}\right)^2\right]+
+\nabla_{\theta,\phi} \E \left[R_2\left(\hat{Z}_{1,K}\right)\right] +\nabla_{\theta,\phi} \log Z \displaybreak[0] \nonumber \\
+&= -\frac{1}{2}\nabla_{\theta,\phi} \left(\frac{\text{Var} \left[\hat{Z}_{1,K}\right]}{Z^2}\right)
++\nabla_{\theta,\phi} \E \left[R_2\left(\hat{Z}_{1,K}\right)\right] +\nabla_{\theta,\phi} \log Z \displaybreak[0] \nonumber \\
+&= -\frac{1}{2K}\nabla_{\theta,\phi} \left(\frac{\text{Var} \left[w_{1,1}\right]}{Z^2}\right)
++\nabla_{\theta,\phi} \E \left[R_2\left(\hat{Z}_{1,K}\right)\right]+\nabla_{\theta,\phi} \log Z . \label{eq:mean}
+\end{align}
+Using a similar process as in variance case, it is now straightforward to show that
+$\nabla_{\theta,\phi} \E \left[R_2\left(\hat{Z}_{1,K}\right)\right]=O(1/K^2)$, which is
+thus similarly dominated (also giving us~\eqref{eq:expt}).
+
+Finally, by combing~\eqref{eq:var} and~\eqref{eq:mean} and noting that
+$\sqrt{\frac{A}{K}+\frac{B}{K^2}} = \frac{A}{\sqrt{K}}+\frac{B}{2AK^{3/2}}+O\left(\frac{1}{K^{(5/2)}}\right)$ we have
+\begin{align}
+\SNR_{M,K} (\theta)
+&= \left|\frac{\nabla_{\theta} \log Z-\frac{1}{2K}\nabla_{\theta} \left(\frac{\text{Var} \left[w_{1,1}\right]}{Z^2}\right)
+	+O\left(\frac{1}{K^2}\right)}
+{\sqrt{\frac{1}{MKZ^4} \E \left[\left(Z \nabla_{\theta} w_{1,1}-w_{1,1}\nabla_{\theta} Z\right)^2\right]
+	+\frac{1}{M}O\left(\frac{1}{K^2}\right)}}\right| 
+\\ &= \sqrt{M}\left|\frac{Z^2\sqrt{K}
+	\left(\nabla_{\theta} \log Z -\frac{1}{2K}\nabla_{\theta} \left(\frac{\text{Var} \left[w_{1,1}\right]}{Z^2}\right)\right) 
+	+ O\left(\frac{1}{K^{3/2}}\right) }
+{\sqrt{\E \left[\left(Z \nabla_{\theta} w_{1,1}-w_{1,1}\nabla_{\theta} Z\right)^2\right]} +O\left(\frac{1}{K}\right)}\right| 
+\displaybreak[0] \\
+&= \sqrt{M}\left|\frac{ \sqrt{K} \; 
+	\nabla_{\theta} Z -\frac{1}{2Z\sqrt{K}}\nabla_{\theta} \left(\frac{\text{Var} \left[w_{1,1}\right]}{Z^2}\right)+ O\left(\frac{1}{K^{3/2}}\right) }
+{\sqrt{\E \left[w_{1,1}^2\left(\nabla_{\theta} \log w_{1,1}-\nabla_{\theta} \log Z\right)^2\right]} + O\left(\frac{1}{K}\right)}\right| =O\left(\sqrt{MK}\right).
+\end{align}
+For $\phi$, then because $\nabla_{\phi} Z = 0$, we instead have
+\begin{align}
+\SNR_{M,K} (\phi) = \sqrt{M} \left|\frac{
+	\nabla_{\phi} \text{Var} \left[w_{1,1}\right] + O\left(\frac{1}{K}\right) }
+{2 Z\sqrt{K} \; \sigma\left[\nabla_{\phi} w_{1,1}\right] +O\left(\frac{1}{\sqrt{K}}\right)}\right| = O\left(\sqrt{\frac{M}{K}}\right)
+\end{align}
+and we are done.
+\end{proof}

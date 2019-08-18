@@ -1,0 +1,72 @@
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+% \usepackage[draft]{hyperref}       % hyperlinks
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{textcomp}       % \textdegree
+\usepackage{microtype}      % microtypography
+\usepackage{appendix}
+\usepackage[table,xcdraw]{xcolor}
+
+\usepackage{nicefrac}
+
+\usepackage{todonotes}
+% \usepackage[round,sort&compress]{natbib}
+\usepackage{subcaption}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{bm} % uniform bold
+
+\usepackage{wrapfig} % for wrapping text around figures
+
+\usepackage{fontawesome} % for icons
+
+\usepackage[normalem]{ulem} % for strikethrough
+
+% nicer description
+% \usepackage{paralist} 
+\usepackage[inline]{enumitem} % inline for inline lists (e.g. itemize*}
+\newlist{compactdesc}{description}{3}
+\setlist[compactdesc]{topsep=0pt,partopsep=0pt,itemsep=0pt,parsep=0pt}
+
+\usepackage{mlmacros} % nice macros for loss, kl, probabilities etc
+
+\usepackage{amsmath} % required for cleveref
+\usepackage[nameinlink,capitalise]{cleveref} % better ref handling
+
+\usepackage{placeins}  % floatbarrier
+
+\usepackage{pifont}  % for tick \cmark and cross \xmark
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+\usepackage{array}  % for tabu
+
+\newcommand*{\defeq}{\mathrel{\vcenter{\baselineskip0.5ex \lineskiplimit0pt
+                     \hbox{\scriptsize.}\hbox{\scriptsize.}}}%
+                     =}
+
+\presetkeys{todonotes}{%
+  backgroundcolor=blue!10!white,
+  linecolor=blue!10!white,
+  bordercolor=blue!10!white
+}{}
+
+\usepackage[skip=5pt,font=small]{caption}
+\usepackage{subcaption}
+\captionsetup{font=small}
+\captionsetup[sub]{font=footnotesize}
+
+% section spacing
+\usepackage{titlesec}
+
+% \titlespacing*{\section}{0pt}{.1\baselineskip}{.1\baselineskip}
+% \titlespacing*{\subsection}{0pt}{0.1\baselineskip}{0.1\baselineskip}
+
+\setlength\floatsep{0.1\baselineskip plus 3pt minus 2pt}
+\setlength\textfloatsep{1.\baselineskip plus 3pt minus 2pt}
+\setlength\intextsep{1.0\baselineskip plus 3pt minus 2 pt}
+
+\newcommand{\comment}[1]{}

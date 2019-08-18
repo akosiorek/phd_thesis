@@ -1,0 +1,27 @@
+\section{Related Work}
+\label{sec:background}
+
+%spatial attention
+A number of recent studies have demonstrated that visual content can be captured through a sequence of spatial glimpses or foveation \cite{Graves2014recurrent, Wierstra2015draw}. Such a paradigm has the intriguing property that the computational complexity is proportional to the number of steps as opposed to the image size.
+Furthermore, the fovea centralis in the retina of primates is structured with maximum visual acuity in the centre and decaying resolution towards the periphery, \citet{Olshausen2016foveal} show that if spatial attention is capable of zooming, a regular grid sampling is sufficient. 
+\citet{Jaderberg2015} introduced the spatial transformer network (STN) which provides a fully differentiable means of transforming feature maps, conditioned on the input itself. \citet{Eslami2016} use the STN as a form of attention in combination with a recurrent neural network (RNN) to sequentially locate and identify objects in an image. Moreover, \citet{Eslami2016} use a latent variable to estimate the presence of additional objects, allowing the RNN to adapt the number of time-steps based on the input. 
+Our spatial attention mechanism is based on the two dimensional Gaussian grid filters of  \cite{Kahou2015ratm} which is both fully differentiable and more biologically plausible than the STN.  
+%While the aforementioned approaches use a regular sampling lattice which is far simpler than of the primate retina, \citet{Olshausen2016foveal} showed that complex sampling patterns are not required when attention is able to zoom-in on a region of interest. 
+
+
+    
+%appearance attention with RNNs
+Whilst focusing on a specific location has its merits, focusing on particular appearance features might be as important. A policy with feedback connections can learn to adjust filters of a convolutional neural network (CNN), thereby adapting them to features present in the current image and improving accuracy \cite{Stollenga2014}. \citet{Brabandere2016dfn} introduced dynamic filter network (DFN), where filters for a CNN are computed on-the-fly conditioned on input features, which can reduce model size without performance loss. \citet{Karl2017} showed that an input-dependent state transitions can be helpful for learning latent Markovian state-space system. While not the focus of this work, we follow this concept in estimating the expected appearance of the tracked object.
+    
+%attention in tracking  
+In the context of single object tracking, both attention mechanisms and RNNs appear to be perfectly suited, yet their success has mostly been limited to simple monochromatic sequences with plain backgrounds \cite{Kahou2015ratm}. \citet{Cheung2016gtc} applied STNs \cite{Jaderberg2015} as attention mechanisms for real-world object tracking, but failed due to exploding gradients potentially arising from the difficulty of the data.
+\citet{Ning2016} achieved competitive performance by using features from an object detector as inputs to a long-short memory network (LSTM), but requires processing of the whole image at each time-step. 
+
+Two recent state-of-the-art trackers employ convolutional Siamese networks which can be seen as an RNN unrolled over two time-steps \cite{Held2016, Valmadre2017}. Both methods explicitly process small search areas around the previous target position to produce a bounding box offset \cite{Held2016} or a correlation response map with the maximum corresponding to the target position \cite{Valmadre2017}. 
+We acknowledge the recent work\footnote{\cite{Gordon2017} only became available at the time of submitting this paper.} of \citet{Gordon2017} which employ an RNN based model and use explicit cropping and warping as a form of non-differentiable spatial attention.
+The work presented in this paper is closest to \cite{Kahou2015ratm} where we share a similar spatial attention mechanism which is guided through an RNN to effectively learn a motion model that spans multiple time-steps. The next section describes our additional attention mechanisms in relation to their biological counterparts.
+
+
+
+    
+    

@@ -1,0 +1,57 @@
+\section{Details for the Inference of SQAIR} 
+\label{apd:sqair_inference}
+
+The propagation inference network $\qp_{\phi}$ is given as below,
+\begin{equation} \label{eq:q_prop}
+    \qp{\bzt^{\mathcal{P}_t}}{\bxt, \bz_{t-1}, \hT{t}{\mathcal{P}_t}}{\phi}
+        = \prod_{i \in {\mathcal{O}_{t-1}}} \qp{\bzt^i}{\bxt, \bz_{t-1}^{i}, \hT{t}{i}, \hR{t}{i}}{\phi},
+\end{equation}
+with $\hR{t}{i}$ the hidden state of the relation \gls{RNN} (see \Cref{eq:propagation_state}). Its role is to capture information from the observation $\bxt$ as well as to model dependencies between different objects.
+The propagation posterior for a single object can be expanded as follows,
+\begin{equation} \label{eq:q_prop_obj}
+\begin{aligned}
+    &\qp{\bzt^i}{\bxt,\bz_{t-1}^{i}, \hT{t}{i}, \hR{t}{i}}{\phi} =\\
+        &\quad \qp{\bzt^{\mathrm{where}, i}}{\bz_{t-1}^{\mathrm{what}, i}, \bz_{t-1}^{\mathrm{where}, i}, \hT{t-1}{i}, \hR{t}{i}}{\phi}\\
+        &\quad \qp{\bzt^{\mathrm{what}, i}}{\bxt, \bzt^{\mathrm{where}, i}, \bz_{t-1}^{\mathrm{what}, i}, \hT{t}{i}, \hR{t}{i}}{\phi}\\
+        &\quad \qp{\zt^{\mathrm{pres}, i}}{\bzt^{\mathrm{what}, i}, \bzt^{\mathrm{where}, i}, z_{t-1}^{\mathrm{pres}, i}, \hT{t}{i}, \hR{t}{i}}{\phi}.
+        % &\quad \qp{\zt^{\mathrm{pres}, i}}{\bxt, \bzt^{\mathrm{what}, i}, \bzt^{\mathrm{where}, i}, \bm{h}_t^{T, i}, \bm{h}_t^{P,i}}{\phi}\delta( z_{t-1}^{\mathrm{pres}, i} - 1).
+\end{aligned}
+\end{equation}
+In the second line, we condition the object location $\bzt^{\mathrm{where}, i}$ on its previous appearance and location as well as its dynamics and relation with other objects.
+In the third line, current appearance $\bzt^{\mathrm{what}, i}$ is conditioned on the new location.
+Both $\bzt^{\mathrm{where}, i}$ and $\bzt^{\mathrm{what}, i}$ are modelled as factorised Gaussians.
+Finally, presence depends on the new appearance and location as well as the presence of the same object at the previous time-step.
+More specifically, 
+\begin{equation} \label{eq:q_prop_presence}
+\begin{aligned}
+    &\qp{\zt^{\mathrm{pres}, i}}{\bzt^{\mathrm{what}, i}, \bzt^{\mathrm{where}, i}, z_{t-1}^{\mathrm{pres}, i}, \hT{t}{i}, \hR{t}{i}}{\phi}\\
+        &\quad= \bern \left(
+            \zt^{\mathrm{pres}, i} \mid f_\phi \left(
+                \bzt^{\mathrm{what}, i}, \bzt^{\mathrm{where}, i}, \hT{t}{i}, \hR{t}{i}
+            \right)
+        \right)
+        \delta_1( z_{t-1}^{\mathrm{pres}, i}),
+\end{aligned}
+\end{equation}
+where the second term is the delta distribution centered on the presence of this object at the previous time-step.
+If it was not there, it cannot be propagated.
+Let $j \in \{0, \dots, i-1\}$ be the index of the most recent present object before object $i$. Hidden states are updated as follows,
+\begin{equation} \label{eq:propagation_state}
+        \hR{t}{i} = \Rr \left(
+        \bxt,
+        \bz_{t-1}^{\mathrm{what}, i}, \bz_{t-1}^{\mathrm{where}, i}, 
+        \hT{t-1}{i}, \hR{t}{i-1},
+        \bzt^{\mathrm{what}, j}, \bzt^{\mathrm{where}, j}
+    \right),
+\end{equation}
+\begin{equation} \label{eq:temporal_state}
+    \hT{t}{i} = \RT \left(
+        \bxt,
+        \bzt^{\mathrm{where}, i}, 
+        \hT{t-1}{i}, \hR{t}{i}
+    \right),
+\end{equation}
+where $\RT$ and $\Rr$ are temporal and propagation \glspl{RNN}, respectively.
+Note that in \cref{eq:propagation_state} the \gls{RNN} does not have direct access to the image $\bxt$, but rather accesses it by extracting an attention glimpse at a proposal location, predicted from $\hT{t-1}{i}$ and $\bz_{t-1}^{\mathrm{where}, i}$.
+This might seem like a minor detail, but in practice structuring computation this way prevents ID swaps from occurring, \textit{cf}. \Cref{app:fail}.
+For computational details, please see \Cref{algo:sqair_prop,algo:sqair_disc} in \Cref{app:algo}.

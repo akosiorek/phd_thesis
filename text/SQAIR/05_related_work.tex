@@ -1,0 +1,40 @@
+\section{Related Work}
+
+\begin{description}[leftmargin=\parindent]
+\item[Object Tracking]
+    There have been many approaches to modelling objects in images and videos. 
+    Object detection and tracking are typically learned in a supervised manner, where object bounding boxes and often additional labels are part of the training data.
+    Single-object tracking commonly use Siamese networks, which can be seen as an \gls{RNN} unrolled over two time-steps \citep{valmadre2017end}. Recently, \cite{kosiorek2017hierch} used an \gls{RNN} with an attention mechanism in the \textsc{hart} model to predict bounding boxes for single objects, while robustly modelling their motion and appearance. Multi-object tracking is typically attained by detecting objects and performing data association on bounding-boxes \citep{bewley2016sort}.
+    \cite{schulter2017deepnf} used an end-to-end supervised approach that detects objects and performs data association.
+    In the unsupervised setting, where the training data consists of only images or videos, the dominant approach is to distill the inductive bias of spatial consistency into a discriminative model.  \cite{cho2015unsupervised} detect single objects and their parts in images, and \cite{kwak2015unsupervised,xiao2016track} incorporate temporal consistency to better track single objects.
+    \Gls{SQAIR} is unsupervised and hence it does not rely on bounding boxes nor additional labels for training, while being able to learn arbitrary motion and appearance models similarly to \textsc{hart} \citep{kosiorek2017hierch}.
+    At the same time, is inherently multi-object and performs data association implicitly (\textit{cf}. \Cref{app:algo}).
+    Unlike the other unsupervised approaches, temporal consistency is baked into the model structure of \gls{SQAIR} and further enforced by lower \gls{KL} divergence when an object is tracked.
+
+\item[Video Prediction]
+     Many works on video prediction learn a deterministic model conditioned on the current frame to predict the future ones \citep{ranzato2014video,srivastava2015unsupervised}.
+     Since these models do not model uncertainty in the prediction, they can suffer from the multiple futures problem --- since perfect prediction is impossible, the model produces blurry predictions which are a mean of possible outcomes.
+     This is addressed in stochastic latent variable models trained using variational inference to generate multiple plausible videos given a sequence of images \citep{babaeizadeh2017stochastic, denton2018stochastic}.
+     Unlike \gls{SQAIR}, these approaches do not model objects or their positions explicitly, thus the representations they learn are of limited interpretability. 
+     
+\item[Learning Decomposed Representations of Images and Videos]
+    Learning decomposed representations of object appearance and position lies at the heart of our model.
+    This problem can be also seen as perceptual grouping, which involves modelling pixels as spatial mixtures of entities.
+    \cite{Greff2016tagger} and \cite{Greff2017neuralem} learn to decompose images into separate entities by iterative refinement of spatial clusters using either learned updates or the Expectation Maximization algorithm;
+    \cite{Ilin2017recurrentln} and \cite{Steenkiste2018relationalnem} extend these approaches to videos, achieving very similar results to \gls{SQAIR}.
+    Perhaps the most similar work to ours is the concurrently developed model of \cite{Hsieh2018ddpae}.
+    The above approaches rely on iterative inference procedures, but do not exhibit the object-counting behaviour of \gls{SQAIR}.
+    For this reason, their computational complexities are proportional to the predefined maximum number of objects, while \gls{SQAIR} can be more computationally efficient by adapting to the number of objects currently present in an image.
+    
+    Another interesting line of work is the \textsc{gan}-based unsupervised video generation that decomposes motion and content \citep{tulyakov2017mocogan,denton2017unsupervised}. These methods learn interpretable features of content and motion, but deal only with single objects and do not explicitly model their locations. Nonetheless, adversarial approaches to learning structured probabilistic models of objects offer a plausible alternative direction of research.
+    
+\item[Bayesian Nonparametric Models]
+    To the best of our knowledge, \cite{neiswanger2012unsupervised} is the only known approach that models pixels belonging to a variable number of objects in a video together with their locations in the generative sense.
+    This work uses a \gls{bnp} model, which relies on mixtures of Dirichlet processes to cluster pixels belonging to an object. 
+    However, the choice of the model necessitates complex inference algorithms involving Gibbs sampling and Sequential Monte Carlo, to the extent that any sensible approximation of the marginal likelihood is infeasible.
+    It also uses a fixed likelihood function, while ours is learnable.
+    
+    The object appearance-persistence-disappearance model in \gls{SQAIR} is reminiscent of the \gls{mibp} of \cite{Gael2009}, another \gls{bnp} model. \Gls{mibp} was used as a model for blind source separation, where multiple sources contribute toward an audio signal, and can appear, persist, disappear and reappear independently. 
+    The prior in \gls{SQAIR} is similar, but the crucial differences are that \gls{SQAIR} combines the \gls{bnp} prior with flexible neural network models for the dynamics and likelihood, as well as variational learning via amortized inference.
+    The interface between deep learning and \gls{bnp}, and graphical models in general, remains a fertile area of research.
+\end{description}

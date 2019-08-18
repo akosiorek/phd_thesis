@@ -1,0 +1,19 @@
+% !Tex root=main.tex
+
+\section{The Partially Importance-Weighted Auto-Encoder}
+\label{sec:piwae}
+
+We have provided theoretical and empirical evidence that using a
+lower $K$ is beneficial to calculating gradients of inference network,  while a higher $K$
+is beneficial for the generative network.  From this it is natural to conclude
+that one should use a different target for each network.  To this end, we introduce
+the partially importance-weighted auto-encoder (\gls{PIWAE}), which for a given budget $T=KM$
+sets $K=1$, $M=T$ for the inference network updates as per the \gls{VAE} and 
+$K=T$, $M=1$ for the generative network updates as per the \gls{IWAE}.  Using
+the general form of our estimator as per~\eqref{eq:grad-est}, the same importance
+weights can be used for calculating both targets, thereby requiring only minimal
+algorithmic changes to the \gls{IWAE}.  Namely, the gradient update algorithm for
+\gls{PIWAE} is as follows.
+
+\todo[inline]{Add algorithm block}
+

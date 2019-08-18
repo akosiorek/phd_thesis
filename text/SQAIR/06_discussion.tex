@@ -1,0 +1,14 @@
+\section{Discussion}
+\label{sec:discussion}
+
+In this paper we proposed \gls{SQAIR}, a probabilistic model that extends \gls{AIR} to image sequences, and thereby achieves temporally consistent reconstructions and samples. In doing so, we enhanced \gls{AIR}'s capability of disentangling overlapping objects and identifying partially observed objects.
+
+This work continues the thread of
+\cite{Greff2017neuralem}, \cite{Steenkiste2018relationalnem} and, together with \cite{Hsieh2018ddpae}, presents unsupervised object detection~\&~tracking with learnable likelihoods by the means of generative modelling of objects.
+In particular, our work is the first one to explicitly model object presence, appearance and location through time. 
+Being a generative model, \gls{SQAIR} can be used for conditional generation, where it can extrapolate sequences into the future.
+As such, it would be interesting to use it in a reinforcement learning setting in conjunction with Imagination-Augmented Agents \citep{weber2017imagination} or more generally as a world model \citep{ha2018worldm}, especially for settings with simple backgrounds,\eg games like Montezuma's Revenge or Pacman.
+
+The framework offers various avenues of further research; 
+\Gls{SQAIR} leads to interpretable representations, but the interpretability of \textit{what} variables can be further enhanced by using alternative objectives that disentangle factors of variation in the objects \citep{kim2018disentangling}. 
+Moreover, in its current state, \gls{SQAIR} can work only with simple backgrounds and static cameras. In future work, we would like to address this shortcoming, as well as speed up the sequential inference process whose complexity is linear in the number of objects. The generative model, which currently assumes additive image composition, can be further improved by\eg autoregressive modelling \citep{oord2016cond}. It can lead to higher fidelity of the model and improved handling of occluded objects. Finally, the \gls{SQAIR} model is very complex, and it would be useful to perform a series of ablation studies to further investigate the roles of different components.

@@ -1,0 +1,37 @@
+% !Tex root=./main.tex
+
+\section{Proof of Directional Convergence}
+\label{sec:dirproof}
+
+\dirproof*
+
+\begin{proof}
+Substituting~\eqref{eq:expt} into~\eqref{eq:dir_conv}, explicitly writing out
+the denominator terms, and multiplying the numerator and denominators of the
+first term by $2KZ^2$ gives
+\begin{align*}
+&\left\lVert \frac{-\nabla_{\phi} \text{Var}\left[w_{1,1}\right]
+	+O\left(\frac{1}{K}\right)}
+{\sqrt{\sum_{d=1}^{D} \left( \nabla_{\phi_d} \text{Var}\left[w_{1,1}\right]
+	+O\left(\frac{1}{K}\right)\right)^2}}
+-\frac{-\nabla_{\phi} \textnormal{Var}\left[w_{1,1}\right]}
+{\sqrt{\sum_{d=1}^D \left(\nabla_{\phi_d} \textnormal{Var}\left[w_{1,1}\right]\right)^2}}
+\right\rVert_2 \\
+& 
+= \left\lVert
+\frac{
+\left(-\nabla_{\phi} \text{Var}\left[w_{1,1}\right]\right)
+\left(
+\sqrt{\sum_{d=1}^D \left(\nabla_{\phi_d} \textnormal{Var}\left[w_{1,1}\right]\right)^2}
+-\sqrt{\sum_{d=1}^{D} \left( \nabla_{\phi_d} \text{Var}\left[w_{1,1}\right]
+	+O\left(\frac{1}{K}\right)\right)^2}\right)+O\left(\frac{1}{K}\right)
+}
+{
+\sqrt{\sum_{d=1}^{D} \left( \nabla_{\phi_d} \text{Var}\left[w_{1,1}\right]
+	+O\left(\frac{1}{K}\right)\right)^2}
+\sqrt{\sum_{d=1}^D \left(\nabla_{\phi_d} \textnormal{Var}\left[w_{1,1}\right]\right)^2}	
+}
+\right\rVert
+\end{align*}
+\end{proof}
+where $d$ indicates the dimension.

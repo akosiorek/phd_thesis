@@ -1,0 +1,185 @@
+% Sample LaTeX file for creating a paper in the Morgan Kaufmannn two
+% column, 8 1/2 by 11 inch proceedings format.
+
+\documentclass[letterpaper]{article}
+\usepackage{uai2019}
+\usepackage[margin=1in]{geometry}
+
+% Set the typeface to Times Roman
+\usepackage{times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{paralist}
+\usepackage[acronym,smallcaps,nowarn,section,nogroupskip,nonumberlist]{glossaries}
+\usepackage[nameinlink,capitalise]{cleveref}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{etoolbox}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage[font=small]{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{titlesec}
+\usepackage[textsize=footnotesize]{todonotes}
+\usepackage{balance}
+\usepackage[ruled,vlined]{algorithm2e}
+
+%% Colours
+\definecolor{red}{HTML}{E41A1C}
+\definecolor{orange}{HTML}{FF7F00}
+\definecolor{yellow}{HTML}{FFC020}
+\definecolor{green}{HTML}{4DAF4A}
+\definecolor{blue}{HTML}{377EB8}
+\definecolor{purple}{HTML}{984EA3}
+% tikz
+\usetikzlibrary{calc,backgrounds,positioning,bayesnet,arrows.meta,patterns,fit,trees}
+% todo
+\presetkeys{todonotes}{%
+  backgroundcolor=blue!10!white,
+  linecolor=blue!10!white,
+  bordercolor=blue!10!white
+}{}
+% cleveref
+\Crefname{algocf}{Algorithm}{Algorithms}
+\crefname{algorithm}{Algorithm}{Algorithms}
+% \crefname{equation}{Equation}{Equations}
+\crefname{figure}{Figure}{Figure}
+\crefname{table}{Table}{Table}
+\crefname{section}{\S}{\S\S}
+\Crefname{section}{\S}{\S\S}
+\crefformat{equation}{(#2#1#3)}
+% abbreviations
+% must run `makeglossaries main'
+% https://tex.stackexchange.com/questions/43759/printglossaries-is-not-generating-anything-for-me
+\makeglossaries
+\glsdisablehyper{}
+\newacronym{SCFM}{scfm}{stochastic control-flow model}
+\newacronym{WS}{ws}{wake-sleep}
+\newacronym{BWS}{bws}{basic wake-sleep}
+\newacronym{RWS}{rws}{reweighted wake-sleep}
+\newacronym{ELBO}{elbo}{evidence lower bound}
+\newacronym{VAE}{vae}{variational autoencoder}
+\newacronym{IWAE}{iwae}{importance weighted autoencoder}
+\newacronym{KL}{kl}{Kullback-Leibler}
+\newacronym{SGD}{sgd}{stochastic gradient descent}
+\newacronym{VIMCO}{vimco}{variational inference for Monte Carlo objectives}
+\newacronym{WW}{ww}{wake-wake}
+\newacronym{WWS}{wws}{wake-wake-sleep}
+\newacronym{AIR}{air}{Attend, Infer, Repeat}
+\newacronym{ESS}{ess}{effective sample size}
+\newacronym{REINFORCE}{reinforce}{Reinforce gradient estimator}
+\newacronym{IS}{is}{importance sampling}
+\newacronym{GMM}{gmm}{Gaussian mixture model}
+\newacronym{MNIST}{mnist}{hand-written digit dataset}
+\newacronym{RELAX}{relax}{RELAX gradient estimator}
+\newacronym{REBAR}{rebar}{REBAR gradient estimator}
+\newacronym{PMF}{pmf}{probability mass function}
+\newacronym{MLP}{mlp}{multilayer perceptron}
+\newacronym{RNN}{rnn}{recurrent neural network}
+\newacronym{PCFG}{pcfg}{probabilistic context free grammar}
+\newacronym{ADAM}{adam}{ADAM}
+\glsunset{ADAM}
+% titlesec
+% \titlespacing\section{0pt}{3pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+% \titlespacing\subsection{0pt}{3pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+ {0ex \@plus1ex \@minus.2ex}%
+ {-1em}%
+ {\normalfont\normalsize\bfseries}}
+\makeatother
+
+\newcommand{\circled}[2][]{%
+  \tikz[baseline=(char.base)]{%
+    \node[shape = circle, draw, inner sep = 1pt,scale=0.75]
+    (char) {\phantom{\ifblank{#1}{#2}{#1}}};%
+    \node at (char.center) {\makebox[0pt][c]{\scriptsize #2}};}}
+\robustify{\circled}
+
+% math
+\newcommand{\given}{\lvert}
+\DeclareMathOperator{\ELBO}{\acrshort{ELBO}}
+\DeclareMathOperator{\std}{\mathrm{std}}
+
+\newcommand{\ak}[1]{\textcolor{blue}{\textbf{ak}: #1}}
+\newcommand{\sid}[1]{\todo{sid:#1}}
+\newcommand{\tal}[1]{\todo{tal:#1}}
+
+\hyphenation{app-roach}
+\hyphenation{auto-encoder}
+
+\title{Revisiting Reweighted Wake-Sleep \\[0.5ex]
+for Models with Stochastic Control Flow}
+
+% \author{} % LEAVE BLANK FOR ORIGINAL SUBMISSION.
+%           % UAI  reviewing is double-blind.
+
+% The author names and affiliations should appear only in the accepted paper.
+%
+\author{
+  Tuan~Anh Le$^1$\thanks{\quad Equal contribution.} \quad Adam R. Kosiorek$^{1, 2}$\footnotemark[1] \quad N. Siddharth$^1$\quad Yee~Whye Teh$^2$\quad Frank Wood$^3$\\
+  $^1$ Department of Engineering Science, University of Oxford \\
+  $^2$ Department of Statistics, University of Oxford \\
+  $^3$ Department of Computer Science, University of British Columbia
+  % \texttt{\{tuananh,adamk,nsid\}@robots.ox.ac.uk,y.w.teh@stats.ox.ac.uk,fwood@cs.ubc.ca}
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+  \Glspl{SCFM} are a class of generative models that involve branching on choices from discrete random variables.
+  %
+  Amortized gradient-based learning of \glspl{SCFM} is challenging as most approaches targeting discrete variables rely on their continuous relaxations---which can be intractable in \glspl{SCFM}, as branching on relaxations requires evaluating \emph{all} (exponentially many) branching paths.
+  %
+  Tractable alternatives mainly combine \acrshort{REINFORCE} with complex control-variate schemes to improve the variance of na\"ive estimators.
+  %
+  Here, we revisit the \gls{RWS}~\citep{bornschein2015reweighted} algorithm, and through extensive evaluations, show that it outperforms current state-of-the-art methods in learning \glspl{SCFM}.
+  %
+  Further, in contrast to the \acrlong{IWAE}, we observe that \gls{RWS} learns better models \emph{and} inference networks with increasing numbers of particles.
+  %
+  Our results suggest that \gls{RWS} is a competitive, often preferable, alternative for learning \glspl{SCFM}.
+\end{abstract}
+
+\glsresetall
+\input{introduction}
+\input{background}
+\input{method}
+\input{experiments}
+\input{conclusion}
+
+\subsubsection*{Acknowledgments}
+
+TAL's research leading to these results is supported by EPSRC DTA and Google (project code DF6700) studentships.
+AK's and YWT's research leading to these results are supported by funding from the European Research Council under the European Union’s Seventh Framework Programme (FP7/2007-2013) ERC grant agreement no. 617071.
+NS is supported by EPSRC/MURI grant EP/N019474/1.
+FW's research leading is supported by The Alan Turing Institute under the EPSRC grant EP/N510129/1; DARPA PPAML through the U.S. AFRL under Cooperative Agreement FA8750-14-2-0006; Intel and DARPA D3M, under Cooperative Agreement FA8750-17-2-0093.
+
+\clearpage
+\newpage
+
+\renewcommand*{\bibfont}{\small}
+\bibliography{main}
+\bibliographystyle{plainnat}
+\balance
+
+\clearpage
+\newpage
+\appendix
+\input{appendix}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

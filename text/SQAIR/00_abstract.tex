@@ -1,0 +1,9 @@
+\begin{abstract}
+\vspace{-5pt}
+We present Sequential Attend, Infer, Repeat (\textsc{sqair}), an interpretable deep generative model for videos of moving objects.
+It can reliably discover and track objects throughout the sequence of frames, and can also generate future frames conditioning on the current frame, thereby simulating expected motion of objects. 
+This is achieved by explicitly encoding object presence, locations and appearances in the latent variables of the model.
+\textsc{Sqair} retains all strengths of its predecessor, Attend, Infer, Repeat (\textsc{air}, \cite{Eslami2016}), including learning in an unsupervised manner, and addresses its shortcomings.
+We use a moving multi-\textsc{mnist} dataset to show limitations of AIR in detecting overlapping or partially occluded objects, and show how \textsc{sqair} overcomes them by leveraging temporal consistency of objects.
+Finally, we also apply \textsc{sqair} to real-world pedestrian CCTV data, where it learns to reliably detect, track and generate walking pedestrians with no supervision.
+\end{abstract}

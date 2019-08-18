@@ -1,0 +1,43 @@
+% !Tex root=tb_icml_2018.tex
+
+\section{Conclusions}
+We have provided theoretical and empirical evidence that algorithmic approaches to increasing the tightness of the \gls{ELBO} independently to the expressiveness of the inference network can be detrimental to learning by reducing the
+signal-to-noise ratio of the inference network gradients.
+% We show for the case of \gls{IWAE} that increasing the particle number reduces the amplitude of the expected gradient $\mathbb{E}\left[\nabla_\phi \mathrm{ELBO}\right]$ faster than its standard deviation, thereby reducing the signal-to-noise ratio.
+%Namely, we have shown for the case of \gls{IWAE} that the signal-to-noise ratio, namely
+%the magnitude of expected value divided by the standard deviation, of the inference network
+%gradients estimates decreases as we increase the number of importance samples $K$.
+%However, we also showed that increasing $K$ can provide a better target for the inference
+%network if gradients can be calculated exactly, suggesting that there is trade-off involved in
+%setting $K$.
+Experiments on a simple latent variable model confirmed our theoretical findings.
+We then exploited these insights to introduce three estimators,
+\gls{PIWAE},~\gls{MIWAE}, and~\gls{CIWAE} and showed that each
+can deliver improvements over~\gls{IWAE}, even when the metric
+used for this assessment is the~\gls{IWAE} target itself.  In particular, 
+each was able to deliver improvement in the training of the inference network,
+while maintaining the quality of the learned generative network.
+
+Whereas \gls{MIWAE} and \gls{CIWAE} mostly allow for balancing the requirements of
+the inference and generative networks, \gls{PIWAE} appears to be able to offer
+simultaneous improvements to both, with the improved training of the inference network
+having a knock-on effect on the generative network.  Key to achieving this is, is its use
+of separate targets for the two networks, opening up interesting avenues for
+future work.
+%
+%Of these, \gls{PIWAE} is likely to be of particular interest for future work 
+%as it shows improvements are possible from using different targets for the generative
+%and inference networks; whereas 
+%
+%In particular, \textsc{piwae} delivered simultaneous improvements in both
+%the inference network and the generative network
+%compared to \textsc{iwae}.
+
+%Our results qualify recent developments with regards to learning inference networks
+%and instigate further investigations regarding desired properties of variational objective functions.
+%
+%A natural conclusion from our results is that it may be beneficial to use different
+%objectives for learning the generative and inference networks.  For example, one
+%might look to use a tighter bound for the generative network than the inference network.
+%Naturally, doing this might introduce its own complications, but it forms a tantalizing possible
+%line of inquiry for future work nonetheless.

@@ -1,0 +1,65 @@
+% !Tex root=tb_icml_2018.tex
+
+\section{New Estimators}
+\label{sec:algs}
+
+Based on our theoretical results, we now introduce three new
+algorithms that address the issue of diminishing \gls{SNR} for the inference
+network.  Our first, \gls{MIWAE}, is exactly equivalent to the 
+general formulation given in~\eqref{eq:grad-est}, the distinction from previous
+approaches coming from the fact that it takes both $M>1$ and $K>1$.  
+The motivation for this is that because our inference network \gls{SNR} increases as
+$O(\sqrt{M/K})$, we should be able to mitigate the issues increasing
+$K$ has on the \gls{SNR} by also increasing $M$.  For fairness, we will
+keep our overall budget $T=MK$ fixed, but we will show that given this
+budget, the optimal value for $M$ is often not $1$.  In practice, we expect that
+it will often be beneficial to increase the mini-batch size $N$ rather than $M$ for
+\gls{MIWAE};
+as we showed in Section~\ref{sec:multi} this has the same effect on the~\gls{SNR}.  Nonetheless, \gls{MIWAE} forms an interesting reference method
+for testing our theoretical results and, as we will show, it can offer improvements
+over \gls{IWAE} for a given $N$.
+
+Our second algorithm, \gls{CIWAE} uses a convex combination of the
+\gls{IWAE} and \gls{VAE} bounds, namely
+\begin{align}
+\ELBO_{\text{CIWAE}} = \beta \ELBO_{\text{VAE}} + (1-\beta) \ELBO_{\text{IWAE}}
+\end{align}
+where $\beta \in [0,1]$ is a combination parameter.  It is trivial
+to see that $\ELBO_{\text{CIWAE}}$ is a lower bound on the log marginal
+that is tighter than the \gls{VAE} bound but looser than the \gls{IWAE}
+bound.  We then employ the following estimator
+\begin{align}
+\label{eq:CIWAE-est}
+\Delta_{K,\beta}^{\text{C}}
+=& \\\nabla_{\theta, \phi} &\left(
+\beta \frac{1}{K} \sum_{k=1}^{K} 
+\log w_k + (1-\beta) \log \left(\frac{1}{K} \sum_{k=1}^{K}  w_k\right)\right) \nonumber
+\end{align}
+where we use the same $w_k$ for both terms.  The motivation
+for  \gls{CIWAE} is that, if we set $\beta$ to a relatively small value, the
+objective will behave mostly like \gls{IWAE}, except when the
+expected \gls{IWAE} gradient becomes very small.  When this happens,
+the \gls{VAE} component should ``take-over'' and alleviate SNR issues:
+the asymptotic SNR of $\Delta_{K,\beta}^{\text{C}}$ for $\phi$ is
+$O(\sqrt{MK})$ because the \gls{VAE} component has non-zero expectation
+in the limit $K\rightarrow\infty$.
+
+Our results suggest that what is good for the generative
+network, in terms of setting $K$, is often detrimental for the inference 
+network.  It is therefore natural to question whether it is sensible
+to always use the same target for both the inference and generative networks.
+Motivated by this,
+our third method, \gls{PIWAE}, uses the \gls{IWAE} target when
+training the generative network, but the \gls{MIWAE} target for training
+the inference network.  We thus have
+\begin{subequations}
+\begin{align}
+\label{eq:PIWAE-est}
+\Delta_{M,K}^{\text{P}} (\theta) &= \nabla_{\theta} \log \frac{1}{K}
+\sum\nolimits_{k=1}^{K} w_k \\
+\Delta_{M,K}^{\text{P}} (\phi) &= \frac{1}{M} \sum\nolimits_{m=1}^{M}
+\nabla_{\phi} \log \frac{1}{L} \sum\nolimits_{\ell=1}^{L} w_{m,\ell}
+\end{align}
+\end{subequations}
+where we will generally set $K=ML$ so that the same weights can be
+used for both gradients.  

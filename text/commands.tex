@@ -1,0 +1,79 @@
+% Comment commands
+\newcommand{\ak}[1]{\textcolor{blue}{\textbf{ak}: #1}}
+\newcommand{\yw}[1]{\textcolor{pink}{\textbf{yw}: #1}}
+\newcommand{\hjk}[1]{\textcolor{green}{\textbf{hjk}: #1}}
+\newcommand{\hip}[1]{\textcolor{orange}{\textbf{hip}: #1}}
+
+% bold text that can be used anywhere
+\newcommand*{\B}[1]{\ifmmode\bm{#1}\else\textbf{#1}\fi}
+
+% \DeclarePairedDelimiter{\fences}{(}{)}
+\newcommand{\MLP}{\operatorname{MLP}}
+\newcommand{\RNN}{\operatorname{RNN}}
+\newcommand{\STN}{\operatorname{ST}}
+\newcommand{\bern}{\operatorname{Bernoulli}}
+\newcommand{\cat}{\operatorname{Categorical}}
+
+\DeclarePairedDelimiter{\fences}{(}{)}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+
+\newcommand{\LSTM}[1]{ \mathrm{LSTM} \fences{#1} }
+\newcommand{\flatten}[1]{ \mathrm{vec} \fences{#1} }
+\newcommand{\reg}[1]{ \ensuremath{R} \fences{#1} }
+
+
+% colors
+\definecolor{pink}{HTML}{ff00ff}
+\definecolor{orange}{HTML}{ff9900}
+\definecolor{blue}{HTML}{0000ff}
+\definecolor{darkgreen}{rgb}{0,.502,0}
+
+
+% keyword for algrithm2e
+\SetKw{Continue}{continue}
+
+
+\newcommand{\hT}[2]{\textcolor{blue}{\bm{h}_{#1}^{T, #2}}}
+\newcommand{\hR}[2]{\textcolor{orange}{\bm{h}_{#1}^{R, #2}}}
+\newcommand{\hD}[2]{\textcolor{pink}{\bm{h}_{#1}^{D, #2}}}
+
+\newcommand{\RT}{\textcolor{blue}{\operatorname{R}_\phi^T}}
+\newcommand{\Rr}{\textcolor{orange}{\operatorname{R}_\phi^R}}
+% for some reason \RR gives \mathbb{R}, so using \Rr instead
+\newcommand{\RD}{\textcolor{pink}{\operatorname{R}_\phi^D}}
+
+
+\newcommand{\sidecaption}[1]% #1 = label name
+{\raisebox{\abovecaptionskip}{\begin{subfigure}[t]{1.6em}
+		\caption[singlelinecheck=off]{}% do not center
+		\label{#1}
+\end{subfigure}}\ignorespaces}
+
+
+% appendix after every chapter
+\AtBeginEnvironment{subappendices}{%
+	\chapter*{Appendix}
+	\addcontentsline{toc}{chapter}{Appendices}
+	\counterwithin{figure}{section}
+	\counterwithin{table}{section}
+}
+
+\probdists{p,q}
+\probdists[pd]{p^D}
+\probdists[pp]{p^P}
+\probdists[qd]{q^D}
+\probdists[qp]{q^P}
+
+\variables{a,b,c,e,g,l,t,o,s,v,w,x,y,z,D,P,S}
+\variables{A,I}
+
+\variables[app]{\alpha}
+\variables[mean]{\mu}
+\variables[std]{\sigma}
+\variables[map]{\nu}
+\variables[dparam]{\psi}
+
+
+\newcommand{\what}{\textsc{what} }
+\newcommand{\where}{\textsc{where} }
+\newcommand{\pres}{\textsc{presence} }

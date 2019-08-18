@@ -1,0 +1,31 @@
+% !Tex root=./main.tex
+
+\vspace{-4pt}
+
+\section{Derivation of Optimal Parameters for Gaussian Experiment}
+\label{sec:optGauss}
+
+\vspace{-4pt}
+
+To derive the optimal parameters for the Gaussian experiment we first note that
+\begin{align*}
+\mathcal J(\theta, \phi) %&:= \frac{1}{N} \sum_{n = 1}^N \ELBO_{\text{IS}}(\theta, \phi, x^{(n)}) \\
+&= \frac{1}{N}\log \prod_{n=1}^{N} p_{\theta}(x^{(n)}) - \frac{1}{N}\sum_{n=1}^{N} \KL{Q_{\phi}(z_{1:K}|x^{(n)})}{P_{\theta}(z_{1:K}|x^{(n)})} \quad \text{where}\\
+P_{\theta}(z_{1:K}|x^{(n)}) &= \frac{1}{K} \sum_{k=1}^{K}
+q_{\phi} (z_1 | x^{(n)}) \dots q_{\phi} (z_{k-1} | x^{(n)}) p_{\theta} (z_k | x^{(n)}) 
+q_{\phi} (z_{k+1} | x^{(n)}) \dots q_{\phi} (z_{K} | x^{(n)}),
+\end{align*}
+$Q_{\phi}(z_{1:K}|x^{(n)})$ is as per~\eqref{eq:background/q_is_z_is} 
+ and the form of the \gls{KL} is taken from~\cite{le2017auto}.
+Next, we note that $\phi$ only controls the mean of the proposal so, while it is not possible to drive the
+$\textsc{KL}$ to zero, it will be minimized for any particular $\theta$ when the means of $q_{\phi}(z|x^{(n)})$
+and $p_{\theta}(z|x^{(n)})$ are the same.  
+Furthermore, the corresponding minimum possible value of the \textsc{KL} is independent of
+$\theta$ and so we can
+calculate the optimum pair $(\theta^*,\phi^*)$ by first optimizing for $\theta$ and then choosing the matching $\phi$.
+The optimal $\theta$ maximizes $\log \prod_{n=1}^{N} p_{\theta}(x^{(n)})$, giving $\theta^* := \mu^* = \frac{1}{N} \sum_{n = 1}^N x^{(n)}$.
+As we straightforwardly have $p_{\theta} (z | x^{(n)}) = 
+\mathcal{N}(z; \left(x^{(n)}+\mu\right)/2, I/2)$, the \text{KL} is then minimized
+when $A=I/2$ and $b=\mu/2$, giving $\phi^* := (A^*, b^*)$, where $A^* = I / 2$ and $b^* = \mu^* / 2$.
+
+\vspace{-4pt}

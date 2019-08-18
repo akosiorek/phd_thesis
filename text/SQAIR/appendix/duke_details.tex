@@ -1,0 +1,8 @@
+\section{Details of the \textit{DukeMTMC} Experiments}
+\label{app:duke_details}
+
+We take videos from cameras one, two, five, six and eight from the \textit{DukeMTMC} dataset \citep{ristani2016performance}. As pre-processing, we invert colors and subtract backgrounds using standard OpenCV tools \citep{itseez2015opencv}, downsample to the resolution of $240 \times 175$, convert to gray-scale and randomly crop fragments of size $64 \times 64$. Finally, we generate $3500$ sequences of length five such that the maximum number of objects present in any single frame is three and we split them into training and validation sets with the ratio of $9:1$.
+
+We use the same training procedure as for the \gls{MNIST} experiments. The only exception is the learning curriculum, which goes from three to five time-steps, since this is the maximum length of the sequences. 
+
+The reported model is similar to \textsc{conv}-\gls{SQAIR}. We set the glimpse size to $28 \times 12$ to account for the expected aspect ratio of pedestrians. Glimpse and image encoders share a \gls{CNN} with $[16,32,64,64]$ feature maps and strides of $[2,2,2,1]$ followed by a fully-connected layer (different for each encoder). The glimpse decoder is implemented as a two-layer fully-connected network with 128 and 1344 units, whose outputs are reshaped into 64 feature maps of size $7 \times 3$, followed by a subpixel-\gls{CNN} with two layers of $[64, 64]$ feature maps and strides of $[2, 2]$. All remaining fully-connected layers in the model have 128 units. The total number of trainable parameters is $3.5$M.

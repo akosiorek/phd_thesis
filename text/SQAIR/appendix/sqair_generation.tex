@@ -1,0 +1,25 @@
+\section{Details for the Generative Model of SQAIR} 
+\label{apd:sqair_generation}
+
+In implementation, we upper bound the number of objects at any given time by $N$.
+In detail, the discovery prior is given by
+\begin{equation} \label{eq:disc_prior}
+    \pd{D_t,\bzt^{\mathcal{D}_t}}{\bzt^{\mathcal{P}_t}}{} 
+     = \pd{D_t}{P_t}{} \prod_{i \in \mathcal{D}_t} \pd(\bzt^{\mathrm{what}, i})\pd(\bzt^{\mathrm{where}, i}) \delta_1(\zt^{\mathrm{pres},i}),
+\end{equation}
+\begin{equation} \label{eq:disc_step_prior}
+    \pd{D_t}{P_t}{}=\cat \left(D_t; N-P_t,p_{\theta}(P_t)\right),
+\end{equation}
+where $\delta_x(\cdot)$ is the delta function at $x$, $\cat(k;K,p)$ implies $k \in \{0, 1, \ldots ,K\}$ with probabilities $p_0,p_1,\ldots,p_K$ and $\pd(\bzt^{\mathrm{what}, i}),\pd(\bzt^{\mathrm{where}, i})$ are fixed isotropic Gaussians.
+The propagation prior is given by 
+\begin{equation} \label{eq:prop_prior}
+    \pp{\bzt^{\mathcal{P}_t}}{\bz_{t-1}}{}
+     = \prod_{i \in \mathcal{P}_t} \pp{\bzt^{\mathrm{pres},i}}{\bz_{t-1}^{\mathrm{pres},i}, \bm{h}_{t-1}}{} \pp{\bzt^{\mathrm{what}, i}}{\bm{h}_{t-1}}{} \pp{\bzt^{\mathrm{where}, i}}{\bm{h}_{t-1}},
+\end{equation}
+\begin{equation} \label{eq:prop_pres_prior}
+    \pp{\bzt^{\mathrm{pres},i}}{\bz_{t-1}^{\mathrm{pres},i}, \bm{h}_{t-1}}{}
+     = \bern (\zt^{\mathrm{pres},i}; f_{\theta}(\bm{h}_{t-1})) \delta_1 (z_{t-1}^{\mathrm{pres},i}),
+\end{equation}
+with $f_{\theta}$ a scalar-valued function with range $[0,1]$ and $\pp(\bzt^{\mathrm{what}, i}|\bm{h}_{t-1}) $, $\pp(\bzt^{\mathrm{where}, i}|\bm{h}_{t-1})$ both factorised Gaussians parameterised by some function of $\bm{h}_{t-1}$.
+
+

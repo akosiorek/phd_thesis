@@ -1,0 +1,141 @@
+\documentclass{article}
+
+% \usepackage{corl_2019} % initial submission
+\usepackage[final]{corl_2019} % Uncomment for the camera-ready ``final'' version
+
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{times}
+% numbers option provides compact numerical references in the text. 
+\usepackage[numbers]{natbib}
+\usepackage{multicol}
+\usepackage{graphicx}
+% \usepackage{subfigure}
+%\usepackage{cleveref}
+\usepackage[noabbrev,capitalize]{cleveref}
+\usepackage{caption}
+\usepackage{subcaption}
+% \usepackage[skip=5pt,font=small]{caption}
+% \usepackage[skip=5pt,font=small]{subcaption}
+\usepackage{titlesec} % % section spacing
+
+
+% for tables side-by-side
+\usepackage{geometry}
+\usepackage{array, caption, floatrow, tabularx, makecell, booktabs}%
+\captionsetup{labelfont = sc}
+\setcellgapes{3pt}
+
+\usepackage[romanian,english]{babel} \usepackage{combelow} %for stefan's name
+
+\usepackage{mlmacros}
+
+\usepackage[T1]{fontenc}
+\usepackage[acronym,smallcaps,nowarn,section,nogroupskip,nonumberlist]{glossaries}
+\renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}
+\glsdisablehyper % disable hyperlinks to gls commands globally
+
+\input{glossary}
+
+\usepackage{todonotes} % this generates a lot of warnings
+
+\newcommand{\ak}[1]{\textcolor{blue}{\textbf{ak}: #1}}
+\newcommand{\AK}[1]{\todo{\ak{#1}}}
+
+\newcommand{\opj}[1]{\textcolor{purple}{\textbf{opj}: #1}}
+\newcommand{\OPJ}[1]{\todo{\opj{#1}}}
+
+
+\renewcommand{\citep}[1]{(\citet{#1})}
+
+\variables{a,g,t,x,y,z}
+
+
+\title{End-to-end Recurrent Multi-Object Tracking and Trajectory Prediction with Relational Reasoning}
+
+% The \author macro works with any number of authors. There are two
+% commands used to separate the names and addresses of multiple
+% authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to
+% break the lines. Using \AND forces a line break at that point. So,
+% if LaTeX puts 3 of 4 authors names on the first line, and the last
+% on the second line, try using \AND instead of \And before the third
+% author name.
+
+% NOTE: authors will be visible only in the camera-ready (ie, when using the option 'final'). 
+% 	For the initial submission the authors will be anonymized.
+
+
+% \author{
+%   Fabian Fuchs\\
+%   Applied AI Lab\\
+%   University of Oxford\\
+%   \texttt{fabian@robots.ox.ac.uk} \\
+%   \And
+%   Adam R. Kosiorek\\
+%   Applied AI Lab\\
+%   University of Oxford\\
+%   \texttt{adamk@robots.ox.ac.uk} \\
+%   \And
+%   Li Sun\\
+%   Applied AI Lab\\
+%   University of Oxford\\
+%   \texttt{kevin@robots.ox.ac.uk} \\
+%   \And
+%   Oiwi Parker Jones\\
+%   Applied AI Lab\\
+%   University of Oxford\\
+%   \texttt{oiwi@robots.ox.ac.uk} \\
+%   \And
+%   Ingmar Posner\\
+%   Applied AI Lab\\
+%   University of Oxford\\
+%   \texttt{ingmar@robots.ox.ac.uk} \\
+% }
+
+\author{
+ Fabian B. Fuchs,\, Adam R. Kosiorek,\, Li Sun,\, Oiwi Parker Jones,\,Ingmar Posner\\
+ Applied AI Lab,  University of Oxford \\
+ \texttt{\{fabian, adamk, kevin, oiwi, ingmar\}@robots.ox.ac.uk} \\
+}
+
+\begin{document}
+\maketitle
+
+%===============================================================================
+
+\begin{abstract}
+The majority of contemporary object-tracking approaches used in autonomous vehicles do not model interactions between objects. This contrasts with the fact that objects' paths are not independent: a cyclist might abruptly deviate from a previously planned trajectory in order to avoid colliding with a car.
+Building upon \textsc{hart}, a neural, class-agnostic single-object tracker, we introduce a multi-object tracking method (\textsc{mohart}) capable of \emph{relational reasoning}. Importantly, the entire system, including the understanding of interactions and relations between objects, is class-agnostic and learned simultaneously in an end-to-end fashion.
+We find that the addition of relational-reasoning capabilities to \textsc{hart} leads to consistent performance gains in tracking as well as future trajectory prediction on several real-world datasets (MOTChallenge, UA-DETRAC, and Stanford Drone dataset), particularly in the presence of ego-motion, occlusions, crowded scenes, and faulty sensor inputs.
+Finally, based on controlled simulations, we propose that a comparison of \textsc{mohart} and \textsc{hart} may be used as a novel way to measure the degree to which the objects in a video depend upon each other as they move together through time. 
+
+
+\end{abstract}
+
+
+% Two or three meaningful keywords should be added here
+\keywords{Multi-Object Tracking, Trajectory Prediction, Relational Reasoning} 
+
+%===============================================================================
+
+\input{1_introduction}
+\input{1b_related_work}
+\input{2_model}
+\input{3_validation}
+\input{4_experiments}
+\input{5_discussion}
+
+
+\section*{Acknowledgements}
+We thank Stefan Saftescu for his contributions, particularly for integrating the Stanford Drone Dataset, and Adam Golinski as well as Stefan Saftescu for proof-reading. This research was funded by the EPSRC AIMS Centre for Doctoral Training at Oxford University and an EPSRC Programme Grant (EP/M019918/1).
+We acknowledge use of Hartree Centre resources in this work. The STFC Hartree Centre is a research collaboratory in association with IBM providing High Performance Computing platforms funded by the UK's investment in e-Infrastructure. The Centre aims to develop and demonstrate next generation software, optimised to take advantage of the move towards exa-scale computing.
+% no \bibliographystyle is required, since the corl style is automatically used.
+\newpage\bibliography{library}  % .bib
+
+\newpage\clearpage\input{6_appendix.tex}
+
+\end{document}
+

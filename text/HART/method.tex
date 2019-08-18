@@ -1,0 +1,146 @@
+\section{Hierarchical Attention}
+\label{sec:att}
+
+    % \begin{enumerate}
+    %     \item Hierarchy; refer to the figure, give overview; explain the terms
+    %     \item Spatial Attention; short; it's not novel but requires restating; it's important to have one followed by the other
+    %     \item Appearance Attention; DFN
+    %     \item Highlight the hierarchy; recurrence reinforces it even further
+    % \end{enumerate}
+
+	\begin{figure}[ht]
+		\centering
+	 	\usebox{\systemfig}
+	 	\vspace{-2.5em}
+	 	\caption{Hierarchical Attentive Recurrent Tracking. Spatial attention extracts a glimpse $\bgt$ from the input image $\bxt$. V1 and the ventral stream extract appearance-based features $\bmapt$ while the dorsal stream computes a foreground/background segmentation $\bst$ of the attention glimpse. Masked features $\bvt$ contribute to the working memory $\B{h}_t$. The LSTM output $\bot$ is then used to compute attention $\ba_{t+1}$, appearance $\bapp_{t+1}$ and a bounding box correction $\Delta \widehat{\bb}_t$. Dashed lines correspond to temporal connections, while solid lines describe information flow within one time-step.}
+		\label{fig:system}
+		\vspace{-.5em}
+	\end{figure}
+	
+    \begin{figure}
+      \begin{minipage}[c]{0.3\textwidth}
+        \usebox{\archfig}
+      \end{minipage}\hfill
+      \begin{minipage}[c]{0.6\textwidth}
+        \caption{Architecture of the appearance attention. V1 is implemented as a CNN shared among the dorsal stream (DFN) and the ventral stream (CNN). The $\odot$ symbol represents the Hadamard product and implements masking of visual features by the foreground/background segmentation.}
+    	\label{fig:arch}
+      \end{minipage}
+      \vspace{-1.5em}
+    \end{figure}
+
+	Inspired by the architecture of the human visual cortex, we structure our system around working memory responsible for storing the motion pattern and an appearance description of the tracked object. If both quantities were known, it would be possible to compute the expected location of the object at the next time step. Given a new frame, however, it is not immediately apparent which visual features correspond to the appearance description. If we were to pass them on to an RNN, it would have to implicitly solve a data association problem. As it is non-trivial, we prefer to model it explicitly by outsourcing the computation to a separate processing stream conditioned on the expected appearance. This results in a location-map, making it possible to neglect features inconsistent with our memory of the tracked object. We now proceed with describing the information flow in our model.
+	    
+    % Inspired by the architecture of human visual cortex, we implement the hierarchical attention mechanism as follows (see the model in \cref{fig:system}). Given attention parameters $\bat$, the \emph{spatial attention} module extracts a glimpse $\bgt$ from the input image $\bxt$. We then apply \emph{appearance attention}, parametrised by appearance $\bappt$ and comprised of V1 and dorsal and ventral streams, to obtain object-specific features $\bvt$, which are used to update the hidden state $\B{h}_t$ of the LSTM. The LSTM's output is then decoded to predict both spatial and appearance attention parameters for the next time-step along with a bounding box correction $\Delta \widehat{\bb}_t$ for the current time-step.
+    
+    Given attention parameters $\bat$, the \emph{spatial attention} module extracts a glimpse $\bgt$ from the input image $\bxt$. We then apply \emph{appearance attention}, parametrised by appearance $\bappt$ and comprised of V1 and dorsal and ventral streams, to obtain object-specific features $\bvt$, which are used to update the hidden state $\B{h}_t$ of an LSTM. The LSTM's output is then decoded to predict both spatial and appearance attention parameters for the next time-step along with a bounding box correction $\Delta \widehat{\bb}_t$ for the current time-step.
+    Spatial attention is driven by top-down signal $\bat$, while appearance attention depends on top-down $\bappt$ as well as bottom-up (contents of the glimpse $\bgt$) signals. Bottom-up signals have local influence and depend on stimulus salience at a given location, while top-down signals incorporate global context into local processing. This attention hierarchy, further enhanced by recurrent connections, mimics that of the human visual cortex \cite{Ungerleider2000}. We now describe the individual components of the system.
+    
+  \begin{description}[leftmargin=\parindent]
+  \item[Spatial Attention]
+
+	Our spatial attention mechanism is similar to the one used by \citet{Kahou2015ratm}. Given an input image $\bxt \in \RR^{H \times W}$, it creates two matrices $\bAt^x \in \RR^{w \times W}$ and $\bAt^y \in \RR^{h \times H}$, respectively. Each matrix contains one Gaussian per row; the width and positions of the Gaussians determine which parts of the image are extracted as the attention glimpse. Formally, the glimpse $\bgt \in \RR^{h \times w}$ is defined as
+	\begin{equation}
+		\bgt = \bAt^y \bxt \left( \bAt^x \right)^{\mathsf{T}}.
+	\end{equation} 
+	Attention is described by centres $\mu$ of the Gaussians, their variances $\sigma^2$ and strides $\gamma$ between centers of Gaussians of consecutive rows of the matrix, one for each axis. In contrast to the work by \citet{Kahou2015ratm}, only centres and strides are estimated from the hidden state of the LSTM, while the variance depends solely on the stride. This prevents excessive aliasing during training caused when predicting a small variance (compared to strides) leading to smoother convergence. The relationship between variance and stride is approximated using linear regression with polynomial basis functions (up to $4^{th}$ order) before training the whole system. The glimpse size we use depends on the experiment.
+	% detail ->Linear regression was fitted before training the system, with the objective to approximate bicubic interpolation with the resulting attention glimpse. 	
+	
+  \item[Appearance Attention]
+
+    This stage transforms the attention glimpse $\bgt$ into a fixed-dimensional vector $\bvt$ comprising appearance and spatial information about the tracked object. Its architecture depends on the experiment. In general, however, we implement $\mathrm{V1} : \RR^{h \times w} \to \RR^{h_v \times w_v \times c_v}$ as a number of convolutional and max-pooling layers. They are shared among later processing stages, which corresponds to the primary visual cortex in humans \cite{Dayan2001}. Processing then splits into ventral and dorsal streams. The ventral stream is implemented as a CNN, and handles visual features and outputs feature maps $\bmapt$. The dorsal stream, implemented as a DFN, is responsible for handling spatial relationships. Let $\MLP{\cdot}$ denote a multi-layered perceptron. The dorsal stream uses appearance $\bappt$ to dynamically compute convolutional filters $\bdparamt^{a \times b \times c \times d}$, where the superscript denotes the size of the filters and the number of input and output feature maps, as
+ 	\begin{equation}
+ 	    \B{\Psi}_t = \set{\bdparamt^{a_i \times b_i \times c_i \times d_i}}_{i=1}^{K} = \MLP{\bappt}.
+ 	\end{equation}
+    The filters with corresponding nonlinearities form $K$ convolutional layers applied to the output of V1. Finally, a convolutional layer with a $1 \times 1$ kernel and a sigmoid non-linearity is applied to transform the output into a spatial Bernoulli distribution $\bst$. Each value in $\bst$ represents the probability of the tracked object occupying the corresponding location.
+ 
+    The location map of the dorsal stream is combined with appearance-based features extracted by the ventral stream, to imitate the distractor-suppressing behaviour of the human brain. It also prevents drift  and allows occlusion handling, since object appearance is not overwritten in the hidden state when input does not contain features particular to the tracked object. Outputs of both streams are combined as\footnote{$\mathrm{vec}: \RR^{m \times n} \to \RR^{mn}$ is the vectorisation operator, which stacks columns of a matrix into a column vector.}
+	\begin{equation}
+		\bvt = \MLP{ \flatten{\bmapt \odot \bst}},
+	\end{equation}
+	with $\odot$ being the Hadamard product.
+   
+   
+  \item[State Estimation]
+    
+    Our approach relies on being able to predict future object appearance and location, and therefore it heavily depends on state estimation. We use an LSTM, which can learn to trade-off spatio-temporal and appearance information in a data-driven fashion. It acts like a working memory, enabling the system to be robust to occlusions and oscillating object appearance \eg when an object rotates and comes back to the original orientation.
+    \begin{equation} 
+        \label{eq:state}
+        % \mathrm{LSTM}: \bvt, \B{h}_{t-1} \mapsto \bot, \B{h}_t
+    	\bot, \B{h}_t = \LSTM{ \bvt, \B{h}_{t-1} },
+    \end{equation}
+    \begin{equation} 
+	    \label{eq:mlp}
+	   % \mathrm{MLP}: \bot, \vec{\bst} \mapsto \bapp_{t+1}, \Delta \ba_{t+1}, \Delta \widehat{\bb}_t
+	    \bapp_{t+1}, \Delta \ba_{t+1}, \Delta \widehat{\bb}_t = \MLP{ \bot, \flatten{\bst} },
+    \end{equation}
+    \begin{equation}
+        \label{eq:att_update}
+     	\ba_{t+1} = \bat + \tanh(\B{c}) \Delta \ba_{t+1},
+    \end{equation}
+    \begin{equation}
+        \label{eq:bbox_update}
+     	\widehat{\bb}_t = \bat + \Delta \widehat{\bb}_t
+    \end{equation}
+    \Cref{eq:state,eq:mlp,eq:att_update,eq:bbox_update} detail the state updates. Spatial attention at time $t$ is formed as a cumulative sum of attention updates from times $t=1$ to $t=T$, where $\B{c}$ is a learnable parameter initialised to a small value to constrain the size of the updates early in training. Since the spatial-attention mechanism is trained to predict where the object is going to go (\Cref{sec:loss}), the bounding box $\widehat{\bb}_t$ is estimated relative to attention at time $t$. 
+   
+   \end{description}
+   
+   \section{Loss}
+   \label{sec:loss}
+   	
+   	%could also cite Gemp2014 for motivating multiple loss terms
+   We train our system by minimising a loss function comprised of: a tracking loss term, a set of terms for auxiliary tasks and regularisation terms. Auxiliary tasks are essential for real-world data, since convergence does not occur without them. They also speed up learning and lead to better performance for simpler datasets. Unlike the auxiliary tasks used by \citet{Jaderberg2016}, ours are relevant for our main objective --- object tracking. In order to limit the number of hyperparameters, we automatically learn loss weighting. The loss $\loss{\cdot}$ is given by
+   
+   	\begin{equation}
+   		\loss[\mathrm{HART}]{\data, \theta} = \lambda_{\mathrm{t}} \loss[\mathrm{t}]{\data, \theta} + \lambda_{\mathrm{s}} \loss[\mathrm{s}]{\data, \theta} + \lambda_{\mathrm{a}} \loss[\mathrm{a}]{\data, \theta}  + \reg{ \B{\lambda} } + \beta \reg{ \data, \theta },
+   	\end{equation}
+   
+   with dataset $\data = \set{\fences{\bxTs, \bbTs}^i}_{i=1}^{M}$, network parameters $\theta$, regularisation terms $\reg{\cdot}$, adaptive weights $\B{\lambda} = \{ \lambda_{\mathrm{t}}, \lambda_{\mathrm{s}} , \lambda_{\mathrm{d}} \}$ and a regularisation weight $\beta$. We now present and justify components of our loss, where expectations $\expc{\cdot}$ are evaluated as an empirical mean over a minibatch of samples $\set{\bxTs^i , \bbTs^i}_{i=1}^M$, where $M$ is the batch size.
+   
+   \begin{description}[leftmargin=\parindent]
+   	
+   	\item[Tracking] 
+   	
+        %WHAT: 
+        To achieve the main tracking objective (localising the object in the current frame), we base the first loss term on Intersection-over-Union (IoU) of the predicted bounding box \wrt the ground truth, where the IoU of two bounding boxes is defined as $\mathrm{IoU}\fences{\B{a}, \B{b}} = \frac{\B{a} \cap \B{b}}{\B{a} \cup \B{b}} = \frac{\text{area of overlap}}{\text{area of union}}$.
+        %WHY:
+        The IoU is invariant to object and image scale, making it a suitable proxy for measuring the quality of localisation. Even though it (or an exponential thereof) does not correspond to any probability distribution (as it cannot be normalised), it is often used for evaluation \cite{VOT2016}.
+        %HOW:
+        We follow the work by \citet{yu2016unitbox} and express the loss term as the negative log of IoU:
+  		\begin{equation}
+	   		\loss[\mathrm{t}]{\data, \theta} = \expc[\p{\widehat{\bb}_{1:T}}{\bxTs, \bb_1}]{ -\log \mathrm{IoU} \fences{\widehat{\bb}_t, \bbt}},
+	   	\end{equation}
+	   	with IoU clipped for numerical stability.
+   	
+   	\item[Spatial Attention]
+   	   
+   	   Spatial attention singles out the tracked object from the image. To estimate its parameters, the system has to predict the object's motion. In case of an error, especially when the attention glimpse does not contain the tracked object, it is difficult to recover. As the probability of such an event increases with decreasing size of the glimpse, we employ two loss terms. The first one constrains the predicted attention to cover the bounding box, while the second one prevents it from becoming too large, where the logarithmic arguments are appropriately clipped to avoid numerical instabilities:
+	    \begin{equation}
+	   	  \loss[\mathrm{s}]{\data, \theta} = \expc[\p{\baTs}{\bxTs, \bb_1}]{ -\log \fences*{\frac{ \bat \cap \bbt }{\mathrm{area}\fences{\bbt}} } -\log \fences { 1 - \mathrm{IoU} \fences{\bat, \bxt} } }.
+	   	\end{equation}
+        
+   	\item[Appearance Attention]
+   		
+%   		TODO: Try to model noisy labels (on the positive side)
+        The purpose of appearance attention is to suppress distractors while keeping full view of the tracked object \eg focus on a \emph{particular} pedestrian moving within a group. To guide this behaviour, we put a loss on appearance attention that encourages picking out only the tracked object. Let $\tau \fences { \bat, \bbt } : \RR^4 \times \RR^4 \to \set{0, 1}^{h_v \times w_v} $ be a target function. Given the bounding box $\bb$ and attention $\ba$, it outputs a binary mask of the same size as the output of V1. The mask corresponds to the the glimpse $\bg$, with the value equal to one at every location where the bounding box overlaps with the glimpse and equal to zero otherwise. If we take $H\fences{p, q}~=~-\sum_z \p{z} \log{\q{z}}$ to be the cross-entropy, the loss reads
+	    \begin{equation}
+	   	  \loss[\mathrm{a}]{\data, \theta} =   \expc[\p{\baTs, \bsTs}{\bxTs, \bb_1}]{ H \fences{ \tau \fences { \bat, \bbt }, \bst  } }.
+	   	\end{equation}
+   	
+   	\item[Regularisation]
+   	
+   	    We apply the L2 regularisation to the model parameters $\theta$ and to the expected value of dynamic parameters $\bdparamt \fences{\bappt}$ as $\reg{ \data, \theta } = \frac{1}{2} \norm{ \theta }_2^2 + \frac{1}{2} \norm*{ \expc[\p{\bappTs}{\bxTs, \bb_1}]{\B{\Psi}_t}{\bappt} }_2^2$.
+   	
+   	\item[Adaptive Loss Weights] 
+   	
+   	    To avoid hyper-parameter tuning, we follow the work by \citet{Kendall2017adaptive} and learn the loss weighting $\B{\lambda}$. After initialising the weights with a vector of ones, we add the following regularisation term to the loss function: $	\reg{\B{\lambda}} = - \sum_i \log \fences{ \B{\lambda}_i^{-1} }$.% We provide a derivation of adaptive loss weights and discuss its properties in \cref{app:adaptive_loss}.
+
+   \end{description}
+
+%   \subsection{Unsupervised Pretraining of Soft Attention}
+%     \begin{enumerate}
+%       \item Crop two random overlapping bounding boxes and convert to glimpses.
+%       \item Treat one as a template and the other one as a feature map.
+%       \item Easy to do with a DFN
+%       \item Unsupervised pretrain by learning overlap mask, scale difference and centre offset.
+%     \end{enumerate}

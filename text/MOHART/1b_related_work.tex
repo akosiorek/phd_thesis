@@ -1,0 +1,23 @@
+
+\section{Related Work}\label{sec:related}
+
+\paragraph{Tracking-by-Detection} Vision-based tracking approaches typically follow a tracking-by-detection paradigm: objects are first detected in each frame independently, and then a tracking algorithm links the detections from different frames to propose a coherent trajectory \cite{Zhang2008,Milan2014,bae2017confidence,keuper2018motion}.
+Motion models and appearance are often used to improve the association between detected bounding-boxes and multiple trackers in a postprocessing step.
+Recently, elements of this pipeline have been replaced with learning-based approaches such as deep learning \cite{Nam2016,Ning2017,keuper2018motion,bae2017confidence} or reinforcement learning \cite{Xiang2015}. Some approaches are targeted towards robustness across domains, for example by using a category-agnostic object detector and performing classification only in a post-processing step \cite{Osep2017,Posner2016}.
+
+
+ \paragraph{End-to-End Tracking} A newly established and much less explored stream of work approaches tracking in an end-to-end fashion. A key difficulty here is that extracting an image crop (according to bounding-boxes provided by a detector), is non-differentiable and results in high-variance gradient estimators.
+ \citet{Kahou15} propose an end-to-end tracker with soft spatial-attention using a 2D grid of Gaussians instead of a hard bounding-box. \Gls{HART} draws inspiration from this idea, employs an additional attention mechanism, and shows promising performance on the real-world KITTI dataset \cite{Kosiorek17}.
+ \Gls{HART}, which forms the foundation of this work, is explained in detail in \Cref{sec:method}. It has also been extended to incorporate depth information from \textsc{rgbd} cameras \cite{Danesh19}. \citet{Gordon2018} propose an approach in which the crop corresponds to the scaled up previous bounding-box. This simplifies the approach, but does not allow the model to learn where to look---\ie no gradient is backpropagated through crop coordinates.
+ To the best of our knowledge, there are no successful implementations of any such end-to-end approaches for multi-object tracking beyond \textsc{sqair} \citep{Kosiorek2018sqair}, which works only on datasets with static backgrounds. On real-world data, the only end-to-end approaches correspond to applying multiple single-object trackers in parallel---a method which does not leverage the potential of scene context or inter-object interactions. 
+
+\paragraph{Pedestrian trajectory prediction} 
+Predicting pedestrian trajectories has a long history in computer vision and robotics.
+Initial research modelled social forces using hand-crafted features~\cite{UCY,ETH,IGP,yamaguchi2011you} or \textsc{mdp}-based motion transition models~\cite{rudenko2018joint}, while more recent approaches learn from context information,\eg positions of other pedestrians or landmarks in the environment. Social-\textsc{lstm} \cite{social-lstm} employs a \gls{LSTM} to predict pedestrian trajectories and uses max-pooling to model global social context.
+Attention mechanisms have been employed to query the most relevant information, such as neighbouring pedestrians, in a learnable fashion  \cite{su2016crowd, fernando2018soft, sadeghian2019sophie}. 
+Apart from relational learning, context \cite{varshneya2017human}, periodical time information \cite{sun20183dof}, and constant motion priors \cite{scholler2019simpler} have proven effective in predicting long-term trajectories. 
+
+Our work stands apart from this prior art by not relying on ground truth tracklets. Instead, it addresses the more challenging task of working directly with visual input, performing tracking, modelling interactions, and, depending on the application scenario, simultaneously predicting future motions. As such, it can also be compared to Visual Interaction Networks (\textsc{vin}) \cite{Watters2017}, which use a \gls{CNN} to encode three consecutive frames into state vectors---one per object---and feeds these into a \gls{RNN}, which has an Interaction Network \cite{Battaglia2016} at its core. 
+% added sentence
+More recently, Relational Neural Expectation Maximization (\textsc{r-nem}) has been proposed as an unsupervised approach which combines scene segmentation and relational reasoning \cite{Steenkiste2018}.
+Both \textsc{Vin}s and \textsc{r-nem} are able to make accurate predictions in physical scenarios, but, to the best of our knowledge, have not been applied to real world data.

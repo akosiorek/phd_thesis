@@ -1,0 +1,212 @@
+% !TEX root =  tb_icml_2018.tex
+
+\PassOptionsToPackage{compress}{natbib}
+\usepackage[accepted]{icml2018}
+
+\usepackage{tikz}
+\usetikzlibrary{fit}					% fitting shapes to coordinates
+\usetikzlibrary{backgrounds}	% drawing the background after the foreground
+
+
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{siunitx}
+%\usepackage{algorithm}
+%\usepackage{algorithmicx}
+%\usepackage{algpseudocode}
+\usepackage{mathtools}
+\usepackage{array}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{adjustbox}
+\usepackage{microtype}
+
+\usepackage{todonotes}
+
+\usepackage{wrapfig}
+\usepackage{tabularx}
+
+\usepackage{times}
+\usepackage[bottom]{footmisc}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{textcomp}
+\usepackage{xspace}
+
+\usepackage{amsthm}
+
+\usepackage{bbm}
+
+
+\usepackage{thmtools}
+\usepackage{thm-restate}
+\usepackage{cancel}
+
+%\usepackage{hyperref}
+
+%\bibliographystyle{icml2017}
+%\bibliographystyle{abbrvnat-simple}
+\bibliographystyle{icml2017}
+\setlength{\bibsep}{2.5pt}
+%\setlength{\bibsep}{5.0pt}
+
+\usepackage{todonotes}
+%\newcommand{\E}{\mathbb{E}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+
+\theoremstyle{plain}
+\newtheorem{theoremApp}{Theorem}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\theoremstyle{lemma}
+\newtheorem{lemma}{Lemma}
+
+\theoremstyle{corollary}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\tom}[1] {{\textcolor{red}{#1}}}
+
+\graphicspath{{../figures/}}
+
+\usepackage{paralist}
+
+\usepackage{thmtools}
+\usepackage{thm-restate}
+
+\usepackage{multicol}
+
+\usepackage{wrapfig}
+
+\newcommand{\E}{\mathbb{E}}
+
+\definecolor{darkgreenClj}{rgb}{0.25,.5,0.25}
+\definecolor{blueClj}{rgb}{0,0.33,0.66}
+\definecolor{redClj}{rgb}{0.66,0.0,0.0}
+\definecolor{purpleClj}{rgb}{0.33,0,0.66}
+\definecolor{cyanClj}{rgb}{0.0,0.5,0.5}
+\definecolor{orangeClj}{rgb}{0.75,0.35,0.0}
+\definecolor{grayClj}{rgb}{0.4,0.4,0.4}
+\lstset{
+	language=Lisp,
+	basicstyle=\small\ttfamily,
+	keywordstyle={},
+	alsoletter={<-,->,:,*,/,?,+,-,/,>,<,=, &},
+	commentstyle=\em \color{gray},
+	frame=lines,
+	%float=tbph,
+	% captionpos=b,
+	showstringspaces=false,
+	keywordstyle=[1]\bf\ttfamily\color{blueClj},
+	keywords=[1]{BO,theta-best,bo-acquire,sample-initial-points,sample,observe,observe<-,predict,mem,store,retrieve,return,catch,throw,absorb,produce,with-primitive-procedures,conditional,result,log-marginal,mean,
+		->sample,->observe,->result},
+	keywordstyle=[2]\bf\ttfamily\color{redClj},
+	keywords=[2]{if,let,letfn,loop,looppredict,recur,or,trampoline,assoc,argmax,count,cons,conj,
+		do,first,fn,get,keys,lazy-seq,map,nth,mat/add,mat/div,print,reduce,repeat,repeatedly,rest,set,shape,take,vec,
+		when,max,fn?,inc,sample*,observe*},
+	keywordstyle=[3]\bf\ttfamily\color{cyanClj},
+	keywords=[3]{dirichlet-discrete,exponential,flip,gamma,beta,mvn-niw,normal,uniform-continuous,distribution,factor,
+		simulate,abc-likelihood,student-t,dirichlet},
+	keywordstyle=[4]\bf\ttfamily\color{purpleClj},
+	keywords=[4]{defopt,defquery,doopt,doquery,query,defdist,infer,checkpoint,exec,defm,cps-of-expression,
+		defn,def,declare},
+	keywordstyle=[5]\bf\ttfamily\color{orangeClj},
+	keywords=[5]{:lmh,:ipmcmc,:war,:peace,:log-weight,:result,:id,:dist,:cont,:value,:state,:importance,:smc,:pgibbs},
+	mathescape=true,
+	stringstyle={},
+	keywordstyle=[6]\bf\ttfamily\color{darkgreenClj},
+	keywords=[6]{+,-,nil,>,<,*,/,=, &,->>,->},
+	mathescape=true,
+	stringstyle={},
+}
+\lstnewenvironment{code}[2]{\lstset{caption=#1,label=#2}}{}
+
+%\newtheorem{example}{Example}
+%%\newtheorem{theorem}{Theorem}[chapter]
+%\newtheorem{lemma}[theorem]{Lemma}
+%%\newtheorem{proposition}[proposition]{Proposition}
+%\newtheorem{remark}{Remark}[chapter]
+%%\newtheorem{corollary}[corollary]{Corollary}
+%\newtheorem{definition}{Definition}[chapter]
+%\newtheorem{conjecture}[conjecture]{Conjecture}
+%\newtheorem{axiom}[axiom]{Axiom}
+
+% % % % % % % % % % % % % % % % % % %
+
+
+%\usepackage{packages/algorithm,packages/algorithmic}
+\usepackage{abbreviations}
+
+%\usepackage{algorithmicx}
+%\usepackage{algpseudocode}
+%\usepackage{setspace}
+%% % % % % % % % %
+%\algnewcommand\algorithmicswitch{\textbf{switch}}
+%\algnewcommand\algorithmiccase{\textbf{case}}
+%\algnewcommand\algorithmicassert{\texttt{assert}}
+%\algnewcommand\Assert[1]{\State \algorithmicassert(#1)}%
+%% New "environments"
+%\algdef{SE}[SWITCH]{Switch}{EndSwitch}[1]{\algorithmicswitch\ #1\ \algorithmicdo}{\algorithmicend\ \algorithmicswitch}%
+%\algdef{SE}[CASE]{Case}{EndCase}[1]{\algorithmiccase\ #1}{\algorithmicend\ \algorithmiccase}%
+%%\algtext*{EndSwitch}%
+%\algtext*{EndCase}%
+%\algnewcommand{\IIf}[1]{\State\algorithmicif\ #1\ \algorithmicthen}
+%\algnewcommand{\EndIIf}{\unskip\ \algorithmicend\ \algorithmicif}
+%
+\usepackage{titlesec}
+\titlespacing\section{0pt}{4pt plus 2pt minus 2pt}{0pt plus 2pt minus 0pt}
+\titlespacing\subsection{0pt}{4pt plus 2pt minus 2pt}{0pt plus 2pt minus 0pt}
+\titlespacing\subsubsection{0pt}{4pt plus 2pt minus 2pt}{0pt plus 2pt minus 0pt}
+
+\usepackage[acronym,smallcaps,nowarn,section,nogroupskip,nonumberlist]{glossaries}
+\newacronym{VAE}{vae}{variational auto-encoder}
+\newacronym{AESMC}{aesmc}{auto-encoding sequential Monte Carlo}
+\newacronym{IS}{is}{importance sampling}
+\newacronym{IWAE}{iwae}{importance-weighted auto-encoder}
+\newacronym{PIWAE}{piwae}{partially importance-weighted auto-encoder}
+\newacronym{MIWAE}{miwae}{multiply importance-weighted auto-encoder}
+\newacronym{CIWAE}{ciwae}{combination importance-weighted auto-encoder}
+\newacronym{SMC}{smc}{sequential Monte Carlo}
+\newacronym{SSM}{ssm}{state-space model}
+\newacronym{SGA}{sga}{stochastic gradient ascent}
+\newacronym{SGD}{sgd}{stochastic gradient descent}
+\newacronym{ELBO}{elbo}{evidence lower bound}
+\newacronym{KL}{kl}{Kullback-Leibler}
+\newacronym{LSTM}{lstm}{long short-term memory}
+\newacronym{AD}{ad}{automatic differentiation}
+\newacronym{SPSA}{spsa}{simultaneous perturbation stochastic approximation}
+\newacronym{CG-SPSA}{cg-spsa}{computational graph SPSA}
+\newacronym{MML}{mml}{maximum marginal likelihood}
+\newacronym{REINFORCE}{reinforce}{REINFORCE}
+\glsunset{REINFORCE}
+\newacronym{ADAM}{adam}{ADAM}
+\glsunset{ADAM}
+\newacronym{GRU}{gru}{gated recurrent unit}
+\newacronym{MLP}{mlp}{multilayer perceptron}
+\newacronym{MAP}{map}{maximum a-posteriori}
+\newacronym{KDE}{kde}{kernel density estimation}
+\newacronym{EM}{em}{expectation maximization}
+\newacronym{MC}{mc}{Monte Carlo}
+\newacronym{ALT}{alt}{alternating \textsc{elbo}s}
+\newacronym{SNR}{snr}{signal-to-noise ratio}
+\newacronym{VRNN}{vrnn}{Variational Recurrent Neural Network}
+\newacronym{LGSSM}{lgssm}{linear Gaussian state space model}
+\newacronym[firstplural=recurrent neural networks, plural=RNNs]{RNN}{rnn}{recurrent neural network}
+\newacronym{MCM}{mcmc}{Markov Chain Monte Carlo}
+\newacronym{RMSE}{rmse}{root mean squared error}
+
+\newcommand{\given}{\lvert}
+\DeclareMathOperator{\Var}{\mathbb{V}}
+\DeclareMathOperator{\Bernoulli}{\mathrm{Bernoulli}}
+\DeclareMathOperator{\ELBO}{\acrshort{ELBO}}
+\DeclareMathOperator{\SNR}{\acrshort{SNR}}
+\DeclareMathOperator*{\maximize}{maxi\,\!mize}
+\newcommand{\KL}[2]{\acrshort{KL}\left(#1 \middle| \middle| #2\right)}
