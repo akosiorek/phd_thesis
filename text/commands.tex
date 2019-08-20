@@ -77,3 +77,19 @@
 \newcommand{\what}{\textsc{what} }
 \newcommand{\where}{\textsc{where} }
 \newcommand{\pres}{\textsc{presence} }
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\KL}{D_{\mathrm{KL}}}
+\newcommand{\given}{\lvert}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\ELBO}{\acrshort{ELBO}}
+\DeclareMathOperator{\std}{\mathrm{std}}
+\DeclareMathOperator{\SNR}{\acrshort{SNR}}
+
+\newcommand{\circled}[2][]{%
+  \tikz[baseline=(char.base)]{%
+    \node[shape = circle, draw, inner sep = 1pt,scale=0.75]
+    (char) {\phantom{\ifblank{#1}{#2}{#1}}};%
+    \node at (char.center) {\makebox[0pt][c]{\scriptsize #2}};}}
+\robustify{\circled}

@@ -1,6 +1,6 @@
 % !tex root=./main.tex
 
-\section{BACKGROUND}
+\section{Background}
 \vspace*{-1ex}
 \label{sec:background}
 
@@ -14,9 +14,7 @@ We begin by reviewing \glspl{IWAE}~\citep{burda2016importance} as a general appr
 We also review control-variate and continuous-relaxation methods for gradient-variance reduction.
 \Glspl{IWAE} coupled with such gradient-variance reduction methods are currently the dominant approach for learning deep generative models with discrete latent variables.
 
-\vspace*{-1ex}
-\subsection{IMPORTANCE WEIGHTED AUTOENCODERS}
-\vspace*{-1ex}
+\subsection{Importance Weighted Autoencoder}
 
 \citet{burda2016importance} introduce the \gls{IWAE}, maximizing the mean \glspl{ELBO} over data, $\frac{1}{N} \sum_{n = 1}^N \ELBO_{\text{IS}}^K(\theta, \phi, x^{(n)})$, where, for $K$ particles,
 \begin{align}
@@ -53,7 +51,7 @@ $\nabla_\phi \!\ELBO_{\acrshort{IS}}^K\!(\theta, \phi, x)$ is estimated similarl
 \end{align}
 
 \vspace*{-1ex}
-\subsection{CONTINUOUS RELAXATIONS AND CONTROL VARIATES}
+\subsection{Continuous Relaxations and Control Variates}
 \vspace*{-1ex}
 \label{sec:background/control-variates}
 

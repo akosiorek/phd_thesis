@@ -1,0 +1,66 @@
+\chapter{Tighter Variational Bounds are Not Necessarily Better}
+
+
+%\begin{icmlauthorlist}
+%	\icmlauthor{Tom Rainforth}{stats}
+%\icmlauthor{Adam R. Kosiorek}{stats,eng}
+%\icmlauthor{Tuan Anh Le}{eng}
+%\icmlauthor{Chris J. Maddison}{stats}
+%\icmlauthor{Maximilian Igl}{eng}
+%\icmlauthor{Frank Wood}{ucb}
+%\icmlauthor{Yee Whye Teh}{stats}
+%\end{icmlauthorlist}
+
+%\icmlaffiliation{stats}{Department of Statistics, University of Oxford}
+%\icmlaffiliation{eng}{Department of Engineering, University of Oxford}
+%\icmlaffiliation{ucb}{Department of Computer Science, University of British Columbia}
+%
+%\icmlcorrespondingauthor{Tom Rainforth}{rainforth@stats.ox.ac.uk}
+
+
+\begin{abstract}
+\vspace{2pt}
+We provide theoretical and empirical evidence that using tighter \glspl{ELBO}
+can be
+detrimental to the process of learning an inference network by reducing the 
+signal-to-noise ratio of the gradient estimator.  Our results call into question common 
+implicit assumptions that tighter \glspl{ELBO} are better variational objectives for 
+simultaneous model learning and inference amortization schemes.
+Based on our insights, we introduce three new algorithms:  the partially importance
+weighted auto-encoder (\textsc{piwae}), the multiply
+importance weighted auto-encoder (\textsc{miwae}), and the combination importance weighted
+auto-encoder (\textsc{ciwae}), each of which includes the standard importance
+weighted auto-encoder (\textsc{iwae}) as a special case.  We show that each
+can deliver improvements over \textsc{iwae}, even when performance is measured
+by the \textsc{iwae} target itself. Furthermore, our results suggest that \textsc{piwae} 
+may be able to deliver simultaneous improvements in the training of both
+the inference and generative networks.
+\end{abstract}
+
+
+\input{text/tighter_bounds/intro}
+\input{text/tighter_bounds/snr}
+\input{text/tighter_bounds/experiments}
+\input{text/tighter_bounds/algs}
+\input{text/tighter_bounds/experiments-alg}
+\input{text/tighter_bounds/conclusion}
+
+\section*{Acknowledgments}
+
+TR and YWT are supported in part by the European Research Council under the European Union's Seventh Framework Programme (FP7/2007--2013) / ERC grant agreement no. 617071. 
+TAL is supported by a Google studentship, project code DF6700.
+MI is supported by the UK EPSRC CDT in Autonomous Intelligent Machines
+and Systems.
+CJM is funded by a DeepMind Scholarship.
+FW is supported under DARPA PPAML through the U.S. AFRL
+under Cooperative Agreement FA8750-14-2-0006, Sub Award number 61160290-111668.
+
+
+\begin{subappendices}
+	\input{text/tighter_bounds/proof}
+	\input{text/tighter_bounds/opt_gauss}
+	\input{text/tighter_bounds/hv_exp}
+	\input{text/tighter_bounds/other_settings}
+	\input{text/tighter_bounds/toy-gauss}
+\end{subappendices}
+

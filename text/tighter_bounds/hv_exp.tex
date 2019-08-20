@@ -21,7 +21,7 @@ variance of the estimates decreases with $M$, but not the expected value.
 %	\end{subfigure}
 		\begin{subfigure}[b]{0.45\textwidth}
 			\centering
-			\includegraphics[width=\textwidth]{b_hist_VAE}
+			\includegraphics[width=\textwidth]figures/tighter_bounds/{b_hist_VAE}
 			\caption{\gls{VAE} inference network gradient estimates \label{fig:snr/b_hist_vae}}
 		\end{subfigure} ~~~~~~~~~~
 %	\begin{subfigure}[b]{0.49\textwidth}
@@ -31,7 +31,7 @@ variance of the estimates decreases with $M$, but not the expected value.
 %	\end{subfigure}
 		\begin{subfigure}[b]{0.45\textwidth}
 			\centering
-			\includegraphics[width=\textwidth]{mu_hist_VAE}
+			\includegraphics[width=\textwidth]{figures/tighter_bounds/mu_hist_VAE}
 			\caption{\gls{VAE} generative network gradient estimates \label{fig:snr/mu_hist_vae}}
 		\end{subfigure}
 	\caption{Histograms of gradient estimates $\Delta_{M,K}$ for the generative network and 
@@ -98,22 +98,22 @@ network deteriorates, albeit slowly, as $K$ increases.
 	\centering
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{hv_b_hist_IWAE}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/hv_b_hist_IWAE}
 		\caption{\gls{IWAE} inference network gradient estimates \label{fig:hv/b_hist_iwae}}
 	\end{subfigure} ~~~~~~~~~~
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{hv_b_hist_VAE}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/hv_b_hist_VAE}
 		\caption{\gls{VAE} inference network gradient estimates \label{fig:hv/b_hist_vae}}
 	\end{subfigure}\\
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{hv_mu_hist_IWAE}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/hv_mu_hist_IWAE}
 		\caption{\gls{IWAE} generative network gradient estimates \label{fig:hv/mu_hist_iwae}}
 	\end{subfigure} ~~~~~~~~~~
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{hv_mu_hist_VAE}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/hv_mu_hist_VAE}
 		\caption{\gls{VAE} generative network gradient estimates \label{fig:hv/mu_hist_vae}}
 	\end{subfigure}
 	\caption{Histograms of gradient estimates as per Figure~\ref{fig:snr/hists}.
@@ -125,12 +125,12 @@ network deteriorates, albeit slowly, as $K$ increases.
 	\centering
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{hv_b_conv}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/hv_b_conv}
 		\caption{Convergence of \gls{SNR} for inference network \label{fig:hv/b}}
 	\end{subfigure} ~~~~~~~~~~
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{hv_mu_conv}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/hv_mu_conv}
 		\caption{Convergence of \gls{SNR} for generative network\label{fig:hv/mu}}
 	\end{subfigure}
 	\caption{Convergence of signal-to-noise ratios of gradient estimates
@@ -143,12 +143,12 @@ network deteriorates, albeit slowly, as $K$ increases.
 	\centering
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{hv_snr_dir}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/hv_snr_dir}
 		\caption{Convergence of \textsc{dsnr} for inference network\label{fig:hv/snr_dir}}
 	\end{subfigure}~~~~~~~~~~
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{hv_snr_dir_mu}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/hv_snr_dir_mu}
 		\caption{Convergence of \textsc{dsnr} for generative network\label{fig:hv/snr_dir_mu}}
 	\end{subfigure}
 	\caption{Convergence of directional signal-to-noise ratio of gradients estimates 
@@ -160,12 +160,12 @@ network deteriorates, albeit slowly, as $K$ increases.
 	\centering
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{hv_dir_snr_end}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/hv_dir_snr_end}
 		\caption{Convergence of \textsc{dsnr} for inference network\label{fig:snr/hv_snr_dir_end}}
 	\end{subfigure} ~~~~~~~~~~
 	\begin{subfigure}[b]{0.45\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{hv_dir_snr_mu_end}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/hv_dir_snr_mu_end}
 		\caption{Convergence of \textsc{dsnr} for generative network\label{fig:snr/hv_snr_dir_mu_end}}
 	\end{subfigure}
 	\caption{Convergence of directional signal-to-noise ratio of gradient estimates where the

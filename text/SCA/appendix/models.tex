@@ -76,10 +76,10 @@ Models were trained for up to $3*10^5$ iterations on single Tesla V100 GPUs, whi
 \begin{center}
 \begin{tabular}{ >{\centering\arraybackslash}m{.1\linewidth} >{\centering\arraybackslash}m{.85\linewidth}}
 SVHN & 
-    \includegraphics[width=\linewidth]{figs/svhn_recons.png}
+    \includegraphics[width=\linewidth]{figures/SCA/svhn_recons.png}
 \\
 CIFAR10 & 
-    \includegraphics[width=\linewidth]{figs/cifar_recons.png}
+    \includegraphics[width=\linewidth]{figures/SCA/cifar_recons.png}
     \end{tabular}
     \captionof{figure}{10 Sample SVHN and Cifar10 reconstructions. First row shows Sobel filtered target image. Second row shows the reconstruction from Part Capsule Layer directly. Third row shows the reconstruction if we use the object predictions for the Part poses instead of Part poses themselves for reconstruction. The templates in this model has the same number of channels as the image, but they have converged to black and white templates and the reconstruction do not have color diversity. The \gls{SCAu} model is trained completely unsupervised but the reconstructions tend to focus on the center digit in SVHN and filter the rest of the clutter. }
     \label{fig:svhn_recons}
@@ -90,7 +90,7 @@ CIFAR10 &
 %     \vspace*{.5em}
 %     \begin{minipage}[b]{0.58\linewidth}
 %     \centering
-%     \includegraphics[width=\linewidth]{figs/constellation_read.png}
+%     \includegraphics[width=\linewidth]{figures/SCA/constellation_read.png}
 %     \vspace*{.05em}
 %     \end{minipage}
 %     \hfill

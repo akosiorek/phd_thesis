@@ -4,17 +4,17 @@
 	\centering
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{convergence_IWAE_64}\vspace{-2pt}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/convergence_IWAE_64}
 		\caption{\textsc{IWAE}$_{64}$ \label{fig:mnistexpt/convergence/iwae64}}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{convergence_log_p(x)}\vspace{-2pt}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/convergence_log_p(x)}
 		\caption{$\log \hat{p}(x)$ \label{fig:mnistexpt/convergence/logpx}}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{convergence_KL}\vspace{-2pt}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/convergence_KL}
 		\caption{$-\mathrm{KL}(Q_{\phi}(z \given x) || P_{\theta}(z \given x))$ \label{fig:mnistexpt/convergence/kl}}
 	\end{subfigure}\vspace{-6pt}
 	\caption{Convergence of evaluation metrics on the test set with increased training time. 
@@ -28,17 +28,17 @@
 	\centering
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{combinations_miwae}\vspace{-2pt}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/combinations_miwae}\
 		\caption{Comparing \gls{MIWAE} and \gls{IWAE} \label{fig:mnistexpt/dotplot/miwae}}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{combinations_combo}\vspace{-2pt}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/combinations_combo}\
 		\caption{Comparing \gls{CIWAE} and \gls{IWAE} \label{fig:mnistexpt/dotplot/ciwae}}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{combinations_piwae}\vspace{-2pt}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/combinations_piwae}\figures/RRWS/
 		\caption{Comparing \gls{PIWAE} and \gls{IWAE} \label{fig:mnistexpt/dotplot/piwae}}
 	\end{subfigure} \vspace{-12pt}
 	\caption{Test set performance of \gls{MIWAE}, \gls{CIWAE}, and \gls{PIWAE} relative to \gls{IWAE} in terms of the \gls{IWAE}-64 (top), $\log \hat p(x)$ (middle), and $-\mathrm{KL}(Q_{\phi}(z \given x) || P_{\theta}(z \given x))$ (bottom) metrics.  All dots are the difference in the metric to that of~\gls{IWAE}. Dotted line is the \gls{IWAE} baseline.

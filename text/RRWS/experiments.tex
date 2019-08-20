@@ -1,8 +1,6 @@
 % !tex root=./main.tex
 
-\vspace*{-1ex}
-\section{EXPERIMENTS}
-\vspace*{-1ex}
+\section{Experiments}
 \label{sec:experiments}
 
 % Purpose of experiments
@@ -57,18 +55,18 @@ Using both \emph{wake-} and \emph{sleep-phase $\phi$ updates} doubles the requir
 The number of particles $K$ used for the \emph{wake-phase $\theta$} and \emph{$\phi$ updates} is always specified, and computation between them is matched so
 a \emph{wake-phase $\phi$ update} with batch size $B$ implies a \emph{sleep phase $\phi$ update} with $KB$ samples.
 
-\subsection{PROBABILISTIC CONTEXT-FREE GRAMMAR}
+\subsection{Probabilistic Context-Free Grammars}
 \label{sec:experiments/pcfg}
 
 % \begin{figure}
-%   \includegraphics[width=\linewidth]{figures/pcfg/errors_end_points.pdf}
+%   \includegraphics[width=\linewidth]{figures/RRWS/pcfg/errors_end_points.pdf}
 %   \caption{}
 %   \label{fig:experiments/pcfg/astronomers_errors}
 % \end{figure}
 \begin{figure*}
   \centering
-  % \includegraphics[width=0.94\textwidth]{figures/pcfg/errors.pdf}
-  \includegraphics[width=\textwidth]{figures/pcfg/errors_vector.pdf}
+  % \includegraphics[width=0.94\textwidth]{figures/RRWS/pcfg/errors.pdf}
+  \includegraphics[width=\textwidth]{figures/RRWS/pcfg/errors_vector.pdf}
   \vspace*{-0.7\baselineskip}
   \caption{
     \Gls{PCFG} training.
@@ -88,7 +86,7 @@ a \emph{wake-phase $\phi$ update} with batch size $B$ implies a \emph{sleep phas
 \end{figure*}
 
 % \begin{figure*}
-%   \includegraphics[width=\textwidth]{figures/pcfg/both_errors.pdf}
+%   \includegraphics[width=\textwidth]{figures/RRWS/pcfg/both_errors.pdf}
 %   \caption{}
 %   \label{fig:experiments/pcfg/astronomers_errors}
 % \end{figure*}
@@ -173,7 +171,7 @@ We inspect the quality of the inference network by sampling from it.
 \begin{figure}[t]
   \centering
   % \vspace*{-1.5\baselineskip}
-  \includegraphics[width=0.95\linewidth]{figures/pcfg/ws_q_samples.eps}
+  \includegraphics[width=0.95\linewidth]{figures/RRWS/pcfg/ws_q_samples.eps}
   \caption{
     Samples from the inference network trained with \gls{WS} ($K = 20$).
     %
@@ -184,17 +182,17 @@ We inspect the quality of the inference network by sampling from it.
 \end{figure}
 
 % \begin{figure*}
-%   \includegraphics[width=\textwidth]{figures/pcfg/ws.eps}
-%   \includegraphics[width=\textwidth]{figures/pcfg/vimco.eps}
+%   \includegraphics[width=\textwidth]{figures/RRWS/pcfg/ws.eps}
+%   \includegraphics[width=\textwidth]{figures/RRWS/pcfg/vimco.eps}
 % \end{figure*}
 
 % p(tree1 | sentence) = 0.42857142857
 % p(tree2 | sentence) = 0.57142857142
 
 \begin{figure*}[!ht]
-  \includegraphics[width=0.33\textwidth]{figures/air/logp_test.pdf}
-  \includegraphics[width=0.33\textwidth]{figures/air_logp_end_2.pdf}
-  \includegraphics[width=0.33\textwidth]{figures/air/kl_test.pdf}
+  \includegraphics[width=0.33\textwidth]{figures/RRWS/air/logp_test.pdf}
+  \includegraphics[width=0.33\textwidth]{figures/RRWS/air_logp_end_2.pdf}
+  \includegraphics[width=0.33\textwidth]{figures/RRWS/air/kl_test.pdf}
   \caption{
     Training of \gls{AIR}.
     \emph{(Left)}
@@ -212,7 +210,7 @@ We inspect the quality of the inference network by sampling from it.
   \vspace*{-2ex}
 \end{figure*}
 
-\subsection{ATTEND, INFER, REPEAT}
+\subsection{Attend, Infer, Repeat}
 \label{sec:experiments/air}
 
 % model
@@ -390,14 +388,14 @@ This experiment confirms that increasing number of particles improves \gls{VIMCO
 %     \label{fig:air_iwae_fixed_prior_2}
 % \end{figure}
 
-\subsection{GAUSSIAN MIXTURE MODEL}
+\subsection{Gaussian Mixture Model}
 \label{sec:experiments/gmm}
 
 \begin{figure*}[!ht]
   \centering
-  % \includegraphics[width=0.9\textwidth]{figures/gmm/plot_paper.pdf}
-  % \includegraphics[width=0.89\textwidth]{figures/gmm/errors.pdf}
-  \includegraphics[width=\textwidth]{figures/gmm/errors_no_std.pdf}
+  % \includegraphics[width=0.9\textwidth]{figures/RRWS/gmm/plot_paper.pdf}
+  % \includegraphics[width=0.89\textwidth]{figures/RRWS/gmm/errors.pdf}
+  \includegraphics[width=\textwidth]{figures/RRWS/gmm/errors_no_std.pdf}
   \vspace*{-4ex}
   \caption{
     \Gls{GMM} training.
@@ -423,7 +421,7 @@ This experiment confirms that increasing number of particles improves \gls{VIMCO
 % \begin{wrapfigure}[7]{r}{0.21\textwidth}
 %   \centering
 %   \vspace*{-3ex}
-%   \includegraphics[width=0.95\linewidth,trim={1em 0 1em 1em},clip]{figures/gmm_true_dist.pdf}
+%   \includegraphics[width=0.95\linewidth,trim={1em 0 1em 1em},clip]{figures/RRWS/gmm_true_dist.pdf}
 %   \vspace*{-2.5ex}
 %   \caption{True \gls{GMM}.}
 %   \label{fig:true-gmm}
@@ -494,10 +492,10 @@ On the other hand, if $\theta$ is initialized such that the mixture probabilitie
 
 \begin{figure*}[!ht]
   \centering
-  % \includegraphics[width=\textwidth]{figures/gmm/plot_paper_2.pdf}
-  % \includegraphics[width=\textwidth]{figures/gmm/plot_paper_2_stair.pdf}
-  % \includegraphics[width=0.9\textwidth]{figures/gmm/plot_paper_3.pdf}
-  \includegraphics[width=\textwidth]{figures/gmm/models.pdf}
+  % \includegraphics[width=\textwidth]{figures/RRWS/gmm/plot_paper_2.pdf}
+  % \includegraphics[width=\textwidth]{figures/RRWS/gmm/plot_paper_2_stair.pdf}
+  % \includegraphics[width=0.9\textwidth]{figures/RRWS/gmm/plot_paper_3.pdf}
+  \includegraphics[width=\textwidth]{figures/RRWS/gmm/models.pdf}
   \vspace*{-4ex}
   \caption{
     Generative model and inference network during \gls{GMM} training shown as Hinton diagrams where areas are proportional to probability.

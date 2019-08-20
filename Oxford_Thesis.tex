@@ -70,6 +70,8 @@
 	natbib=true
 ]{biblatex}
 
+\DeclareNameAlias{sortname}{first-last}
+\setlength\bibitemsep{0.45\baselineskip}
 
 \AtEveryBibitem{%
 	\clearfield{month}
@@ -236,12 +238,15 @@
 %%%%% CHAPTERS
 % Add or remove any chapters you'd like here, by file name (excluding '.tex'):
 \flushbottom
-\include{text/ch1-intro}
-\include{text/ch2-litreview}
-\include{text/HART/hart}
-\include{text/SQAIR/sqair}
+%\include{text/ch1-intro}
+%\include{text/ch2-litreview}
+%\include{text/HART/hart}
+%\include{text/MOHART/mohart}
+%\include{text/SQAIR/sqair}
 %\include{text/SCA/sca}
-%\include{text/RRWS/rrws}
+\include{text/tighter_bounds/tighter_bounds}
+\include{text/RRWS/rrws}
+
 
 %% APPENDICES %% 
 % Starts lettered appendices, adds a heading in table of contents, and adds a

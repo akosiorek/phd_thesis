@@ -1,6 +1,6 @@
 % !tex root=./main.tex
 
-\section{PROBABILISTIC CONTEXT-FREE GRAMMAR}
+\section{Probabilistic Context-Free Grammars}
 \label{app:pcfg}
 
 We show the \emph{astronomers} \gls{PCFG} in \cref{fig:app/pcfg/astronomers}.
@@ -21,21 +21,21 @@ We show the \emph{astronomers} \gls{PCFG} in \cref{fig:app/pcfg/astronomers}.
   \label{fig:app/pcfg/astronomers}
 \end{figure}
 \begin{figure}[htb]
-  \includegraphics[scale=0.6]{figures/pcfg/vimco_q_samples.eps}
+  \includegraphics[scale=0.6]{figures/RRWS/pcfg/vimco_q_samples.eps}
   \caption{Samples from the inference network which was trained with \gls{VIMCO} with $K = 20$.}
   \label{fig:experiments/pcfg/vimco_q_samples}
   \vspace*{-2ex}
 \end{figure}
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=0.7\linewidth]{figures/pcfg/np_probs.pdf}
+  \includegraphics[width=0.7\linewidth]{figures/RRWS/pcfg/np_probs.pdf}
   \caption{Production probabilities for the non-terminal NP learned via \gls{WS} and \gls{VIMCO} with $K = 20$.}
   \label{fig:experiments/pcfg/production_probs}
   \vspace*{-2ex}
 \end{figure}
 
 
-\section{ATTEND, INFER, REPEAT}
+\section{Attend, Infer, Repeat}
 \label{app:air}
 
 \Gls{AIR} is a model with many components and might be difficult to understand if not described explicitly.
@@ -81,10 +81,10 @@ Here, we outline details of our implementation and provide pseudo-code for the i
 \end{algorithm}
 \vspace*{-2ex}
 
-\section{GAUSSIAN MIXTURE MODEL}
+\section{Gaussian Mixture Model}
 \label{app:gmm}
 
-\subsection{CONTROL VARIATES}
+\subsection{Control Variates}
 Here, we present the architectures for the \acrshort{REBAR}/\acrshort{RELAX} control variate used in the \gls{GMM} experiment.
 
 The reparameterized sampling of Gumbels and conditional Gumbels is described by \citet[Appendix C]{tucker2017rebar} and \citet[Appendix B]{grathwohl2018backpropagation}.
@@ -127,8 +127,7 @@ Using \acrshort{REBAR}/\acrshort{RELAX} for more complicated models is possible,
 
 \begin{figure*}[!htb]
   \centering
-  \includegraphics[width=\textwidth]{figures/gmm/errors_just_std.pdf}
-  \vspace*{-4ex}
+  \includegraphics[width=\textwidth]{figures/RRWS/gmm/errors_just_std.pdf}
   \caption{
     Standard deviation of gradient estimator of $\phi$ for \gls{GMM}.
     Median and interquartile ranges from $10$ repeats shown.
@@ -137,10 +136,9 @@ Using \acrshort{REBAR}/\acrshort{RELAX} for more complicated models is possible,
     The standard deviation of $\phi$'s gradient estimator is given by $\frac{1}{D_\phi} \sum_{d = 1}^{D_\phi} \std(g_d)$ where $g_d$ is the $d$th (out of $D_\phi$) element of one of $\phi$'s gradient estimators (e.g. \cref{eq:iwae-reinforce} for \acrshort{REINFORCE}) and $\std(\cdot)$ is estimated using $10$ samples.
   }
   \label{fig:gmm_just_std}
-  \vspace*{-2ex}
 \end{figure*}
 
-\subsection{ADDITIONAL RESULTS}
+\subsection{Additional Results}
 \label{app:gmm/additional}
 
 Here, we include additional \gls{GMM} experiments:
@@ -163,7 +161,7 @@ This is empirically verified since \gls{WS} outperforms other methods, including
 
 \begin{figure*}[!ht]
   \centering
-  \includegraphics[width=\textwidth]{figures/gmm/errors_near.pdf}
+  \includegraphics[width=\textwidth]{figures/RRWS/gmm/errors_near.pdf}
   \vspace*{-4ex}
   \caption{
     \Gls{GMM} training when $p_\theta(x)$ is close to $p_{\theta^*}(x)$.
@@ -174,7 +172,7 @@ This is empirically verified since \gls{WS} outperforms other methods, including
   \vspace*{-2ex}
 \end{figure*}
 
-\section{SIGMOID BELIEF NETWORKS}
+\section{Sigmoid Belief Networks}
 \label{app:sigmoid_belief_nets}
 
 In \cref{fig:sbn}, we show training of sigmoid belief networks with three stochastic layers with the same architecture as in \citet{mnih2016variational}.
@@ -183,7 +181,7 @@ We find that in high particle regimes, model learning is virtually the same for 
 However, \gls{WW} outperforms \gls{VIMCO} in terms of inference network learning.
 
 \begin{figure*}[!ht]
-  \includegraphics[width=\textwidth]{figures/discrete_vae/rws_baselines.pdf}
+  \includegraphics[width=\textwidth]{figures/RRWS/discrete_vae/rws_baselines.pdf}
   \vspace*{-4ex}
   \caption{
     Training of sigmoid belief nets.
@@ -201,7 +199,7 @@ However, \gls{WW} outperforms \gls{VIMCO} in terms of inference network learning
   \vspace*{-2ex}
 \end{figure*}
 
-\section{DISCRETE VAES}
+\section{Discrete VAEs}
 \label{app:dvae}
 
 Rolfe 2016 \citep{rolfe2016dvae} introduces discrete \textsc{vae} (\textsc{dvae}).

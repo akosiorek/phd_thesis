@@ -4,11 +4,20 @@
 \usepackage{url}            % simple URL typesetting
 \usepackage{booktabs}       % professional-quality tables
 \usepackage{amsfonts}       % blackboard math symbols
+\usepackage{amsmath}    % aligned etc
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
 \usepackage{appendix}
 
 \usepackage{mathtools} % for DeclarePairedDelimiter
+
+\usepackage{floatrow}  % for MOHART
+\usepackage{tabularx}  % for MOHART
+
+% for RRWS and TB
+\usepackage{tikz}
+\usetikzlibrary{calc,backgrounds,positioning,bayesnet,arrows.meta,patterns,fit,trees}
+
 
 \usepackage[acronym,smallcaps,nowarn,section,nogroupskip,nonumberlist]{glossaries}
 
@@ -39,6 +48,8 @@
 \usepackage{graphicx}
 \graphicspath{{figures/}}
 \usepackage[export]{adjustbox}
+
+\usepackage{colortbl}  % for \rowcolor
 
 % section spacing
 \usepackage{titlesec}

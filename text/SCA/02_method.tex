@@ -39,7 +39,7 @@ The part capsule $m$ can be assigned to the object capsule $k^\star$ as $k^\star
     \centering
     \begin{minipage}[c]{0.35\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{figs/consinvert5}
+        \includegraphics[width=\linewidth]{figures/SCA/consinvert5}
     \end{minipage}
     \hfill
     \begin{minipage}[c]{0.63\linewidth}
@@ -60,7 +60,7 @@ Empirical results show that this model is able to perform unsupervised instance-
 %     \vspace*{.5em}
 %     \begin{minipage}[b]{0.58\linewidth}
 %     \centering
-%     \includegraphics[width=\linewidth]{figs/constellation_read.png}
+%     \includegraphics[width=\linewidth]{figures/SCA/constellation_read.png}
 %     \vspace*{.05em}
 %     \end{minipage}
 %     \hfill
@@ -75,18 +75,6 @@ Empirical results show that this model is able to perform unsupervised instance-
 
 \subsection{Part Capsule Autoencoder (\textsc{pcae})}
 \label{sec:img_capsule}
-\comment{\begin{figure}
-    \centering
-    \includegraphics[width=.6\linewidth]{figs/image_capsule}
-    \caption{\ak{}{redo the figure} Image capsule network.
-        An \gls{MLP} predicts poses (black dots) of the low-level capsules that correspond to object-parts from the image.
-        Higher-level object capsules are activated by another \gls{MLP} that receives the states of the low-level capsules as input. The high-level object capsules then try to predict the parameters of lower-level part capsules.
-        Each object capsule predicts each part capsule separately, and the poses of the part capsules are modelled by a mixture model of different predictions.
-        Finally, reconstructed poses of the part capsules are used to transform learned templates, which are then put together into an image reconstruction.
-    }
-    \label{fig:image_capsule}
-\end{figure}
-}
 Explaining images as geometrical arrangements of parts requires first inferring what parts the images are composed of, as well as the relationships of the parts to the viewer (which we call their poses). For the \gls{CCAu} a part is just a 2D point, but here each part capsule has a six \gls{DOF} pose, a presence variable and a unique identity. We frame the part-discovery problem as auto-encoding: the encoder learns to infer the poses and presences of different part capsules, while the decoder learns an image template for each part (\cref{fig:learned_templates}) similar to \cite{Tieleman2014thesis,Eslami2016}. The templates corresponding to present parts are affine-transformed using their poses, and the pixels of these transformed templates are used to create a separate mixture model for each image pixel.
 The \gls{PCAu} is followed by an \glsreset{OCAu}\gls{OCAu}, which closely resambles the \gls{CCAu} and is described in \Cref{sec:ocae}.
 
@@ -146,7 +134,7 @@ Consequently, the part-capsule likelihood is given by,
 \begin{figure}
     \centering
     \begin{minipage}[b]{.47\linewidth}
-    \includegraphics[width=\linewidth]{figs/templates}
+    \includegraphics[width=\linewidth]{figures/SCA/templates}
     \vspace*{.25em}
     \end{minipage}
     \hfill
@@ -157,30 +145,30 @@ Consequently, the part-capsule likelihood is given by,
 \end{figure}
 \begin{figure}
     \centering
-    % \includegraphics[width=\linewidth]{figs/mnist_rec}
-    % \includegraphics[width=.5\linewidth]{figs/mnist_strokes}
+    % \includegraphics[width=\linewidth]{figures/SCA/mnist_rec}
+    % \includegraphics[width=.5\linewidth]{figures/SCA/mnist_strokes}
     \begin{subfigure}[c]{.045\linewidth}
-        \includegraphics[width=\linewidth]{figs/mnist/inputs}
+        \includegraphics[width=\linewidth]{figures/SCA/mnist/inputs}
         \caption{}
     \end{subfigure}
     \hfill
     \begin{subfigure}[c]{.045\linewidth}
-        \includegraphics[width=\linewidth]{figs/mnist/recs}
+        \includegraphics[width=\linewidth]{figures/SCA/mnist/recs}
         \caption{}
     \end{subfigure}
         \hfill
     \begin{subfigure}[c]{.0295\linewidth}
-        \includegraphics[width=\linewidth]{figs/mnist/acts}
+        \includegraphics[width=\linewidth]{figures/SCA/mnist/acts}
         \caption{}
     \end{subfigure}
     \hfill
     \begin{subfigure}[c]{.09\linewidth}
-        \includegraphics[width=\linewidth]{figs/mnist/caps_recs}
+        \includegraphics[width=\linewidth]{figures/SCA/mnist/caps_recs}
         \caption{}
     \end{subfigure}
     \hfill
     \begin{subfigure}[c]{.225\linewidth}
-        \includegraphics[width=\linewidth]{figs/mnist/transformed_templates}
+        \includegraphics[width=\linewidth]{figures/SCA/mnist/transformed_templates}
         \caption{}
     \end{subfigure}
     \hfill
@@ -244,7 +232,7 @@ respectively; the former is the maximum presence probability among predictions f
 \end{description}
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{figs/sca_architecture_v3}
+    \includegraphics[width=\linewidth]{figures/SCA/sca_architecture_v3}
     \caption{\gls{SCAu} architecture.}
     \label{fig:sca_arch}
 \end{figure}

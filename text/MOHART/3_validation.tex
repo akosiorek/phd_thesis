@@ -3,7 +3,7 @@
 
 \begin{figure}%
     \centering
-    \includegraphics[width=0.99\textwidth]{Figures/sot_protons.png}
+    \includegraphics[width=0.99\textwidth]{figures/MOHART/sot_protons}
     \vspace{-3mm}
     \caption{\textsc{hart} single object tracking applied four times in parallel. Dashed lines indicate spatial attention, solid lines are predicted bounding boxes at time step $T+3$, faded circles show the ground truth location at $T+3$. The repulsive force between each object pair scales with distance as $1/r$. There is no information exchange between the trackers and each tracker evidently only `attends' to its own object. The fact that the future location is predicted accurately (i.e., much better than linear extrapolation) indicates that \textsc{hart} is able to capture complex motion patterns essentially allowing to draw conclusions about the force field. Shown are consecutive time steps from left to right.
     }
@@ -11,7 +11,7 @@
 \end{figure} 
 \begin{figure}%
     \centering
-    \includegraphics[width=0.99\textwidth]{Figures/mot_proel.pdf}
+    \includegraphics[width=0.99\textwidth]{figures/MOHART/mot_proel}
     \vspace{-3mm}
     \caption{\textsc{hart} (top, $46\%$ IoU) vs. \textsc{mohart} (bottom, $76\%$ IoU). Dashed lines show spatial attention, solid lines show predicted bounding boxes, faded circles indicate future ground truth locations. Circles of the same colour repel each other, circles of different colours attract each other. The colour coded identities are randomly assigned in each time step rendering information exchange between trackers (i.e. relational reasoning) necessary. The numbers in the bottom row indicate the self-attention weights from the perspective of the top left tracker (yellow number box).
     \vspace{-3mm}
@@ -30,11 +30,11 @@ The second scenario (\Cref{fig:toy2}) is constructed to be impossible to solve w
     \centering
     \begin{subfigure}[c]{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{Figures/toy_iou_over_timesteps.pdf}
+        \includegraphics[width=\linewidth]{figures/MOHART/toy_iou_over_timesteps}
     \end{subfigure}
     \begin{subfigure}[c]{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{Figures/dial.pdf}
+        \includegraphics[width=\linewidth]{figures/MOHART/dial}
     \end{subfigure}
     \vspace{-2mm}
     \caption{
