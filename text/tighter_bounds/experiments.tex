@@ -35,13 +35,13 @@ However, the expected gradients for the inference network still change with $K$.
 	\begin{subfigure}[b]{0.4\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{figures/tighter_bounds/b_conv}
-		\caption{\vspace{-6pt} Convergence of \gls{SNR} for inference network \label{fig:snr/b}}
+		\caption{Convergence of \gls{SNR} for inference network \label{fig:snr/b}}
 	\end{subfigure}
-~~~~~~~~~~~~~~
+%	\hfill
 	\begin{subfigure}[b]{0.4\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{figures/tighter_bounds/mu_conv}
-		\caption{\vspace{-6pt} Convergence of \gls{SNR} for generative network\label{fig:snr/mu}}
+		\caption{Convergence of \gls{SNR} for generative network\label{fig:snr/mu}}
 	\end{subfigure}
 	\caption{Convergence of signal-to-noise ratios of gradient estimates with increasing $M$ and $K$.
 		Different lines correspond to different
@@ -50,7 +50,6 @@ However, the expected gradients for the inference network still change with $K$.
 		Shown in red is the \gls{VAE} where $K=1$ is fixed and we increase $M$. 
 		The black and green dashed lines show the expected convergence rates from our theoretical results, 
 		representing gradients of $1/2$ and $-1/2$ respectively.  
-		\vspace{-12pt}
 		\label{fig:snr/K_conv}}
 \end{figure*}
 
@@ -170,13 +169,13 @@ the dominant effect for the inference network.
 		\centering
 		\includegraphics[width=\textwidth]{figures/tighter_bounds/dir_snr_mu_end}
 		\caption{Convergence of \textsc{dsnr} for generative network\label{fig:snr/snr_dir_mu_end}}
-	\end{subfigure}\vspace{-6pt}
+	\end{subfigure}
 	\caption{Convergence of the \textsc{dsnr} when the
 		target gradient is taken as $u = \E \left[\Delta_{1,1000}\right]$.  Conventions as
 		per Figure~\ref{fig:snr/extra}.
-		\vspace{-14pt}
 		\label{fig:snr/extra_end}}
 \end{figure*}
+
 
 \subsection{Directional Signal-to-Noise Ratio}
 

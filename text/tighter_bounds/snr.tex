@@ -22,17 +22,9 @@ is possible, we can express our gradient estimate in the general form
 \Delta_{M,K} :=  &\frac{1}{M} \sum\nolimits_{m=1}^{M}
 \nabla_{\theta, \phi} \log \frac{1}{K} \sum\nolimits_{k=1}^{K} w_{m,k}^{}, \\
 \text{where} \, \, w_{m,k}^{} &= \frac{p_{\theta}(z_{m,k},x^{})}{q_{\phi}(z_{m,k} \given x^{})} \, \,
-\text{and} \, \,z_{m,k} \iid q_{\phi}(z_{m,k} \given x^{}). \nonumber
+\text{and} \, \,z_{m,k} \sim q_{\phi}(z_{m,k} \given x^{}). \nonumber
 \end{align}
-%\begin{align}
-%\label{eq:grad-est}
-%\Delta_{M,K} &:=  \frac{1}{M} \sum_{m=1}^{M}
-%\nabla_{\theta, \phi} \log \hat{Z}_{m,K}, \\
-%\text{where} \,\, \hat{Z}_{m,K} &=
-%\frac{1}{K} \sum_{k=1}^{K} w_{m,k}^{},
-% \,\, w_{m,k}^{} = \frac{p_{\theta}(z_{m,k},x^{})}{q_{\phi}(z_{m,k} \given x^{})},
-%\end{align}
-%and each $z_{m,k} \iid q_{\phi}(z_{m,k} \given x^{})$.  
+
 Thus, for a fixed budget of $T = MK$ samples, we have a family of estimators with the cases $K=1$ and $M=1$
 corresponding respectively to the \gls{VAE} and \gls{IWAE} objectives.
 We will use ${\Delta}_{M,K} \left(\theta\right)$ to refer to gradient estimates with respect
