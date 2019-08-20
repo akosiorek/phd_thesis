@@ -13,16 +13,17 @@
     This in contrast to human visual perception, which does not process the visual field in its entirety, but rather acknowledges it briefly and focuses on processing small fractions thereof, which we dub \emph{visual attention}.
     
     
-    \begin{figure}[ht!]
-\begin{minipage}[c]{0.67\textwidth}
-            \centering
+\begin{figure}[ht!]
+	\centering
+	\begin{minipage}[c]{0.67\textwidth}
+		\centering
         \begin{subfigure}[b]{1.\textwidth}
-            \includegraphics[width=\textwidth]{HART/att_img}
+      		 \centering
+             \includegraphics[width=\textwidth]{HART/att_img}
         \end{subfigure}
-      
-        \hspace{-30pt}
+%        \hspace{-30pt}
         \begin{minipage}{.85\textwidth}
-        
+        	\centering
             \begin{subfigure}[b]{.29\textwidth}
                 \sidecaption{fig:glimpse}
                 \raisebox{-.5\height}{\includegraphics[width=\textwidth, cfbox=darkgreen 1pt 0pt]{HART/att_glimpse}}
@@ -39,16 +40,13 @@
                 \sidecaption{fig:overlay}
                 \raisebox{-.5\height}{\includegraphics[width=\textwidth]{HART/att_overlay}}
             \end{subfigure}
-        
         \end{minipage}
-        
-  \end{minipage}\hfill
-  \begin{minipage}[c]{0.3\textwidth}
-   \caption{KITTI image with the \textcolor{blue}{ground-truth} and \textcolor{red}{predicted} bounding boxes and an \textcolor{darkgreen}{attention glimpse}. The lower row corresponds to the hierarchical attention of our model: $1^{st}$ layer extracts an attention glimpse (a), the $2^{nd}$ layer uses appearance attention to build a location map (b). The $3^{rd}$ layer uses the location map to suppress distractors, visualised in (c).}
+	\end{minipage}
+	\begin{minipage}[c]{0.2\textwidth}
+   		\caption{KITTI image with the \textcolor{blue}{ground-truth} and \textcolor{red}{predicted} bounding boxes and an \textcolor{darkgreen}{attention glimpse}. The lower row corresponds to the hierarchical attention of our model: $1^{st}$ layer extracts an attention glimpse (a), the $2^{nd}$ layer uses appearance attention to build a location map (b). The $3^{rd}$ layer uses the location map to suppress distractors, visualised in (c).}
         \label{fig:img_with_att}
-\end{minipage}
-    \vspace{-1.5em}
-    \end{figure}
+	\end{minipage}
+\end{figure}
     
     
     %%% Neural attention mechanisms are cool and widely studied in CV and neuroscience

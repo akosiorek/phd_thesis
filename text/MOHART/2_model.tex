@@ -4,18 +4,15 @@
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=1.0\textwidth]{figures/MOHART/system_large.pdf}
-	\vspace{-5mm}
 	\caption{Single-object tracking with \gls{HART} (top) and our extension to multi-object tracking (\gls{MOHART}, bottom). 
 	We track multiple objects in a scene by applying multiple \gls{HART} trackers in parallel. 
 	The trackers can exchange information about their respective objects using query-key-value attention.
-	To do so, \gls{HART} is split into \gls{HART}-a and \gls{HART}-b (see top row) and we apply the self-attention mechanism in-between the parts.
-		\vspace{-2mm}}
+	To do so, \gls{HART} is split into \gls{HART}-a and \gls{HART}-b (see top row) and we apply the self-attention mechanism in-between the parts.}
 	\label{fig:system_large}
 \end{figure}
 
 We start by describing the \glsreset{HART}\gls{HART} algorithm \cite{Kosiorek17}, and then follow with an extension of \gls{HART} to tracking multiple objects, where multiple instances of \gls{HART} communicate with each other using multi-headed attention to facilitate relational reasoning. We also explain how this method can be extended to trajectory prediction instead of just tracking. 
 
-\vspace{-.5em}
 \paragraph{Hierarchical Attentive Recurrent Tracking (\textsc{hart})}
 \textsc{Hart} is an attention-based recurrent algorithm, which can efficiently track single objects in a video.
 It uses a spatial attention mechanism to extract a \textit{glimpse} $\bg_t$, which corresponds to a small crop of the image $\bxt$ at time-step $t$, containing the object of interest.
@@ -35,7 +32,6 @@ This results in performance loss, as it is more difficult to identify
 occlusions, ego-motion and object interactions.
 Below, we propose an extension of \gls{HART} which remedies these shortcomings.
 
-\vspace{-.5em}
 \paragraph{Multi-Object Hierarchical Attentive Recurrent Tracking (\textsc{mohart})}
 Multi-object support in \gls{HART} requires the following modifications.
 Firstly, in order to handle a dynamically changing number of objects, we apply \gls{HART} to multiple objects in parallel, where all parameters between \gls{HART} instances are shared. 

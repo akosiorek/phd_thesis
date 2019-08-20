@@ -11,10 +11,8 @@
 	\begin{figure}[ht]
 		\centering
 	 	\usebox{\systemfig}
-	 	\vspace{-2.5em}
 	 	\caption{Hierarchical Attentive Recurrent Tracking. Spatial attention extracts a glimpse $\bgt$ from the input image $\bxt$. V1 and the ventral stream extract appearance-based features $\bmapt$ while the dorsal stream computes a foreground/background segmentation $\bst$ of the attention glimpse. Masked features $\bvt$ contribute to the working memory $\B{h}_t$. The LSTM output $\bot$ is then used to compute attention $\ba_{t+1}$, appearance $\bapp_{t+1}$ and a bounding box correction $\Delta \widehat{\bb}_t$. Dashed lines correspond to temporal connections, while solid lines describe information flow within one time-step.}
 		\label{fig:system}
-		\vspace{-.5em}
 	\end{figure}
 	
     \begin{figure}
@@ -25,7 +23,6 @@
         \caption{Architecture of the appearance attention. V1 is implemented as a CNN shared among the dorsal stream (DFN) and the ventral stream (CNN). The $\odot$ symbol represents the Hadamard product and implements masking of visual features by the foreground/background segmentation.}
     	\label{fig:arch}
       \end{minipage}
-      \vspace{-1.5em}
     \end{figure}
 
 	Inspired by the architecture of the human visual cortex, we structure our system around working memory responsible for storing the motion pattern and an appearance description of the tracked object. If both quantities were known, it would be possible to compute the expected location of the object at the next time step. Given a new frame, however, it is not immediately apparent which visual features correspond to the appearance description. If we were to pass them on to an RNN, it would have to implicitly solve a data association problem. As it is non-trivial, we prefer to model it explicitly by outsourcing the computation to a separate processing stream conditioned on the expected appearance. This results in a location-map, making it possible to neglect features inconsistent with our memory of the tracked object. We now proceed with describing the information flow in our model.

@@ -4,7 +4,6 @@
 \begin{figure}%
     \centering
     \includegraphics[width=0.99\textwidth]{figures/MOHART/sot_protons}
-    \vspace{-3mm}
     \caption{\textsc{hart} single object tracking applied four times in parallel. Dashed lines indicate spatial attention, solid lines are predicted bounding boxes at time step $T+3$, faded circles show the ground truth location at $T+3$. The repulsive force between each object pair scales with distance as $1/r$. There is no information exchange between the trackers and each tracker evidently only `attends' to its own object. The fact that the future location is predicted accurately (i.e., much better than linear extrapolation) indicates that \textsc{hart} is able to capture complex motion patterns essentially allowing to draw conclusions about the force field. Shown are consecutive time steps from left to right.
     }
     \label{fig:toy1}
@@ -12,9 +11,7 @@
 \begin{figure}%
     \centering
     \includegraphics[width=0.99\textwidth]{figures/MOHART/mot_proel}
-    \vspace{-3mm}
     \caption{\textsc{hart} (top, $46\%$ IoU) vs. \textsc{mohart} (bottom, $76\%$ IoU). Dashed lines show spatial attention, solid lines show predicted bounding boxes, faded circles indicate future ground truth locations. Circles of the same colour repel each other, circles of different colours attract each other. The colour coded identities are randomly assigned in each time step rendering information exchange between trackers (i.e. relational reasoning) necessary. The numbers in the bottom row indicate the self-attention weights from the perspective of the top left tracker (yellow number box).
-    \vspace{-3mm}
     }
     \label{fig:toy2}
 \end{figure}
@@ -36,10 +33,8 @@ The second scenario (\Cref{fig:toy2}) is constructed to be impossible to solve w
         \centering
         \includegraphics[width=\linewidth]{figures/MOHART/dial}
     \end{subfigure}
-    \vspace{-2mm}
     \caption{
         Left: average IoU over sequence length for different implementations of relational reasoning on the toy domain shown in \cref{fig:toy2} ($\text{randomness} = 1.0$). Right: performance depending on how often agents are re-assigned identities randomly (sequence length 15). The higher the randomness, the less static the force field is and the more vital relational reasoning is. 
-        \vspace{-4mm}
     }
     \label{fig:toy_quant}
 \end{figure}

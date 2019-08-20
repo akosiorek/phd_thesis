@@ -4,9 +4,7 @@
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=1\textwidth]{figures/MOHART/tracking_qualitative}
-\vspace{-8mm}
-\caption{Tracking examples of both \textsc{hart} and \textsc{mohart}. Coloured boxes are bounding boxes predicted by the model, arrows point at challenging aspects of the scenes. (A) \& (C): Each person being tracked is temporarily occluded by a woman walking across the scene (blue arrows). \textsc{mohart}, which includes a relational reasoning module, handles this more robustly (compare red arrows).
-\vspace{-4mm}}
+\caption{Tracking examples of both \textsc{hart} and \textsc{mohart}. Coloured boxes are bounding boxes predicted by the model, arrows point at challenging aspects of the scenes. (A) \& (C): Each person being tracked is temporarily occluded by a woman walking across the scene (blue arrows). \textsc{mohart}, which includes a relational reasoning module, handles this more robustly (compare red arrows).}
 \label{fig:tracking_and_predicting}
 \end{figure}
 
@@ -101,18 +99,14 @@ The Stanford drone dataset (see \Cref{tab:results_stanford}) is qualitatively di
     \begin{subfigure}[c]{0.99\linewidth}
         \centering
         \includegraphics[width=\linewidth]{figures/MOHART/prediction_motc2.png}
-        \vspace{-6mm}
         \caption{Prediction results on the MOTChallenge dataset \cite{MOT16}.}
         \label{fig:MOTC_imgs}
     \end{subfigure}
-    \vspace{2mm}
     \begin{subfigure}[c]{0.99\linewidth}
         \centering
         \includegraphics[width=\linewidth]{figures/MOHART/prediction_detrac2.png}
-        \vspace{-6mm}
         \caption{Prediction results on the UA-DETRAC dataset (crowded scenes only) \cite{Wen15}.}
         \label{fig:Detrac_quant}
-    \vspace{-5mm}
     \end{subfigure}
 \caption{Peeking into the future. Only the first two frames are shown to the tracking algorithm followed by three black frames. \textsc{mohart} learns to fall back on its internal motion model when no observation (i.e. only a black frame) is available. The reported IoU scores show the performance for the respective frames 0, 1, 2, and 3 time steps into the future.
 \label{fig:prediction}

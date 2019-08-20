@@ -14,7 +14,6 @@
 		\includegraphics[width=\textwidth]{HART/kth_overlay_16}
 		\caption{Tracking results on KTH dataset \cite{KTH_activity_recognition}. Starting with the first initialisation frame where all three boxes overlap exactly, time flows from left to right showing every $16^{th}$ frame of the sequence captured at 25fps. The colour coding follows from  \Cref{fig:img_with_att}. The second row shows attention glimpses multiplied with appearance attention.}
 		\label{fig:kth}
-		\vspace{-1.5em}
 	\end{figure}
 
     \citet{Kahou2015ratm} performed a pedestrian tracking experiment on the KTH activity recognition dataset \cite{KTH_activity_recognition} as a real-world case-study. We replicate this experiment for comparison. We use code provided by the authors for data preparation and we also use their pre-trained feature extractor. Unlike them, we did not need to upscale ground-truth bounding boxes by a factor of 1.5 and then downscale them again for evaluation. We follow the authors and set the glimpse size $\fences{h, w} = \fences{28, 28}$. We replicate the training procedure exactly, with the exception of using the RMSProp optimiser \cite{Hinton2015RMSProp} with learning rate of $3.33 \times 10^{-5}$ and momentum set to $0.9$ instead of the stochastic gradient descent with momentum. The original work reported an IoU of 55.03\% on average, on test data, while the presented work achieves an average IoU score of 77.11\%, reducing the relative error by almost a factor of two. \Cref{fig:kth} presents qualitative results.
@@ -45,11 +44,9 @@
     		HART                        &   \B{0.81}   \\
     		\bottomrule
     	\end{tabular}
-    	\vspace{.3em}
     	\caption{Average IoU on KITTI over 60 time-steps.}
     	\label{tab:kitti}
     \end{minipage}
-    \vspace{-2.5em}
 \end{table}
 
     Since we demonstrated that pedestrian tracking is feasible using the proposed architecture, we proceed to evaluate our model in a more challenging multi-class scenario on the KITTI dataset \cite{Geiger2013}. It consists of 21 high resolution video sequences with multiple instances of the same class posing as potential distractors. We split all sequences into 80/20 sequences for train and test sets, respectively. As images in this dataset are much more varied, we implement V1 as the first three convolutional layers of a modified AlexNet \cite{Krizhevsky2012}. The original AlexNet takes inputs of size $227 \times 227$ and downsizes them to $14 \times 14$ after \emph{conv3} layer. Since too low resolution would result in low tracking performance, and we did not want to upsample the extracted glimpse, we decided to replace the initial stride of four with one and to skip one of the max-pooling operations to conserve spatial dimensions. This way, our feature map has the size of $14 \times 14 \times 384$ with the input glimpse of size $\fences{h, w} = \fences{56, 56}$. We apply dropout with probability 0.25 at the end of V1. The ventral stream is comprised of a single convolutional layer with a $1 \times 1$ kernel and five output feature maps. The dorsal stream has two dynamic filter layers with kernels of size $1 \times 1$ and $3 \times 3$, respectively and five feature maps each. We used 100 hidden units in the RNN with orthogonal initialisation and Zoneout \cite{Krueger2016} with probability set to 0.05. The system was trained via curriculum learning \cite{Bengio2009}, by starting with sequences of length five and increasing sequence length every 13 epochs, with epoch length decreasing with increasing sequence length. We used the same optimisation settings, with the exception of the learning rate, which we set to $3.33 \times 10^{-6}$.
