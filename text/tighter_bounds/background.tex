@@ -2,7 +2,7 @@
 
 \section{Evidence Lower Bounds and the Importance Weighted Auto-Encoder}
 
-More generally, as shown by~\cite{maddison2017filtering,anonymous2018auto-encoding}, one can express the bound
+More generally, as shown by~\cite{Maddison2017filtering,anonymous2018auto-encoding}, one can express the bound
 between a general \gls{ELBO} and the log marginal likelihood $\log Z_P$ given a non-negative unbiased estimator $\hat{Z}_P$
 of $Z_P$ and a proposal distribution $Q(x)$ using
 \begin{align}
@@ -17,7 +17,7 @@ In the case of \glspl{IWAE}, then taking $Q$ and $\hat Z_P$ as per \eqref{eq:bac
 \ELBO_{\text{IS}}(\theta, \phi, y) &= \log p_{\theta}(y) - \KL{Q_{\text{IS}}}{P_{\text{IS}}}, \text{ where } \label{eqn:aesmc/bias/elbo_is} \\
 P_{\text{IS}}(x^{1:K}) &= \frac{1}{K} \sum_{k = 1}^K \left(q(x^1 \given y) \cdots q(x^{k - 1} \given y) p(x^k \given y) q(x^{k + 1} \given y) \cdots q(x^K \given y) \right),
 \end{align}
-while similar representations can be straightforwardly derived such as those of~\cite{le2017auto,maddison2017filtering,naesseth2017variational}.
+while similar representations can be straightforwardly derived such as those of~\cite{Le2017auto,Maddison2017filtering,Naesseth2017variational}.
 
 Using these results,~\cite{anonymous2018auto-encoding} go on to show that
 $Q_{\text{IS}}(x^{1:K}) = P_{\text{IS}}(x^{1:K})$ for all $x^{1:K}$ if and only if $q(x \given y) = p(x \given y)$ for all $x$.

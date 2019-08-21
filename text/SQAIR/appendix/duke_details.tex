@@ -1,7 +1,7 @@
 \section{Details of the \textit{DukeMTMC} Experiments}
 \label{app:duke_details}
 
-We take videos from cameras one, two, five, six and eight from the \textit{DukeMTMC} dataset \citep{ristani2016performance}. As pre-processing, we invert colors and subtract backgrounds using standard OpenCV tools \citep{itseez2015opencv}, downsample to the resolution of $240 \times 175$, convert to gray-scale and randomly crop fragments of size $64 \times 64$. Finally, we generate $3500$ sequences of length five such that the maximum number of objects present in any single frame is three and we split them into training and validation sets with the ratio of $9:1$.
+We take videos from cameras one, two, five, six and eight from the \textit{DukeMTMC} dataset \citep{Ristani2016performance}. As pre-processing, we invert colors and subtract backgrounds using standard OpenCV tools \citep{Itseez2015opencv}, downsample to the resolution of $240 \times 175$, convert to gray-scale and randomly crop fragments of size $64 \times 64$. Finally, we generate $3500$ sequences of length five such that the maximum number of objects present in any single frame is three and we split them into training and validation sets with the ratio of $9:1$.
 
 We use the same training procedure as for the \gls{MNIST} experiments. The only exception is the learning curriculum, which goes from three to five time-steps, since this is the maximum length of the sequences. 
 

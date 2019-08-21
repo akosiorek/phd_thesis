@@ -175,7 +175,7 @@ This is empirically verified since \gls{WS} outperforms other methods, including
 \section{Sigmoid Belief Networks}
 \label{app:sigmoid_belief_nets}
 
-In \cref{fig:sbn}, we show training of sigmoid belief networks with three stochastic layers with the same architecture as in \citet{mnih2016variational}.
+In \cref{fig:sbn}, we show training of sigmoid belief networks with three stochastic layers with the same architecture as in \citet{Mnih2016variational}.
 We additionally drive number of particles up to $K = 5000$ and include \gls{KL} plots.
 We find that in high particle regimes, model learning is virtually the same for \gls{WW} and \gls{VIMCO}.
 However, \gls{WW} outperforms \gls{VIMCO} in terms of inference network learning.
@@ -202,12 +202,12 @@ However, \gls{WW} outperforms \gls{VIMCO} in terms of inference network learning
 \section{Discrete VAEs}
 \label{app:dvae}
 
-Rolfe 2016 \citep{rolfe2016dvae} introduces discrete \textsc{vae} (\textsc{dvae}).
+Rolfe 2016 \citep{Rolfe2016dvae} introduces discrete \textsc{vae} (\textsc{dvae}).
 It combines a prior over binary latent variables with an element-wise spike-and-X smoothing transformation, allowing approximate marginalization of the discrete variables.
 This results in a continuous relaxation of discrete variables and a low-variance gradient estimator.
-\citet{vahdat2018dvaepp} replaced the original transformation with an overlapping exponential transformation, leading to a yet lower-variance gradient estimator.
-While both approaches produce relaxed binary variables, the relaxation is  significantly less tight (\cite{vahdat2018dvaepp}, Appendix C, Figure 5.) then the \textsc{concrete} of \cite{jang2017categorical,maddison2017concrete}
-Both approaches require analytical inverse \textsc{cdf}s of the smoothing transformations, a shortcoming addressed by \citet{vahdat2018dvaehash} --- it also leads to a tighter relaxation than its predecessors, however no comparison to \textsc{concrete} is available.
+\citet{Vahdat2018dvaepp} replaced the original transformation with an overlapping exponential transformation, leading to a yet lower-variance gradient estimator.
+While both approaches produce relaxed binary variables, the relaxation is  significantly less tight (\cite{Vahdat2018dvaepp}, Appendix C, Figure 5.) then the \textsc{concrete} of \cite{Jang2017categorical,Maddison2017concrete}
+Both approaches require analytical inverse \textsc{cdf}s of the smoothing transformations, a shortcoming addressed by \citet{Vahdat2018dvaehash} --- it also leads to a tighter relaxation than its predecessors, however no comparison to \textsc{concrete} is available.
 
 \textsc{Dvae} was designed for undirected binary priors, \textit{e.g.}\ restricted Boltzmann machines (\textsc{rbm}), and it does not account for the case of categorical latent variables.
 It is possible to construct a $d$-dimensional categorical variable from  $d-1$ binary variables via stick-breaking construction.

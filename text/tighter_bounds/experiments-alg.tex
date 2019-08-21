@@ -86,9 +86,9 @@
 \label{sec:exp-algs}
 
 We now use our new estimators to train deep generative models for the MNIST digits 
-dataset~\citep{lecun1998gradient}.  For this, we duplicated the 
+dataset~\citep{Lecun1998gradient}.  For this, we duplicated the 
 architecture and
-training schedule outlined in~\citet{burda2016importance}. In particular, all networks were trained and evaluated using their
+training schedule outlined in~\citet{Burda2016importance}. In particular, all networks were trained and evaluated using their
  stochastic binarization.
 For all methods we set a budget of $T=64$ weights in the target estimate
 for each datapoint in the minibatch.  
@@ -111,7 +111,7 @@ for estimating the log marginal likelihood and thus provides an indicator
 for fidelity of the learned generative model.  
 The third metric is an
 estimator for the divergence implicitly targeted by the \gls{IWAE}.  Namely, as shown
-by~\citet{le2017auto}, the $\ELBO_{\text{IWAE}}$ can be interpreted as
+by~\citet{Le2017auto}, the $\ELBO_{\text{IWAE}}$ can be interpreted as
 \begin{align}
 \ELBO_{\text{IWAE}} = 
 \log p_{\theta}(x) - \mathrm{KL}(Q_{\phi}(z \given x) || P_{\theta}(z \given x))
@@ -151,7 +151,7 @@ with \gls{IWAE} performing the worst.
 We note here that the \textsc{KL} is not an exact
 measure of the inference network performance as it also depends on the generative model.
 As such, the apparent superior performance of the \gls{VAE} may be because it produces a
-simpler model, as per the observations of~\citet{burda2016importance}, which in turn is easier
+simpler model, as per the observations of~\citet{Burda2016importance}, which in turn is easier
 to learn an inference network for.  Critically though,
 \gls{PIWAE} improves this metric whilst also improving generative network performance, such
 that this reasoning no longer applies.  Similar behavior is observed for~\gls{MIWAE} and~\gls{CIWAE}
@@ -205,7 +205,7 @@ to \gls{IWAE} than for the other algorithms.
 
 As an additional measure of the performance of the inference
 network that is distinct to any of the training targets, 
-we also considered the effective sample size (ESS)~\cite{mcbook}
+we also considered the effective sample size (ESS)~\cite{Mcbook}
 for the fully trained networks, defined as
 \begin{align}
 \text{ESS} = (\textstyle \sum_{k=1}^K w_k)^2 / \textstyle \sum_{k=1}^K w_k^2.

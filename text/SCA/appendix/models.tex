@@ -5,7 +5,7 @@
 \label{app:constellation_model}
 % Implementation:
 The \gls{CCAu} uses a four-layer Set Transformer as its encoder.
-Every layer has four attention heads, 128 hidden units per head, and is followed by layer norm \citep{Ba2016LayerN}.
+Every layer has four attention heads, 128 hidden units per head, and is followed by layer norm \citep{Ba2016layern}.
 The encoder outputs three 32-dimensional vectors---one for each object capsule.
 The decoder uses a separate neural net for each object capsule to predict all parameters used to model its points: this includes four candidate part predictions per capsule for a total of 12 candidates.
 In this experiment, each object$\rightarrow$part relationship \gls{OP} is just a 2-D offset in the object's frame of reference (instead of a $3\times3$ matrix) and it is affine transformed by the corresponding \gls{OV} matrix to predict the 2-D point.
@@ -38,13 +38,13 @@ Details of the architectures we used are available in \Cref{tab:arch}.
 We use ReLu nonlinearities except for presence probabilities, for which we use sigmoids.
 (128:2) for a \gls{CNN} means 128 channels with a stride of two.
 All kernels are $3\times3$.
-For set transformer (1-16)-256 means one attention head, 16 hidden units and 256 output units; it uses layer normalization \citep{Ba2016LayerN} as in the original paper \citep{Lee2019set} but no dropout. All experiments (apart from constellations) used 16 special features per part capsule.
+For set transformer (1-16)-256 means one attention head, 16 hidden units and 256 output units; it uses layer normalization \citep{Ba2016layern} as in the original paper \citep{Lee2019set} but no dropout. All experiments (apart from constellations) used 16 special features per part capsule.
 
 For \textsc{svhn} and \textsc{cifar10}, we use normalized sobel-filtered images as the target of the reconstruction to emphasize the shape importance. \Cref{fig:svhn_recons} in \Cref{app:recs} shows examples of \textsc{svhn} and \textsc{cifar10} reconstruction.
 The filtering procedure is as follows:
 1) apply sobel filtering, 2) subtract the median color, 3) take the absolute value of the image, 4) normalize for image values to be $\in \interval{0, 1}$.
 
-All models are trained with the RMSProp optimizer \citep{tieleman2012rms} $\mathrm{momentum}=.9$ and $\epsilon = \left(10 * \mathrm{batch\_size}\right)^{-2}$.
+All models are trained with the RMSProp optimizer \citep{Tieleman2012rms} $\mathrm{momentum}=.9$ and $\epsilon = \left(10 * \mathrm{batch\_size}\right)^{-2}$.
 Batch size is 64 for constellations and 128 for all other datasets.
 The learning rate was equal to $10^{-5}$ for \textsc{mnist} and constellation experiments (without any decay), while we run a hyperparameter search for \textsc{svhn} and \textsc{cifar10}: we searched learning rates in the range of $5*10^{-5}$ to $5*10^{-4}$ and exponential learning rate decay of 0.96 every $10^3$ or $3*10^3$ weight updates. Learning rate of $10^{-4}$ was selected for both \textsc{svhn} and \textsc{cifar10}, the decay steps was $10^3$ for \textsc{svhn} and $3*10^3$ for \textsc{cifar10}.
 The $\textsc{lin-pred}$ accuracy on a validation set is used as a proxy to select the best hyperparameters---including weights on different losses, reported in \Cref{tab:hparams}.

@@ -2,7 +2,7 @@
 \label{app:mnist_details}
 
 \subsection{\textsc{Sqair} and \textsc{air} Training Details}
-    All models are trained by maximising the \gls{ELBO} $\loss[IWAE]$ (\Cref{eq:iwae}) with the \gls{RMSprop} optimizer \citep{tieleman2012rms} with momentum equal to $0.9$. We use the learning rate of $10^{-5}$ and decrease it to $\frac{1}{3} \cdot 10^{-5}$ after 400k and to $10^{-6}$ after 1000k training iterations. Models are trained for the maximum of $2 \cdot 10^6$ training iterations; we apply early stopping in case of overfitting.
+    All models are trained by maximising the \gls{ELBO} $\loss[IWAE]$ (\Cref{eq:iwae}) with the \gls{RMSprop} optimizer \citep{Tieleman2012rms} with momentum equal to $0.9$. We use the learning rate of $10^{-5}$ and decrease it to $\frac{1}{3} \cdot 10^{-5}$ after 400k and to $10^{-6}$ after 1000k training iterations. Models are trained for the maximum of $2 \cdot 10^6$ training iterations; we apply early stopping in case of overfitting.
     \Gls{SQAIR} models are trained with a curriculum of sequences of increasing length: we start with three time-steps, and increase by one time-step every $10^5$ training steps until reaching the maximum length of 10.
     When training \gls{AIR}, we treated all time-steps of a sequence as independent, and we trained it on all data (sequences of length ten, split into ten independent sequences of length one). 
 
@@ -10,7 +10,7 @@
     All models use glimpse size of $20 \times 20$ and \gls{ELU} \citep{Clevert2015elu} non-linearities for all layers except \glspl{RNN} and output layers.
     \textsc{mlp}-\gls{SQAIR} uses fully-connected layers for all networks. In both variants of \gls{SQAIR}, the $\RD$ and $\Rr$ \glspl{RNN} are the vanilla \glspl{RNN}. The propagation prior \gls{RNN} and the temporal \gls{RNN} $\RT$ use \gls{GRU}. \gls{AIR} follows the same architecture as \textsc{mlp}-\gls{SQAIR}. All fully-connected layers and \glspl{RNN} in \textsc{mlp}-\gls{SQAIR} and \gls{AIR} have 256 units; they have $2.9$M and $1.7$M trainable parameters, respectively.
     
-    \textsc{Conv}-\gls{SQAIR} differs from the  \textsc{mlp} version in that it uses \glspl{CNN} for the glimpse and image encoders and a subpixel-\gls{CNN} \citep{shi2016subpixel} for the glimpse decoder. All fully connected layers and \glspl{RNN} have 128 units. 
+    \textsc{Conv}-\gls{SQAIR} differs from the  \textsc{mlp} version in that it uses \glspl{CNN} for the glimpse and image encoders and a subpixel-\gls{CNN} \citep{Shi2016subpixel} for the glimpse decoder. All fully connected layers and \glspl{RNN} have 128 units. 
     The encoders share the \gls{CNN}, which is followed by a single fully-connected layer (different for each encoder).
     The \gls{CNN} has four convolutional layers with $[16,32,32,64]$ features maps and strides of $[2,2,1,1]$. The glimpse decoder is composed of two fully-connected layers with $[256, 800]$ hidden units, whose outputs are reshaped into $32$ features maps of size $5 \times 5$, followed by a subpixel-\gls{CNN} with three layers of $[32,64,64]$ feature maps and strides of $[1, 2, 2]$.
     All filters are of size $3 \times 3$.
@@ -22,7 +22,7 @@
 
 \subsection{\textsc{Vrnn} Implementation and Training Details} \label{apd:vrnn}
 
-    Our \gls{VRNN} implementation is based on the implementation\footnote{\url{https://github.com/tensorflow/models/tree/master/research/fivo}} of \gls{FIVO} by \cite{maddison2017filtering}.
+    Our \gls{VRNN} implementation is based on the implementation\footnote{\url{https://github.com/tensorflow/models/tree/master/research/fivo}} of \gls{FIVO} by \cite{Maddison2017filtering}.
     We use an \textsc{lstm} with hidden size $J$ for the deterministic backbone of the \gls{VRNN}.
     At time $t$, the \textsc{lstm} receives $\psi^{x}(\bx_{t-1})$ and $\psi^{z}(\bz_{t-1})$ as input and outputs $o_t$, where $\psi^{x}$ is a data feature extractor and $\psi^{z}$ is a latent feature extractor. 
     The output is mapped to the mean and standard deviation of the Gaussian prior $\p{\bzt}{\bx_{t-1}}{\theta}$ by an \gls{MLP}. 
@@ -32,12 +32,12 @@
     All aforementioned \glspl{MLP} use the same number of hidden units $H$ and the same number of hidden layers $L$.
     % We refer to this model as \textsc{mlp}-\gls{VRNN}.
     The \textsc{conv}-\gls{VRNN} uses a \gls{CNN} for $\psi^{x}$ and a transposed \gls{CNN} for $\psi^{\mathrm{dec}}$. The \textsc{mlp}-\gls{VRNN} uses an \gls{MLP} with $H'$ hidden units  and $L'$ hidden layers for both. 
-    \Gls{ELU} were used throughout as activations. The latent dimensionality was fixed to 165, which is the upper bound of the number of latent dimensions that can be used per time-step in \gls{SQAIR} or \gls{AIR}. Training was done by optimising the \gls{FIVO} bound, which is known to be tighter than the \gls{IWAE} bound for sequential latent variable models \citep{maddison2017filtering}. We also verified that this was the case with our models on the moving-\textsc{mnist} data. We train with the \gls{RMSprop} optimizer with a learning rate of $10^{-5}$, momentum equal to $0.9$, and training until convergence of test \gls{FIVO} bound.
+    \Gls{ELU} were used throughout as activations. The latent dimensionality was fixed to 165, which is the upper bound of the number of latent dimensions that can be used per time-step in \gls{SQAIR} or \gls{AIR}. Training was done by optimising the \gls{FIVO} bound, which is known to be tighter than the \gls{IWAE} bound for sequential latent variable models \citep{Maddison2017filtering}. We also verified that this was the case with our models on the moving-\textsc{mnist} data. We train with the \gls{RMSprop} optimizer with a learning rate of $10^{-5}$, momentum equal to $0.9$, and training until convergence of test \gls{FIVO} bound.
     
     For each of \textsc{mlp}-\gls{VRNN} and \textsc{conv}-\gls{VRNN}, we experimented with three architectures: small/medium/large. 
     We used $H$=$H'$=$J$=128/256/512 and $L$=$L'$=2/3/4 for \textsc{mlp}-\gls{VRNN}, giving number of parameters of $1.2$M/$2.1$M/$9.8$M. 
     For \textsc{conv}-\gls{VRNN}, the number of features maps we used was $[32,32,64,64]$, $[32,32,32,64,64,64]$ and $[32,32,32,64,64,64,64,64,64]$, with strides of $[2,2,2,2]$, $[1,2,1,2,1,2]$ and $[1,2,1,2,1,2,1,1,1]$, all with $3 \times 3$ filters, $H$=$J$=$128$/$256$/$512$ and $L$=1, giving number of parameters of $0.8$M/$2.6$M/$6.1$M. 
-    The largest convolutional encoder architecture is very similar to that in \cite{gulrajani2016pixelvae} applied to \gls{MNIST}.
+    The largest convolutional encoder architecture is very similar to that in \cite{Gulrajani2016pixelvae} applied to \gls{MNIST}.
     
     We have chosen the medium-sized models for comparison with \gls{SQAIR} due to overfitting encountered in larger models.
 
@@ -56,4 +56,4 @@
 
 We perform the addition experiment by feeding latent representations extracted from the considered models into a 19-way classifier, as there are 19 possible outputs (addition of two digits between 0 and 9). 
 The classifier is implemented as an \gls{MLP} with two hidden layers with 256 \gls{ELU} units each and a softmax output. For \gls{AIR} and \gls{SQAIR}, we use concatenated $\bz^\mathrm{what}$ variables multiplied by the corresponding $z^\mathrm{pres}$ variables, while for \gls{VRNN} we use the whole 165-dimensional latent vector.
-We train the model over $10^7$ training iterations with the \gls{ADAM} optimizer \citep{kingma2015adam} with default parameters (in tensorflow).
+We train the model over $10^7$ training iterations with the \gls{ADAM} optimizer \citep{Kingma2015adam} with default parameters (in tensorflow).

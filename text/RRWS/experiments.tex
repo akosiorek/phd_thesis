@@ -13,7 +13,7 @@
 % - revisiting competitiveness of rws on large models
 % - check whether claims hold for continuous
 
-The \gls{IWAE} and \gls{RWS} algorithms have primarily been applied to problems with continuous latent variables and/or discrete latent variables that do not actually induce branching (such as sigmoid belief networks;~\cite{neal1992connectionist}).
+The \gls{IWAE} and \gls{RWS} algorithms have primarily been applied to problems with continuous latent variables and/or discrete latent variables that do not actually induce branching (such as sigmoid belief networks;~\cite{Neal1992connectionist}).
 %
 The purpose of the following experiments is to compare \gls{RWS} to \gls{IWAE} combined with control variates and continuous relaxations (c.f \cref{sec:method}) on models with conditional branching, and show that it outperform such methods.
 %
@@ -24,9 +24,9 @@ We empirically demonstrate that increasing the number of particles $K$ can be de
 % \end{compactitem}
 %
 
-In the first experiment, we present learning and amortized inference in a \gls{PCFG}~\citep{booth1973applying}, an example \gls{SCFM} where continuous relaxations are inapplicable.
+In the first experiment, we present learning and amortized inference in a \gls{PCFG}~\citep{Booth1973applying}, an example \gls{SCFM} where continuous relaxations are inapplicable.
 We demonstrate that \gls{RWS} outperforms \gls{IWAE} with a control variate both in terms of learning and inference.
-The second experiment focuses on \glsreset{AIR}\gls{AIR}, the deep generative model of \cite{eslami2016attend}.
+The second experiment focuses on \glsreset{AIR}\gls{AIR}, the deep generative model of \cite{Eslami2016attend}.
 It demonstrates that \gls{RWS} leads to better learning of the generative model in a setting with both discrete and continuous latent variables, for modeling a complex visual data domain (c.f. \cref{sec:experiments/air}).
 The final experiment involves a \gls{GMM} (\cref{sec:experiments/gmm}), thereby serving as a pedagogical example.
 It explains the causes of why \gls{RWS} might be preferable to other methods in more detail.
@@ -91,14 +91,14 @@ a \emph{wake-phase $\phi$ update} with batch size $B$ implies a \emph{sleep phas
 %   \label{fig:experiments/pcfg/astronomers_errors}
 % \end{figure*}
 
-In this experiment we learn model parameters and amortize inference in a \gls{PCFG}~\citep{booth1973applying}.
+In this experiment we learn model parameters and amortize inference in a \gls{PCFG}~\citep{Booth1973applying}.
 Each discrete latent variable in a \gls{PCFG} chooses a particular child of a node in a tree.
 Depending on each discrete choice, the generative model can lead to different future latent variables.
 A \gls{PCFG} is an example of an \gls{SCFM} where continuous relaxations cannot be applied---weighing combinatorially many futures by a continuous relaxation is infeasible and doing so for futures which have infinite latent variables is impossible.
 
-While supervised approaches have recently led to state-of-the-art performance in parsing~\citep{chen2014fast}, \glspl{PCFG} remain one of the key models for unsupervised parsing~\citep{manning1999foundations}.
-Learning in a \gls{PCFG} is typically done via expectation-maximization~\citep{dempster1977maximum} which uses the inside-outside algorithm~\citep{lari1990estimation}.
-Inference methods are based on dynamic programming~\citep{younger1967recognition,earley1970efficient} or search~\citep{klein2003parsing}.
+While supervised approaches have recently led to state-of-the-art performance in parsing~\citep{Chen2014fast}, \glspl{PCFG} remain one of the key models for unsupervised parsing~\citep{Manning1999foundations}.
+Learning in a \gls{PCFG} is typically done via expectation-maximization~\citep{Dempster1977maximum} which uses the inside-outside algorithm~\citep{Lari1990estimation}.
+Inference methods are based on dynamic programming~\citep{Younger1967recognition,Earley1970efficient} or search~\citep{Klein2003parsing}.
 Applying \gls{RWS} and \gls{IWAE} algorithms to \glspl{PCFG} allows learning from large unlabeled datasets through \gls{SGD} while inference amortization ensures linear-time parsing in the number of words in a sentence, at test-time.
 Moreover, using the inference network as a proposal distribution in \gls{IS} provides asymptotically exact posteriors if parses are ambiguous.
 
@@ -106,7 +106,7 @@ Moreover, using the inference network as a proposal distribution in \gls{IS} pro
 A \gls{PCFG} is defined by sets of terminals (or words) $\{t_i\}$, non-terminals $\{n_i\}$, production rules $\{n_i \to \zeta_j\}$ with $\zeta_j$ a sequence of terminals and non-terminals, probabilities for each production rule such that $\sum_j~P\left(n_i \!\to\! \zeta_j\right)~=~1$ for each $n_i$, and a start symbol $n_1$.
 % A \gls{PCFG} is defined by a set of terminals (or words) $\{t_i\}$, a set of non-terminals $\{n_i\}$, a start symbol $n_1$, a set of production rules $\{n_i \to \zeta_j\}$, with $\zeta_j$ a sequence of terminals and non-terminals, and a set of probabilities for each production rule such that $\sum_j~P\left(n_i \to \zeta_j\right)~=~1$ for each $n_i$.
 Consider the \emph{Astronomers \gls{PCFG}} given in \citet[Table
-11.2]{manning1999foundations} (c.f. \cref{app:pcfg}).
+11.2]{Manning1999foundations} (c.f. \cref{app:pcfg}).
 A parse tree $z$ is obtained by recursively applying the production rules until there are no more non-terminals.
 For example, a parse tree (S (NP astronomers) (VP (V saw) (NP stars))) is obtained by applying the production rules as follows:
 
@@ -126,7 +126,7 @@ One can easily construct infinitely long $z$ by choosing productions which conta
 % Take, for instance the sentence ``astronomers saw stars with telescopes.''
 % This sentence could be interpreted either as i) the astronomers used telescopes to see stars or ii) the astronomers saw stars which had telescopes.
 % % what are pcfgs?
-% \Glspl{PCFG}~\citep{manning1999foundations} allow us to handle such ambiguities by modeling the joint distribution over the structure $z$, which is represented as a parse tree, and the sentence $x$.
+% \Glspl{PCFG}~\citep{Manning1999foundations} allow us to handle such ambiguities by modeling the joint distribution over the structure $z$, which is represented as a parse tree, and the sentence $x$.
 
 % p, q architecture
 We learn the production probabilities of the \gls{PCFG} and an inference network computing the conditional distribution of a parse tree given a sentence.
@@ -137,13 +137,13 @@ Each word is represented as a one-hot vector and the sentence embedding is obtai
 %
 Instead of a hard $\{0, 1\}$ likelihood which can make learning difficult, we use a relaxation, $p(x \given z) = \exp(-L(x, s(z))^2)$, where $L$ is the Levenshtein distance and $s(z)$ is the sentence produced by $z$.
 %
-Using the Levenshtein distance can also be interpreted as an instance of approximate Bayesian computation~\citep{sisson2018handbook}.
+Using the Levenshtein distance can also be interpreted as an instance of approximate Bayesian computation~\citep{Sisson2018handbook}.
 %
 Training sentences are obtained by sampling from the \emph{astronomers} \gls{PCFG} with the true production probabilities.
 %, discarding the corresponding parse trees.
 
 % why ws is better?
-We run \gls{WW}, \gls{WS}, \gls{VIMCO} and \acrshort{REINFORCE} ten times for $K \in \{2, 5, 10, 20\}$, with batch size \(B=2\), using the Adam optimizer~\citep{kingma2015adam} with default hyperparameters.
+We run \gls{WW}, \gls{WS}, \gls{VIMCO} and \acrshort{REINFORCE} ten times for $K \in \{2, 5, 10, 20\}$, with batch size \(B=2\), using the Adam optimizer~\citep{Kingma2015adam} with default hyperparameters.
 %
 We observe that the inference network can often end up sub-optimally sampling very long $z$ (by choosing production rules with many non-terminals), leading to slow and ineffective runs.
 %
@@ -216,24 +216,24 @@ We inspect the quality of the inference network by sampling from it.
 % model
 Next, we evaluate \gls{WW} and \gls{VIMCO}
 % (the best performing \gls{IWAE}-based algorithm for the \gls{GMM})
-on \gls{AIR}~\citep{eslami2016attend}, a structured deep generative model with both discrete and continuous latent variables.
+on \gls{AIR}~\citep{Eslami2016attend}, a structured deep generative model with both discrete and continuous latent variables.
 %
 \Gls{AIR} uses the discrete variable to decide how many continuous variables are necessary to explain an image.
 %
 The sequential inference procedure of \gls{AIR} poses a difficult problem, since it implies a sequential decision process with possible branching.
 %
-See \citep{eslami2016attend} and \cref{app:air} for the model notation and details.
+See \citep{Eslami2016attend} and \cref{app:air} for the model notation and details.
 
 % training
 We set the maximum number of inference steps in \gls{AIR} to three and train on $50 \times 50$ images with zero, one or two \acrshort{MNIST} digits.
 %
 The training and testing data sets consist of $60000$ and $10000$ images respectively, generated from the respective \acrshort{MNIST} train/test datasets.
 %
-Unlike \gls{AIR}, which used Gaussian likelihood with fixed standard deviation and continuous inputs (i.e., input $\mathbf{x} \in [0, 1]^{50 \times 50}$), we use a Bernoulli likelihood and binarized data; the stochastic binarization is similar to \citet{burda2016importance}.
+Unlike \gls{AIR}, which used Gaussian likelihood with fixed standard deviation and continuous inputs (i.e., input $\mathbf{x} \in [0, 1]^{50 \times 50}$), we use a Bernoulli likelihood and binarized data; the stochastic binarization is similar to \citet{Burda2016importance}.
 %
 % This choice is motivated by initial experiments, which have shown that the original setup is detrimental to the sleep phase of \gls{WS} -- samples from the generative model did not look similar to true data even after the training has converged.
 %
-Training is performed over two million iterations by RmsProp \citep{tieleman2012rms} with the learning rate of $10^{-5}$, which is divided by three after $400$k and $1000$k training iterations.
+Training is performed over two million iterations by RmsProp \citep{Tieleman2012rms} with the learning rate of $10^{-5}$, which is divided by three after $400$k and $1000$k training iterations.
 %
 We set the glimpse size to $20 \times 20$.
 
@@ -403,7 +403,7 @@ This experiment confirms that increasing number of particles improves \gls{VIMCO
     \emph{(Top)}
     Quality of the generative model:
     \gls{WS} and \gls{WW} improve with more particles thanks to lower variance and lower bias estimators of the gradient respectively.
-    \Gls{IWAE} methods suffer with a larger particle budget~\citep{rainforth2018tighter}.
+    \Gls{IWAE} methods suffer with a larger particle budget~\citep{Rainforth2018tighter}.
     \Gls{WS} performs the worst as a consequence of computing the expected \gls{KL} under the model distribution~\(p_\theta(x)\)~\cref{eq:sleep-phi-obj} instead of the true data distribution~\(p(x)\) as with \gls{WW}~\cref{eq:wake-phi-obj}.
     \Gls{WW} suffers from branch-pruning (see text) in low-particle regimes, but learns the best model fastest in the many-particle regime; $\delta$-\gls{WW} additionally learns well in the low-particle regime.
     \emph{(Bottom)}
@@ -450,7 +450,7 @@ We fix the mixture parameters in order to study the important features of the pr
 % training details
 We train using \gls{WS}, \gls{WW}, as well as using \gls{IWAE} with \acrshort{REINFORCE}, \acrshort{RELAX}, \gls{VIMCO} and the Concrete distribution.
 %
-We attempted different variants of relaxations \citep{rolfe2016dvae,vahdat2018dvaepp} in this setting, but they performed considerably worse than any of the alternatives (c.f. \Cref{app:dvae}).
+We attempted different variants of relaxations \citep{Rolfe2016dvae,Vahdat2018dvaepp} in this setting, but they performed considerably worse than any of the alternatives (c.f. \Cref{app:dvae}).
 %
 We fix $C = 20$ and increase number of particles from $K = 2$ to $20$.
 %
@@ -473,7 +473,7 @@ The inference network is evaluated via the $L_2$ distance between \glspl{PMF} of
 We demonstrate that using \gls{WS} and \gls{WW} with larger particle budgets leads to better inference networks whereas this is not the case for \gls{IWAE} methods (\cref{fig:gmm}, bottom).
 % Here, we demonstrate that using \gls{WS} and \gls{WW} leads to a better inference networks when number of particles is increased whereas this is not the case for \gls{IWAE} methods (\cref{fig:gmm}, Middle).
 Recall that the former is because using more samples to estimate the gradient of the sleep $\phi$ objective \cref{eq:sleep-phi-obj} for \gls{WS} reduces variance at a standard Monte Carlo rate and that using more particles in \cref{eq:wake-phi-est} to estimate the gradient of the wake $\phi$ objective results in a lower bias.
-The latter is because using more particles results in the signal-to-noise of \gls{IWAE}'s $\phi$ gradient estimator to drop at the rate $O(1 / \sqrt{K})$~\citep{rainforth2018tighter}.
+The latter is because using more particles results in the signal-to-noise of \gls{IWAE}'s $\phi$ gradient estimator to drop at the rate $O(1 / \sqrt{K})$~\citep{Rainforth2018tighter}.
 
 Learning of the generative model, through inference-network learning, also monotonically improves with increasing \(K\) for \gls{WS} and \gls{WW}, but worsens for all \gls{IWAE} methods except \gls{VIMCO}, since the $\theta$ gradient estimator (common to all methods), $\nabla_\theta \ELBO_{\acrshort{IS}}^K(\theta, \phi, x)$ can be seen as an importance sampling estimator whose quality is tied to the proposal distribution (inference network).
 
@@ -536,7 +536,7 @@ This behavior is not seen in \gls{WW} with many particles where it is the best a
 We propose a simple extension of \gls{WW}, denoted $\delta$-\acrshort{WW}, that mitigates this shortcoming by changing the proposal of the self-normalized importance sampling estimator in \cref{eq:wake-phi-est} to \(q_{\phi, \delta}(z \given x) = (1 - \delta) q_\phi(z \given x) + \delta \mathrm{Uniform}(z)\).
 We use $\delta = 0.2$, noting that the method is robust to a range of values.
 Using a different proposal than the inference network $q_\phi(z \given x)$ means that using the low-particle estimator in \cref{eq:wake-phi-est} no longer leads to branch-pruning.
-This is known as defensive \acrlong{IS}~\citep{hesterberg1995weighted}, and is used to better estimate integrands that have long tails using short-tailed proposals.
+This is known as defensive \acrlong{IS}~\citep{Hesterberg1995weighted}, and is used to better estimate integrands that have long tails using short-tailed proposals.
 Using $\delta$-\gls{WW} outperforms all other algorithms in learning both the generative model and the inference network in the low-$K$ regime and performs similarly as \gls{WW} in the high-$K$ regime.
 
 

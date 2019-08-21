@@ -15,7 +15,7 @@ the number of samples $M$ used for Monte Carlo estimation of the \gls{ELBO} and 
 in the bound construction.  Here $M$ does not change the true value of
 $\nabla_{\theta, \phi} \ELBO$, only our variance in estimating
 it, while changing $K$ changes the \gls{ELBO} itself, with larger $K$ leading to tighter 
-bounds~\citep{burda2016importance}.  Presuming that reparameterization
+bounds~\citep{Burda2016importance}.  Presuming that reparameterization
 is possible, we can express our gradient estimate in the general form
 \begin{align}
 \label{eq:grad-est}
@@ -90,14 +90,14 @@ where $Z := p_{\theta}(x)$ is the true marginal likelihood.
 	overall expectation is independent of $M$ and
 	the variance reduces at a rate $O(1/M)$.  
 	The effect of $K$ is more complicated but
-	is perhaps most easily seen by noting that~\cite{burda2016importance}
+	is perhaps most easily seen by noting that~\cite{Burda2016importance}
 	\begin{align*}
 	\nabla_{\theta, \phi} \log \hat{Z}_{m,K}
 	= \sum_{k=1}^{K} \frac{w_{m,k}^{}}{\sum_{\ell=1}^{K} w_{m,k}^{}} 
 	\nabla_{\theta, \phi} \log \left(w_{m,k}^{}\right),
 	\end{align*}
 	such that $\nabla_{\theta, \phi} \log \hat{Z}_{m,K}$ can be interpreted as a self-normalized importance sampling
-	estimate.  We can, therefore, invoke the known result (see e.g.~\citet{hesterberg1988advances}) 
+	estimate.  We can, therefore, invoke the known result (see e.g.~\citet{Hesterberg1988advances}) 
 	that the bias of a self-normalized
 	importance sampler converges at a rate $O(1/K)$ and the standard deviation at
 	a rate $O(1/\sqrt{K})$.  We thus see that the \gls{SNR} converges at a rate $O((1/K)/(1/\sqrt{K}))
@@ -151,11 +151,11 @@ $-\nabla_{\phi} \text{Var}\left[w_{1,1}\right]$ as $K \to \infty$.
 This direction is rather interesting: it implies that as $K\to\infty$, the optimal $\phi$
 is that which minimizes the variance of the weights.  This is well known to be 
 the optimal importance sampling
-distribution in terms of estimating the marginal likelihood~\citep{mcbook}.
+distribution in terms of estimating the marginal likelihood~\citep{Mcbook}.
 Given that the role of the inference network during training is to estimate the
 marginal likelihood, this is thus arguably exactly what we want to optimize for.  
 As such, this result, which complements those
-of~\cite{cremer2017reinterpreting}, suggests that increasing 
+of~\cite{Cremer2017reinterpreting}, suggests that increasing 
 $K$ provides a preferable target in terms of the direction of the
 true inference network gradients.  We thus see that there is a trade-off with the fact that increasing $K$ also diminishes
 the \gls{SNR}, reducing the estimates to pure noise if $K$ is
@@ -266,7 +266,7 @@ will omit the dependency on $N$ to simplify the notation.
 %
 %It is already well established that increasing $K$ in the \gls{IWAE} leads to a tighter
 %\gls{ELBO} and that choosing $K>1$ tends to lead to better 
-%performance in learning the generative network~\citep{burda2016importance}.  Our
+%performance in learning the generative network~\citep{Burda2016importance}.  Our
 %assertion is that these improvements do not necessarily translate
 %to improved gradient estimators or, by proxy, better \gls{SGA} schemes for
 %the inference network.  Though, as we showed in the last section, 
@@ -289,13 +289,13 @@ will omit the dependency on $N$ to simplify the notation.
 %where $I = \lim\limits_{K \rightarrow \infty} I_{K} = 0$ because
 %with infinite samples, the estimate is exact and thus independent
 %of the proposal parameters.  Now adapting the \gls{IWAE} result
-%of~\citet{rainforth2017opportunities} shows that
+%of~\citet{Rainforth2017opportunities} shows that
 %\begin{align}
 %\label{eq:mse-bound}
 %\E \left[I_{K}^2\right] = \E \left[\left(I_{K}-I\right)^2\right] \le \frac{C_0 ^2 \varsigma_1^4}{4 K^2}+\frac{C_0 ^2 \varsigma_1^4}{4 K^2}
 %+\frac{\kappa_0^2 \varsigma_1^2}{K}+\frac{C_0 \kappa_0 \varsigma_1^3}{K^{3/2}}+O\left(\frac{1}{K^3}\right),
 %\end{align}
-%where $C_0$, $\kappa_0$ ($K_0$ in~\citet{rainforth2017opportunities}), 
+%where $C_0$, $\kappa_0$ ($K_0$ in~\citet{Rainforth2017opportunities}), 
 %and $\varsigma_1$ are constants and we have set $N=1$ in their formulation.  
 %Here the first $\frac{C_0 ^2 \varsigma_1^4}{4 K^2}$ and $O\left(\frac{1}{K^3}\right)$
 %are ``bias terms'', i.e. $\left(\E \left[I_{K}\right]\right)^2 = \left(\nabla_{\phi} \ELBO\right)^2$, and

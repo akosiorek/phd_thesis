@@ -101,9 +101,9 @@
         %WHAT: 
         To achieve the main tracking objective (localising the object in the current frame), we base the first loss term on Intersection-over-Union (IoU) of the predicted bounding box \wrt the ground truth, where the IoU of two bounding boxes is defined as $\mathrm{IoU}\fences{\B{a}, \B{b}} = \frac{\B{a} \cap \B{b}}{\B{a} \cup \B{b}} = \frac{\text{area of overlap}}{\text{area of union}}$.
         %WHY:
-        The IoU is invariant to object and image scale, making it a suitable proxy for measuring the quality of localisation. Even though it (or an exponential thereof) does not correspond to any probability distribution (as it cannot be normalised), it is often used for evaluation \cite{VOT2016}.
+        The IoU is invariant to object and image scale, making it a suitable proxy for measuring the quality of localisation. Even though it (or an exponential thereof) does not correspond to any probability distribution (as it cannot be normalised), it is often used for evaluation \cite{Vot2016}.
         %HOW:
-        We follow the work by \citet{yu2016unitbox} and express the loss term as the negative log of IoU:
+        We follow the work by \citet{Yu2016unitbox} and express the loss term as the negative log of IoU:
   		\begin{equation}
 	   		\loss[\mathrm{t}]{\data, \theta} = \expc[\p{\widehat{\bb}_{1:T}}{\bxTs, \bb_1}]{ -\log \mathrm{IoU} \fences{\widehat{\bb}_t, \bbt}},
 	   	\end{equation}

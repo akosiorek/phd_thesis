@@ -60,7 +60,7 @@ Similarities are then normalised via a $\operatorname{softmax}$ operation and us
 Finally, outputs of different attention heads are concatenated in \Cref{eq:multihead}.
 \textsc{Sab} produces $M$ output vectors, one for each input, which are then concatenated with corresponding inputs and fed into separate \gls{LSTM}s for further processing, as in \gls{HART}---see \Cref{fig:system_large}.
 
-\Gls{MOHART} is trained fully end-to-end, contrary to other tracking approaches \cite{Zhang2008,Milan2014,bae2017confidence,keuper2018motion}.
+\Gls{MOHART} is trained fully end-to-end, contrary to other tracking approaches \cite{Zhang2008,Milan2014,Bae2017confidence,Keuper2018motion}.
 It maintains a hidden state, which can contain information about the object's motion. One benefit is that in order to predict future trajectories, one can simply feed black frames into the model. Our experiments show that the model learns to fall back on the motion model captured by the \gls{LSTM} in this case. 
 
 

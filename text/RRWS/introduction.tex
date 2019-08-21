@@ -5,9 +5,9 @@
 %
 Recent years have seen such models gain relevance, particularly in the domain of deep probabilistic programming~\citep[Ch. 7]{siddharth2017learning,bingham2019pyro,tran2017deep,vandemeent2018intro}, which allows combining neural networks with generative models expressing arbitrarily complex control flow.
 %
-\Glspl{SCFM} are encountered in a wide variety of tasks including tracking and prediction \citep{neiswanger2014dependent,kosiorek2018sequential}, clustering \citep{rasmussen2000infinite}, topic modeling \citep{blei2003latent}, model structure learning \citep{adams2010learning}, counting \citep{eslami2016attend}, attention \citep{xu2015show}, differentiable data structures \citep{graves2014neural,graves2016hybrid,grefenstette2015learning}, speech \& language modeling \citep{juang1991hidden,chater2006probabilistic}, and concept learning \citep{kemp2006learning,lake2018emergence}.
+\Glspl{SCFM} are encountered in a wide variety of tasks including tracking and prediction \citep{Neiswanger2014dependent,Kosiorek2018sequential}, clustering \citep{Rasmussen2000infinite}, topic modeling \citep{Blei2003latent}, model structure learning \citep{Adams2010learning}, counting \citep{Eslami2016attend}, attention \citep{Xu2015show}, differentiable data structures \citep{Graves2014neural,Graves2016hybrid,Grefenstette2015learning}, speech \& language modeling \citep{Juang1991hidden,Chater2006probabilistic}, and concept learning \citep{Kemp2006learning,Lake2018emergence}.
 
-While a variety of approaches for amortized gradient-based learning (targeting model \gls{ELBO}) exist for models using discrete random variables, the majority rely on continuous relaxations of the discrete variables~\citep[e.g.][]{rolfe2016dvae,vahdat2018dvaepp,vahdat2018dvaehash,oord2017neural,maddison2017concrete,jang2017categorical}, enabling gradient computation through reparameterization~\citep{kingma2014auto,rezende2014stochastic}.
+While a variety of approaches for amortized gradient-based learning (targeting model \gls{ELBO}) exist for models using discrete random variables, the majority rely on continuous relaxations of the discrete variables~\citep[e.g.][]{rolfe2016dvae,vahdat2018dvaepp,vahdat2018dvaehash,oord2017neural,maddison2017concrete,jang2017categorical}, enabling gradient computation through reparameterization~\citep{Kingma2014auto,Rezende2014stochastic}.
 %
 The models used by these approaches typically do not involve any control flow on discrete random choices, instead choosing to feed choices from their continuous relaxations directly into a neural network, thereby facilitating the required learning.
 
@@ -96,11 +96,11 @@ This process can very quickly become intractable for more complex \glspl{SCFM}, 
 %
 % sid: include the biased gradient estimator angle here?
 
-Alternatives to continuous-relaxation methods mainly involve the use of the \gls{IWAE}~\citep{burda2016importance} framework, employing the \acrshort{REINFORCE}~\citep{williams1992simple} gradient estimator, combined with control-variate schemes~\citep{mnih2014neural,mnih2016variational,gu2016muprop,tucker2017rebar,grathwohl2018backpropagation} to help decrease the variance of the na\"ive estimator.
+Alternatives to continuous-relaxation methods mainly involve the use of the \gls{IWAE}~\citep{Burda2016importance} framework, employing the \acrshort{REINFORCE}~\citep{Williams1992simple} gradient estimator, combined with control-variate schemes~\citep{Mnih2014neural,Mnih2016variational,Gu2016muprop,Tucker2017rebar,Grathwohl2018backpropagation} to help decrease the variance of the na\"ive estimator.
 %
 Although this approach ameliorates the problem with continuous relaxations in that it does not require evaluation of all branches, it has other drawbacks.
 %
-Firstly, with more particles, the \gls{IWAE} estimator adversely impacts inference-network quality, consequently impeding model learning~\citep{rainforth2018tighter}.
+Firstly, with more particles, the \gls{IWAE} estimator adversely impacts inference-network quality, consequently impeding model learning~\citep{Rainforth2018tighter}.
 %
 Secondly, its practical efficacy can still be limited due to high variance and the requirement to design and optimize a separate neural network (c.f. \cref{sec:experiments/gmm}).
 
@@ -161,7 +161,7 @@ Secondly, its practical efficacy can still be limited due to high variance and t
   \vspace*{-2\baselineskip}
 \end{figure}
 
-Having characterized the class of models we are interested in (c.f. \cref{fig:scfm}), and identified a range of current approaches (along with their characteristics) that might apply to such models, we revisit \gls{RWS}~\citep{bornschein2015reweighted}.
+Having characterized the class of models we are interested in (c.f. \cref{fig:scfm}), and identified a range of current approaches (along with their characteristics) that might apply to such models, we revisit \gls{RWS}~\citep{Bornschein2015reweighted}.
 %
 Comparing extensively with state-of-the-art methods for learning in \glspl{SCFM}, we
 demonstrate its efficacy in learning better generative models and inference networks, using lower variance gradient estimators, over a range of computational budgets.
@@ -172,8 +172,8 @@ We then revisit \gls{RWS} (\cref{sec:method}) and present an extensive evaluatio
 %
 \begin{inparaenum}[i)]
 \item a \gls{PCFG} model on sentences,
-\item the \gls{AIR} model~\citep{eslami2016attend} to perceive and localize multiple \acrshort{MNIST} digits, and
-\item a pedagogical \gls{GMM} example that exposes a shortcoming of \gls{RWS} which we then design a fix for. %  using defensive \acrlong{IS}~\citep{hesterberg1995weighted}, and
+\item the \gls{AIR} model~\citep{Eslami2016attend} to perceive and localize multiple \acrshort{MNIST} digits, and
+\item a pedagogical \gls{GMM} example that exposes a shortcoming of \gls{RWS} which we then design a fix for. %  using defensive \acrlong{IS}~\citep{Hesterberg1995weighted}, and
 \end{inparaenum}
 %
 Our experiments confirm \gls{RWS} as a competitive, often preferable, alternative for learning \glspl{SCFM}.

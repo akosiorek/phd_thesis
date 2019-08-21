@@ -4,15 +4,15 @@
 \item[Object Tracking]
     There have been many approaches to modelling objects in images and videos. 
     Object detection and tracking are typically learned in a supervised manner, where object bounding boxes and often additional labels are part of the training data.
-    Single-object tracking commonly use Siamese networks, which can be seen as an \gls{RNN} unrolled over two time-steps \citep{valmadre2017end}. Recently, \cite{kosiorek2017hierch} used an \gls{RNN} with an attention mechanism in the \textsc{hart} model to predict bounding boxes for single objects, while robustly modelling their motion and appearance. Multi-object tracking is typically attained by detecting objects and performing data association on bounding-boxes \citep{bewley2016sort}.
-    \cite{schulter2017deepnf} used an end-to-end supervised approach that detects objects and performs data association.
-    In the unsupervised setting, where the training data consists of only images or videos, the dominant approach is to distill the inductive bias of spatial consistency into a discriminative model.  \cite{cho2015unsupervised} detect single objects and their parts in images, and \cite{kwak2015unsupervised,xiao2016track} incorporate temporal consistency to better track single objects.
-    \Gls{SQAIR} is unsupervised and hence it does not rely on bounding boxes nor additional labels for training, while being able to learn arbitrary motion and appearance models similarly to \textsc{hart} \citep{kosiorek2017hierch}.
+    Single-object tracking commonly use Siamese networks, which can be seen as an \gls{RNN} unrolled over two time-steps \citep{Valmadre2017end}. Recently, \cite{Kosiorek2017hierch} used an \gls{RNN} with an attention mechanism in the \textsc{hart} model to predict bounding boxes for single objects, while robustly modelling their motion and appearance. Multi-object tracking is typically attained by detecting objects and performing data association on bounding-boxes \citep{Bewley2016sort}.
+    \cite{Schulter2017deepnf} used an end-to-end supervised approach that detects objects and performs data association.
+    In the unsupervised setting, where the training data consists of only images or videos, the dominant approach is to distill the inductive bias of spatial consistency into a discriminative model.  \cite{Cho2015unsupervised} detect single objects and their parts in images, and \cite{Kwak2015unsupervised,Xiao2016track} incorporate temporal consistency to better track single objects.
+    \Gls{SQAIR} is unsupervised and hence it does not rely on bounding boxes nor additional labels for training, while being able to learn arbitrary motion and appearance models similarly to \textsc{hart} \citep{Kosiorek2017hierch}.
     At the same time, is inherently multi-object and performs data association implicitly (\textit{cf}. \Cref{app:algo}).
     Unlike the other unsupervised approaches, temporal consistency is baked into the model structure of \gls{SQAIR} and further enforced by lower \gls{KL} divergence when an object is tracked.
 
 \item[Video Prediction]
-     Many works on video prediction learn a deterministic model conditioned on the current frame to predict the future ones \citep{ranzato2014video,srivastava2015unsupervised}.
+     Many works on video prediction learn a deterministic model conditioned on the current frame to predict the future ones \citep{Ranzato2014video,Srivastava2015unsupervised}.
      Since these models do not model uncertainty in the prediction, they can suffer from the multiple futures problem --- since perfect prediction is impossible, the model produces blurry predictions which are a mean of possible outcomes.
      This is addressed in stochastic latent variable models trained using variational inference to generate multiple plausible videos given a sequence of images \citep{babaeizadeh2017stochastic, denton2018stochastic}.
      Unlike \gls{SQAIR}, these approaches do not model objects or their positions explicitly, thus the representations they learn are of limited interpretability. 
@@ -26,10 +26,10 @@
     The above approaches rely on iterative inference procedures, but do not exhibit the object-counting behaviour of \gls{SQAIR}.
     For this reason, their computational complexities are proportional to the predefined maximum number of objects, while \gls{SQAIR} can be more computationally efficient by adapting to the number of objects currently present in an image.
     
-    Another interesting line of work is the \textsc{gan}-based unsupervised video generation that decomposes motion and content \citep{tulyakov2017mocogan,denton2017unsupervised}. These methods learn interpretable features of content and motion, but deal only with single objects and do not explicitly model their locations. Nonetheless, adversarial approaches to learning structured probabilistic models of objects offer a plausible alternative direction of research.
+    Another interesting line of work is the \textsc{gan}-based unsupervised video generation that decomposes motion and content \citep{Tulyakov2017mocogan,Denton2017unsupervised}. These methods learn interpretable features of content and motion, but deal only with single objects and do not explicitly model their locations. Nonetheless, adversarial approaches to learning structured probabilistic models of objects offer a plausible alternative direction of research.
     
 \item[Bayesian Nonparametric Models]
-    To the best of our knowledge, \cite{neiswanger2012unsupervised} is the only known approach that models pixels belonging to a variable number of objects in a video together with their locations in the generative sense.
+    To the best of our knowledge, \cite{Neiswanger2012unsupervised} is the only known approach that models pixels belonging to a variable number of objects in a video together with their locations in the generative sense.
     This work uses a \gls{bnp} model, which relies on mixtures of Dirichlet processes to cluster pixels belonging to an object. 
     However, the choice of the model necessitates complex inference algorithms involving Gibbs sampling and Sequential Monte Carlo, to the extent that any sensible approximation of the marginal likelihood is infeasible.
     It also uses a fixed likelihood function, while ours is learnable.

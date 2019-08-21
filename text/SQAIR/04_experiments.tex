@@ -4,7 +4,7 @@
 We evaluate \gls{SQAIR} on two datasets.
 Firstly, we perform an extensive evaluation on moving \gls{MNIST} digits, where we show that it can learn to reliably detect, track and generate moving digits (\Cref{sec:expr_mnist}). Moreover, we show that \gls{SQAIR} can simulate moving objects into the future --- an outcome it has not been trained for. 
 We also study the utility of learned representations for a downstream task.
-Secondly, we apply \gls{SQAIR} to real-world pedestrian CCTV data from static cameras (\textit{DukeMTMC}, \cite{ristani2016performance}), where we perform background subtraction as pre-processing. In this experiment, we show that \gls{SQAIR} learns to detect, track, predict and generate walking pedestrians without human supervision.
+Secondly, we apply \gls{SQAIR} to real-world pedestrian CCTV data from static cameras (\textit{DukeMTMC}, \cite{Ristani2016performance}), where we perform background subtraction as pre-processing. In this experiment, we show that \gls{SQAIR} learns to detect, track, predict and generate walking pedestrians without human supervision.
 
 \subsection{Moving multi-\textsc{mnist}}
 \label{sec:expr_mnist}
@@ -54,7 +54,7 @@ The dataset consists of sequences of length 10 of multiple moving \gls{MNIST} di
 Sequences are generated such that no objects overlap in the first frame, and all objects are present through the sequence; the digits can move out of the frame, but always come back.
 See \Cref{app:mnist_inout} for an experiment on a harder version of this dataset.
 There are 60,000 training and 10,000 testing sequences created from the respective \gls{MNIST} datasets.
-We train two variants of \gls{SQAIR}: the \textsc{mlp}-\gls{SQAIR} uses only fully-connected networks, while the \textsc{conv}-\gls{SQAIR} replaces the networks used to encode images and glimpses with convolutional ones; it also uses a subpixel-convolution network as the glimpse decoder \citep{shi2016subpixel}.
+We train two variants of \gls{SQAIR}: the \textsc{mlp}-\gls{SQAIR} uses only fully-connected networks, while the \textsc{conv}-\gls{SQAIR} replaces the networks used to encode images and glimpses with convolutional ones; it also uses a subpixel-convolution network as the glimpse decoder \citep{Shi2016subpixel}.
 See \Cref{app:mnist_details} for details of the model architectures and the training procedure.
 
 We use \gls{AIR} and \gls{VRNN} \citep{Chung2015} as baselines for comparison.  \gls{VRNN} can be thought of as a sequential \gls{VAE} with an \gls{RNN} as its deterministic backbone. Being similar to a \gls{VAE}, its latent variables are not structured, nor easily interpretable. For a fair comparison, we control the latent dimensionality of $\gls{VRNN}$ and the number of learnable parameters. We provide implementation details in \Cref{apd:vrnn}.
@@ -169,7 +169,7 @@ We analyze failure cases of \gls{SQAIR} in \Cref{app:fail}.
     \caption{Inputs on the top, reconstructions in the second row, samples in the third row; rows four and five contain inputs and conditional generation: the first four frames in the last row are reconstructions, while the remaining ones are predicted by sampling from the prior. There is no ground-truth, since we used sequences of length five of training and validation.}
     \label{fig:duke_rec}
 \end{figure}
-To evaluate the model in a more challenging, real-world setting, we turn to data from static CCTV cameras of the \textit{DukeMTMC} dataset \citep{ristani2016performance}. As part of pre-precessing, we use standard background subtraction algorithms \citep{itseez2015opencv}. In this experiment, we use $3150$ training and $350$ validation sequences of length $5$. For details of model architectures, training and data pre-processing, see \Cref{app:duke_details}.
+To evaluate the model in a more challenging, real-world setting, we turn to data from static CCTV cameras of the \textit{DukeMTMC} dataset \citep{Ristani2016performance}. As part of pre-precessing, we use standard background subtraction algorithms \citep{Itseez2015opencv}. In this experiment, we use $3150$ training and $350$ validation sequences of length $5$. For details of model architectures, training and data pre-processing, see \Cref{app:duke_details}.
 We evaluate the model qualitatively by examining reconstructions, conditional samples (conditioned on the first four frames) and samples from the prior (\Cref{fig:duke_rec} and \Cref{app:duke_visual}).
 We see that the model learns to reliably detect and track walking pedestrians, even when they are close to each other.
 

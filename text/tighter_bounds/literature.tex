@@ -3,25 +3,25 @@ There has been extensive literature investigating how to make the ELBO a tighter
 Broadly speaking, there are two approaches.
 
 The first approach aims at making the \emph{learned} variational distribution more expressive, thereby allowing it to more closely approximate the true posterior \emph{when trained}.
-This can be done by normalising flows \citep{rezende_variational_2015,kingma2016improving},
-using auxiliary variables \citep{maaloe_auxiliary_2016} \citep{ranganath2016hierarchical}
+This can be done by normalising flows \citep{RezendeVariational2015,Kingma2016improving},
+using auxiliary variables \citep{MaaloeAuxiliary2016} \citep{Ranganath2016hierarchical}
 
-The second approach improves upon the current variational distribution by algorithmic means. This can be done using particle methods including weighting \citep{burda2015importance} or resampling \citep{maddison2017filtering}\citep{le2017auto}. Alternatively, Markov Chain Monte Carlo can be used in latent space \citep{salimans_markov_2015}.
-Another possibility is to use a different divergence measure as done in \citep{li2016renyi}.
+The second approach improves upon the current variational distribution by algorithmic means. This can be done using particle methods including weighting \citep{Burda2015importance} or resampling \citep{Maddison2017filtering}\citep{Le2017auto}. Alternatively, Markov Chain Monte Carlo can be used in latent space \citep{SalimansMarkov2015}.
+Another possibility is to use a different divergence measure as done in \citep{Li2016renyi}.
 
 
 To fit in:
 
 Perturbative Black Box Variational Inference:
-\citep{bamler_perturbative_2017}
+\citep{BamlerPerturbative2017}
 
 Ladder VAEs:
-\citep{so_nderby_ladder_2016}
+\citep{SoNderbyLadder2016}
 This is weird but probably part of the first approach.
 
 Variational Gaussian Process
-\citep{tran_variational_2015}
+\citep{TranVariational2015}
 Also weird but probably also part of first approach.
 
 Christian Naesseth
-\citep{naesseth2017variational}
+\citep{Naesseth2017variational}
