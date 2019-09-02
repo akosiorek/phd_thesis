@@ -1,5 +1,5 @@
 \section{Introduction}
-\label{sec:intro}
+\label{sec:mohart_intro}
 
 
 \begin{figure}[b!]
@@ -24,14 +24,14 @@
 
 Autonomous vehicles need to operate in rich environments that contain a large variety of interacting object. 
 %
-This variety motivates the need for \emph{class-agnostic} object trackers, which break with the popular tracking-by-detection paradigm \cite{Zhang2008,Milan2014,bae2017confidence, keuper2018motion}. 
+This variety motivates the need for \emph{class-agnostic} object trackers, which break with the popular tracking-by-detection paradigm \cite{Zhang2008,Milan2014,Bae2017confidence, Keuper2018motion}. 
 %
 In tracking-by-detection, static video frames are first analysed by an object detector,\eg a pre-trained deep \gls{CNN} such as \textsc{yolo} \citep{Redmon15}, and then the detected objects are linked across frames. 
 %
 Algorithms from this family can achieve high accuracy, provided sufficient labelled data to train the object detector, and given that all encountered objects can be associated with known classes. 
 %
 
-\Gls{HART} is a recently proposed alternative for single-object tracking (\textsc{sot}), where an arbitrary object can be tracked from an initial video frame \citep{Kosiorek17}.
+\Gls{HART} is a recently proposed alternative for single-object tracking (\textsc{sot}), where an arbitrary object can be tracked from an initial video frame \citep{Kosiorek2017hierch}.
 %
 Since the initial bounding-box is user-provided and may be placed over any part of the image, regardless of whether it corresponds to an object and its class, \gls{HART} can track arbitrary objects.
 % 
@@ -39,9 +39,9 @@ Since the initial bounding-box is user-provided and may be placed over any part 
 Contrary to tracking-by-detection, where only one video frame is typically processed at any given time to generate bounding box proposals, end-to-end learning in \gls{HART} allows discovering complex visual and spatio-temporal patterns in videos, which is conducive to inferring what an object is and how it moves.
 %
 
-In the original formulation, \gls{HART} is limited to the single-object modality---as are other existing end-to-end trackers \cite{Kahou15,Danesh19,Gordon2018}.
+In the original formulation, \gls{HART} is limited to the single-object modality---as are other existing end-to-end trackers \cite{Kahou2015ratm,Danesh2019deep,Gordon2018re3}.
 %
-In this work, we present \gls{MOHART}, a class-agnostic tracker with complex relational reasoning capabilities provided by a multi-headed self-attention module \citep{Vaswani17,Lee2019settransformer}. 
+In this work, we present \gls{MOHART}, a class-agnostic tracker with complex relational reasoning capabilities provided by a multi-headed self-attention module \citep{Vaswani17,Lee2019set}. 
 \Gls{MOHART} infers the latent state of every tracked object in parallel, and uses self-attention to inform per-object states about other tracked objects.
 This helps to avoid performance loss under self-occlusions of tracked objects or strong ego-motion.
 Moreover, since the model is trained end-to-end, it is able to learn how to manage faulty or missing sensor inputs.

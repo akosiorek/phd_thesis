@@ -108,7 +108,7 @@ The only difference is the conditioning on $\bzt^{\mathcal{P}_t}$, which allows 
 The second term, or $\qp_\phi$, describes propagation. The detailed structures of $\qd_\phi$ and $\qp_\phi$ are shown in \Cref{fig:sqair_inf_detail}, while all the pertinent algorithms and equations can be found in \Cref{app:algo,apd:sqair_inference}, respectively.
 
 \textbf{Learning}
-We train \gls{SQAIR} as an \gls{IWAE} of \cite{Burda2016}. Specifically, we maximise the importance-weighted evidence lower-bound $\loss[\textsc{IWAE}]$, namely
+We train \gls{SQAIR} as an \gls{IWAE} of \cite{Burda2016iwae}. Specifically, we maximise the importance-weighted evidence lower-bound $\loss[\textsc{IWAE}]$, namely
 
 \begin{equation} \label{eq:iwae}
 \begin{aligned}
@@ -119,5 +119,5 @@ We train \gls{SQAIR} as an \gls{IWAE} of \cite{Burda2016}. Specifically, we maxi
     }.
 \end{aligned}
 \end{equation}
-To optimise the above, we use \gls{RMSprop}, $K=5$ and batch size of $32$. We use the \textsc{vimco} gradient estimator of \cite{Mnih2016} to backpropagate through the discrete latent variables $z^{\mathrm{pres}}$, and use reparameterisation for the continuous ones \citep{Kingma2013auto}.
+To optimise the above, we use \gls{RMSprop}, $K=5$ and batch size of $32$. We use the \textsc{vimco} gradient estimator of \cite{Mnih2016} to backpropagate through the discrete latent variables $z^{\mathrm{pres}}$, and use reparameterisation for the continuous ones \citep{Kingma2014auto}.
 We also tried to use \textsc{nvil} of \cite{Mnih2014} as in the original work on \gls{AIR}, but found it very sensitive to hyper-parameters, fragile and generally under-performing.

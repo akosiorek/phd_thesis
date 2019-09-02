@@ -1,13 +1,13 @@
 \section{Introduction}
-\label{sec:intro}
+\label{sec:sqair_intro}
 
 The ability to identify objects in their environments and to understand relations between them is a cornerstone of human intelligence \citep{Kemp2008discovery}. Arguably, in doing so we rely on a notion of spatial and temporal consistency which gives rise to an expectation that objects do not appear out of thin air, nor do they spontaneously vanish, and that they can be described by properties such as location, appearance and some dynamic behaviour that explains their evolution over time. We argue that this notion of consistency can be seen as an \textit{inductive bias} that improves the efficiency of our learning. Equally, we posit that introducing such a bias towards spatio-temporal consistency into our models should greatly reduce the amount of supervision required for learning.
 
 One way of achieving such inductive biases is through model structure. 
 While recent successes in deep learning demonstrate that progress is possible without explicitly imbuing models with interpretable structure \citep{Lecun2015deep}, recent works show that introducing such structure into deep models can indeed lead to favourable inductive biases improving performance  e.g.\ in convolutional networks \citep{Lecun1989backpropagation} or in tasks requiring relational reasoning \citep{Santoro2017}.
-Structure can also make neural networks useful in new contexts by significantly improving generalization, data efficiency \citep{Jacobsen2016struc} or extending their capabilities to unstructured inputs \citep{Graves2016}.
+Structure can also make neural networks useful in new contexts by significantly improving generalization, data efficiency \citep{Jacobsen2016struc} or extending their capabilities to unstructured inputs \citep{Graves2016dnc}.
 
-\gls{AIR}, introduced by \cite{Eslami2016}, is a notable example of such a structured probabilistic model that relies on deep learning and admits efficient amortized inference.
+\gls{AIR}, introduced by \cite{Eslami2016air}, is a notable example of such a structured probabilistic model that relies on deep learning and admits efficient amortized inference.
 Trained without any supervision, \gls{AIR} is able to decompose a visual scene into its constituent components and to generate a (learned) number of latent variables that explicitly encode the location and appearance of each object. While this approach is inspiring, its focus on modelling individual (and thereby inherently static) scenes leads to a number of limitations. For example, it often merges two objects that are close together into one since no temporal context is available to distinguish between them. Similarly, we demonstrate that \gls{AIR} struggles to identify partially occluded objects, e.g.\ when they extend beyond the boundaries of the  scene frame (see \Cref{fig:partial_glimpse} in \Cref{sec:expr_mnist}). 
 
 Our contribution is to mitigate the shortcomings of  \gls{AIR} by introducing a sequential version that models sequences of frames, enabling it to discover and track objects over time as well as to generate convincing extrapolations of frames into the future. We achieve this by leveraging temporal information to learn a richer, more capable generative model. Specifically, we extend \gls{AIR} into a spatio-temporal state-space model and train it on unlabelled image sequences of dynamic objects. 
@@ -16,7 +16,7 @@ We show that the resulting model, which we name Sequential \gls{AIR} (\acrshort{
 The rest of this work is organised as follows.
 In \Cref{sec:air}, we describe the generative model and inference of \gls{AIR}.
 In \Cref{sec:sqair}, we discuss its limitations and how it can be improved, thereby introducing \gls{SQAIR}, our extension of \gls{AIR} to image sequences.
-In \Cref{sec:experiments}, we demonstrate the model on a dataset of multiple moving MNIST digits (\Cref{sec:expr_mnist}) and compare it against \gls{AIR} trained on each frame and \gls{VRNN} of \cite{Chung2015} with convolutional architectures, and show the superior performance of \gls{SQAIR} in terms of log marginal likelihood and interpretability of latent variables.
+In \Cref{sec:sqair_experiments}, we demonstrate the model on a dataset of multiple moving MNIST digits (\Cref{sec:expr_mnist}) and compare it against \gls{AIR} trained on each frame and \gls{VRNN} of \cite{Chung2015} with convolutional architectures, and show the superior performance of \gls{SQAIR} in terms of log marginal likelihood and interpretability of latent variables.
 We also investigate the utility of inferred latent variables of \gls{SQAIR} in downstream tasks.
 In \Cref{sec:expr_duke} we apply \gls{SQAIR} on real-world pedestrian CCTV data, where \gls{SQAIR} learns to reliably detect, track and generate walking pedestrians without any supervision.
 Code for the implementation on the \textsc{mnist} dataset\footnote{code: \href{https://github.com/akosiorek/sqair}{github.com/akosiorek/sqair}} and the results video\footnote{video: \href{https://youtu.be/-IUNQgSLE0c}{youtu.be/-IUNQgSLE0c}} are available online.

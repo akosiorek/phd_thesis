@@ -24,9 +24,9 @@ The second stage, the \gls{OCAu}, tries to organize discovered parts and their p
 Every object capsule contributes components to each of these mixtures by multiplying its pose---the \gls{OV}---by the relevant \glsreset{OP}\gls{OP}\footnote{The type of a part capsule may determine which, if any, of an object's parts contribute to the mixture used to model the pose of an already discovered part}.
 
 Stacked Capsule Autoencoders (\Cref{sec:caps_decoders}) capture spatial relationships between whole objects and their parts when trained on unlabelled data.
-The vectors of presence probabilities for the object capsules tend to form tight clusters, and when we assign a class to each cluster we achieve state-of-the-art results for unsupervised classification on \textsc{svhn} (55\%) and near state-of-the-art on \textsc{mnist} (98.5\%), which can be further improved to 67\% and 99\%, respectively, by learning fewer than 300 parameters. We also present promising proof-of-concept results on \textsc{cifar10} (\Cref{sec:experiments}).
+The vectors of presence probabilities for the object capsules tend to form tight clusters, and when we assign a class to each cluster we achieve state-of-the-art results for unsupervised classification on \textsc{svhn} (55\%) and near state-of-the-art on \textsc{mnist} (98.5\%), which can be further improved to 67\% and 99\%, respectively, by learning fewer than 300 parameters. We also present promising proof-of-concept results on \textsc{cifar10} (\Cref{sec:sca_experiments}).
 %
-We describe related work in \Cref{sec:related_work} and discuss implications of our work and future  directions in \Cref{sec:discussion}.
+We describe related work in \Cref{sec:related_work} and discuss implications of our work and future  directions in \Cref{sec:sca_discussion}.
 
 \begin{figure}
     \centering

@@ -1,3 +1,6 @@
+\RequirePackage{silence}
+\WarningFilter{remreset}{The remreset package}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% OXFORD THESIS TEMPLATE
 
@@ -22,7 +25,7 @@
 %%%%% CHOOSE PAGE LAYOUT
 % The most common choices should be below.  You can also do other things, like replacing "a4paper" with "letterpaper", etc.
 
-% This one will format for two-sided binding (ie left and right pages have mirror margins; blank pages inserted where needed):
+% This one will format for two-sided binding (ie left and right pages have mirror s; blank pages inserted where needed):
 \documentclass[a4paper,twoside]{ociamthesis}
 % This one will format for one-sided binding (ie left margin > right margin; no extra blank pages):
 %\documentclass[a4paper]{ociamthesis}
@@ -237,15 +240,15 @@
 
 %%%%% CHAPTERS
 % Add or remove any chapters you'd like here, by file name (excluding '.tex'):
-\flushbottom
-\include{text/ch1-intro}
-\include{text/ch2-litreview}
+%\flushbottom
+%\include{text/ch1-intro}
+%\include{text/ch2-litreview}
 \include{text/HART/hart}
 \include{text/MOHART/mohart}
 \include{text/SQAIR/sqair}
 \include{text/SCA/sca}
-\include{text/tighter_bounds/tighter_bounds}
-\include{text/RRWS/rrws}
+%\include{text/tighter_bounds/tighter_bounds}
+%\include{text/RRWS/rrws}
 
 
 %% APPENDICES %% 
@@ -253,7 +256,7 @@
 %    page that just says "Appendices" to signal the end of your main text.
 \startappendices
 % Add or remove any appendices you'd like here:
-\include{text/appendix-1}
+%\include{text/appendix-1}
 
 
 %%%%% REFERENCES

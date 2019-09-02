@@ -2,7 +2,7 @@
 \label{sec:air}
 
 % recap of AIR
-\gls{AIR}, introduced by \cite{Eslami2016}, is a structured \gls{VAE} capable of decomposing a static scene $\bx$ into its constituent objects, where each object is represented as a separate triplet of continuous latent variables $\bz = \{\bz^{\mathrm{what}, i}, \bz^{\mathrm{where}, i}, z^{\mathrm{pres},i}\}_{i=1}^n$, $n \in \mathbb{N}$ being the (random) number of objects in the scene.
+\gls{AIR}, introduced by \cite{Eslami2016air}, is a structured \gls{VAE} capable of decomposing a static scene $\bx$ into its constituent objects, where each object is represented as a separate triplet of continuous latent variables $\bz = \{\bz^{\mathrm{what}, i}, \bz^{\mathrm{where}, i}, z^{\mathrm{pres},i}\}_{i=1}^n$, $n \in \mathbb{N}$ being the (random) number of objects in the scene.
 Each triplet of latent variables explicitly encodes position, appearance and presence of the respective object, and the model is able to infer the number of objects present in the scene. Hence it is able to count, locate and describe objects in the scene, all learnt in an unsupervised manner, made possible by the inductive bias introduced by the model structure.
 
 \textbf{Generative Model}
@@ -23,7 +23,7 @@ which constructs an image patch and a
 spatial transformer ($\operatorname{ST}$, \cite{Jaderberg2015}), which scales and shifts it according to $\bz^\mathrm{where}$; see \Cref{fig:generation} for details.
 
 \textbf{Inference}
-\cite{Eslami2016} use a sequential inference algorithm, where latent variables are inferred one at a time; see \Cref{fig:sqair_inf_flow}.
+\cite{Eslami2016air} use a sequential inference algorithm, where latent variables are inferred one at a time; see \Cref{fig:sqair_inf_flow}.
 The number of inference steps $n$ is given by $z^{\mathrm{pres}, 1:n+1}$, a random vector of $n$ ones followed by a zero. The $\bz^{i}$ are sampled sequentially from
 \vspace{-7pt}
 \begin{equation} \label{eq:air_posterior}

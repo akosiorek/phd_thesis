@@ -1,5 +1,5 @@
 \section{Evaluation}
-\label{sec:experiments}
+\label{sec:sca_experiments}
 
 % \todo{\ak{}{this is where I left yesterday}}
 The decoders in the \gls{SCAu} use explicitly parameterised affine transformations
@@ -39,7 +39,7 @@ This shows that wiring in an inductive bias towards modelling geometric relation
 \begin{minipage}[c]{.28\linewidth}
     \centering
     \caption{
-        Unsupervised classification results in \% with (standard deviation) are averaged over 5 runs. Methods based on mutual information are shaded. Results marked with $\mathcal{y}$ use data augmentation, ${\mathcal{r}}$ use \textsc{imagenet}-pretrained features instead of images, while ${\mathcal{x}}$ are taken from \cite{Iic}. We highlight the best results and those that are are within its 98\% confidence interval according to a two-sided t test.
+        Unsupervised classification results in \% with (standard deviation) are averaged over 5 runs. Methods based on mutual information are shaded. Results marked with $\mathcal{y}$ use data augmentation, ${\mathcal{r}}$ use \textsc{imagenet}-pretrained features instead of images, while ${\mathcal{x}}$ are taken from \cite{Ji2018iic}. We highlight the best results and those that are are within its 98\% confidence interval according to a two-sided t test.
     }
     \label{tab:results}
 \end{minipage}
@@ -50,15 +50,15 @@ This shows that wiring in an inductive bias towards modelling geometric relation
     \begin{tabular}{@{}llll@{}}
         Method & \textsc{mnist} & \textsc{cifar10} & \textsc{svhn} \\
         \midrule
-        \textsc{kmeans} (\cite{Adc}) & 53.49 & 20.8 & 12.5 \\
-        \textsc{Ae} (\cite{Ae})$^{\mathcal{x}}$ & 81.2 & 31.4 & - \\
-        \textsc{Gan} (\cite{Gan})$^{\mathcal{x}}$ & 82.8 & 31.5 & - \\
+        \textsc{kmeans} (\cite{Haeusser2018adc}) & 53.49 & 20.8 & 12.5 \\
+        \textsc{Ae} (\cite{Bengio2007greedy})$^{\mathcal{x}}$ & 81.2 & 31.4 & - \\
+        \textsc{Gan} (\cite{Radford2016gan})$^{\mathcal{x}}$ & 82.8 & 31.5 & - \\
         \rowcolor[HTML]{EFEFEF} 
-        \textsc{Imsat} (\cite{Imsat})$^{\mathcal{y}, \mathcal{r}}$ & \textbf{98.4} (0.4) & 45.6 (0.8) & \textbf{57.3} (3.9) \\ 
+        \textsc{Imsat} (\cite{Hu2017imsat})$^{\mathcal{y}, \mathcal{r}}$ & \textbf{98.4} (0.4) & 45.6 (0.8) & \textbf{57.3} (3.9) \\ 
         \rowcolor[HTML]{EFEFEF} 
-        \textsc{Iic} \citep{Iic}$^{\mathcal{x}, \mathcal{y}}$ & \textbf{98.4} (0.6) & \textbf{57.6} (5.0) & - \\
+        \textsc{Iic} \citep{Ji2018iic}$^{\mathcal{x}, \mathcal{y}}$ & \textbf{98.4} (0.6) & \textbf{57.6} (5.0) & - \\
         \rowcolor[HTML]{EFEFEF} 
-        \textsc{Adc} \citep{Adc}$^\mathcal{y}$ & \textbf{98.7} (0.6) & 29.3 (1.5) & 38.6 (4.1) \\
+        \textsc{Adc} \citep{Haeusser2018adc}$^\mathcal{y}$ & \textbf{98.7} (0.6) & 29.3 (1.5) & 38.6 (4.1) \\
         \midrule
         \textsc{max-act} (\gls{SCAu}) & \textbf{98.0 (.15)}  & 19.79 (1.0) & 49.07 (1.7) \\ 
         \textsc{clust-nn} (\gls{SCAu}) & \textbf{98.5 (.11)} & 19.39 (1.5) & \textbf{53.0 (3.8)}\\ 
@@ -70,18 +70,18 @@ This shows that wiring in an inductive bias towards modelling geometric relation
 \end{table}
 % The goal of capsule networks was always to discover objects as an arrangement of parts. If this is the case, then presence probabilities of object capsules should be highly informative of object class.
 To allow for multimodality in the appearance of objects of a specific class, we typically use more object capsules than the number of class labels. We expect that the vector of presence probabilities of object capsules should be highly informative of the class label.
-To test this hypothesis, we train \gls{SCAu} on \textsc{mnist}, \textsc{svhn} and \textsc{cifar10} and try to assign class labels to vectors of object capsule presences. This is done with one of the following methods: \textsc{max-act}: we search for a training example that maximally activates given object capsule and assign the corresponding label to this capsule; \textsc{cluster-nn}: we perform \textsc{kmeans} clustering into $C$ clusters and then find the training example that is the closest to each cluster’s centroid to assign a label to the cluster; \textsc{lin-match}: after finding 10 clusters\footnote{All considered datasets have 10 classes.} with \textsc{kmeans} we use bipartite graph matching \citep{Kuhn1955hungarian} to find the permutation of cluster indices that minimizes the classification error---this is standard practice in unsupervised classification, see\eg \cite{Iic};
+To test this hypothesis, we train \gls{SCAu} on \textsc{mnist}, \textsc{svhn} and \textsc{cifar10} and try to assign class labels to vectors of object capsule presences. This is done with one of the following methods: \textsc{max-act}: we search for a training example that maximally activates given object capsule and assign the corresponding label to this capsule; \textsc{cluster-nn}: we perform \textsc{kmeans} clustering into $C$ clusters and then find the training example that is the closest to each cluster’s centroid to assign a label to the cluster; \textsc{lin-match}: after finding 10 clusters\footnote{All considered datasets have 10 classes.} with \textsc{kmeans} we use bipartite graph matching \citep{Kuhn1955hungarian} to find the permutation of cluster indices that minimizes the classification error---this is standard practice in unsupervised classification, see\eg \cite{Ji2018iic};
 \textsc{lin-pred}: we train a linear classifier with supervision given the presence vectors; this learns $K \times 10$ weights and $10$ biases, where $K$ is the number of object capsules, but it does not modify any parameters of the main model.
 
-In agreement with previous work on unsupervised clustering \citep{Iic,Imsat,Hjelm2019deepinfomax,Adc}, we train our models and report results on full datasets (\textsc{train}, \textsc{valid} and \textsc{test} splits).
+In agreement with previous work on unsupervised clustering \citep{Ji2018iic,Hu2017imsat,Hjelm2019deepinfomax,Haeusser2018adc}, we train our models and report results on full datasets (\textsc{train}, \textsc{valid} and \textsc{test} splits).
 The linear transformation used in \textsc{lin-pred} variant of our method is trained on the \textsc{train} split of respective datasets while its performance on the \textsc{test} split is reported.
 
 We used an \gls{PCAu} with 24 single-channel $11\times11$ templates for \textsc{mnist} and 24 and 32 three-channel $14\times14$ templates for \textsc{svhn} and \textsc{cifar10}, respectively.
-We used sobel-filtered images as the reconstruction target for \textsc{svhn} and \textsc{cifar10}, as in \cite{Jaiswal}, while using the raw pixel intensities as the input to \gls{PCAu}.
+We used sobel-filtered images as the reconstruction target for \textsc{svhn} and \textsc{cifar10}, as in \cite{Jaiswal2018capsule}, while using the raw pixel intensities as the input to \gls{PCAu}.
 The \gls{OCAu} used 24, 32 and 64 object capsules, respectively.
 Further details on model architectures and hyper-parameter tuning are available in \Cref{app:models}.
 All results are presented in \Cref{tab:results}.
-\gls{SCAu} achieves competitive results in unsupervised object classification on \textsc{mnist} and \textsc{svhn} and under-performs slightly on \textsc{cifar10}, which is further discussed in \Cref{sec:discussion}.
+\gls{SCAu} achieves competitive results in unsupervised object classification on \textsc{mnist} and \textsc{svhn} and under-performs slightly on \textsc{cifar10}, which is further discussed in \Cref{sec:sca_discussion}.
 
 \subsection{Ablation study}
 \label{sec:ablation}
@@ -90,7 +90,7 @@ an ablation study shows which model components are important and to what degree.
 We train \gls{SCAu} variants on \textsc{mnist} as well as a padded-and-translated $40\times40$ version of the dataset, where the original digits are translated up to 6 pixels in each direction.
 Trained models are tested on \textsc{test} splits of both datasets; additionally, we evaluate the model trained on the $40\times40$ \textsc{mnist} on the \textsc{test} split of \textsc{affnist} dataset.
 Testing on \textsc{affnist} shows whether the model can generalize to unseen viewpoints.
-This task was used by \cite{Sparsecaps} to evaluate Sparse Unsupervised Capsules, which achieved $90.12\%$ accuracy. \Gls{SCAu} achieves $92.2\pm 0.59\%$, which indicates that it is better at viewpoint generalization.
+This task was used by \cite{Rawlinson2018sparsecaps} to evaluate Sparse Unsupervised Capsules, which achieved $90.12\%$ accuracy. \Gls{SCAu} achieves $92.2\pm 0.59\%$, which indicates that it is better at viewpoint generalization.
 We choose the \textsc{lin-match} performance metric, since it is the one favoured by the unsupervised classification community.
 \begin{table}
 \centering

@@ -11,7 +11,7 @@
 	\label{fig:system_large}
 \end{figure}
 
-We start by describing the \glsreset{HART}\gls{HART} algorithm \cite{Kosiorek17}, and then follow with an extension of \gls{HART} to tracking multiple objects, where multiple instances of \gls{HART} communicate with each other using multi-headed attention to facilitate relational reasoning. We also explain how this method can be extended to trajectory prediction instead of just tracking. 
+We start by describing the \glsreset{HART}\gls{HART} algorithm \cite{Kosiorek2017hierch}, and then follow with an extension of \gls{HART} to tracking multiple objects, where multiple instances of \gls{HART} communicate with each other using multi-headed attention to facilitate relational reasoning. We also explain how this method can be extended to trajectory prediction instead of just tracking. 
 
 \paragraph{Hierarchical Attentive Recurrent Tracking (\textsc{hart})}
 \textsc{Hart} is an attention-based recurrent algorithm, which can efficiently track single objects in a video.
@@ -19,7 +19,7 @@ It uses a spatial attention mechanism to extract a \textit{glimpse} $\bg_t$, whi
 This allows it to dispense with the processing of the whole image and can significantly decrease the amount of computation required.
 \Gls{HART} uses a \gls{CNN} to convert the glimpse $\bg_t$ into features $\mathbf{f}_t$, which then update the hidden state $\mathbf{h}_t$ of a \gls{LSTM} core.
 The hidden state is used to estimate the current bounding-box $\mathbf{b}_t$, spatial attention parameters for the next time-step $\ba_{t+1}$, as well as object appearance.
-Importantly, the recurrent core can learn to predict complicated motion conditioned on the past history of the tracked object, which leads to relatively small attention glimpses---contrary to \gls{CNN}-based approaches \citep{Held2016goturn,Valmadre2017corr}, \gls{HART} does not need to analyse large regions-of-interest to search for tracked objects.
+Importantly, the recurrent core can learn to predict complicated motion conditioned on the past history of the tracked object, which leads to relatively small attention glimpses---contrary to \gls{CNN}-based approaches \citep{Held2016goturn,Valmadre2017}, \gls{HART} does not need to analyse large regions-of-interest to search for tracked objects.
 In the original paper, \textsc{hart} processes the glimpse with an additional ventral and dorsal stream on top of the feature extractor. Early experiments have shown that this does not improve performance on the MOTChallenge dataset, presumably due to the oftentimes small objects and overall small amount of training data. 
 \Cref{fig:system_large} illustrates \gls{HART}, further details are provided in \Cref{sec:architecture_details}.
 
@@ -37,14 +37,14 @@ Multi-object support in \gls{HART} requires the following modifications.
 Firstly, in order to handle a dynamically changing number of objects, we apply \gls{HART} to multiple objects in parallel, where all parameters between \gls{HART} instances are shared. 
 We refer to each \gls{HART} instance as a \textit{tracker}.
 Secondly, we introduce a presence variable $p_{t,m}$ for object $m$.
-It is used to mark whether an object should interact with other objects, as well as to mask the loss function (described in \cite{Kosiorek17}) for the given object when it is not present.
+It is used to mark whether an object should interact with other objects, as well as to mask the loss function (described in \cite{Kosiorek2017hierch}) for the given object when it is not present.
 In this setup, parallel trackers cannot exchange information and are conceptually still single-object trackers, which we use as a baseline, referred to as \gls{HART} (despite it being an extension of the original algorithm).
 Finally, to facilitate communication between trackers, we augment \gls{HART} with an additional step between feature extraction and the \gls{LSTM}.
 
 Let $\mathbf{f}_{t, m}$ be the feature vector extracted from the glimpse corresponding to the m$^\mathrm{th}$ object, and let $\mathbf{f}_{t, 1:M}$ be the set of such features extracted from all glimpses.
 Since different objects can interact with each other, it is necessary to use a method that can inform each object about the effects of their interactions with other objects.
 Moreover, since features extracted from different objects comprise a set, this method should be permutation-equivariant,\ie the results should not depend on the order in which object features are processed.
-Therefore, we use the multi-head self-attention block (\textsc{sab}, \citet{Lee2019settransformer}), which is able to account for higher-order interactions between set elements when computing their representations, thereby allowing rich information exchange, and it can do so in a permutation-equivariant manner.
+Therefore, we use the multi-head self-attention block (\textsc{sab}, \citet{Lee2019set}), which is able to account for higher-order interactions between set elements when computing their representations, thereby allowing rich information exchange, and it can do so in a permutation-equivariant manner.
 Intuitively, in our case, \textsc{sab} allows any of the trackers to query other trackers about attributes of their respective objects,\eg distance between objects, their direction of movement, or their relation to the robot.
 This is implemented as follows,
 \begin{align}

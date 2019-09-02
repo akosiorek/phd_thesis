@@ -20,7 +20,7 @@ Both approaches have led to \textit{ID swaps}, where the order of explaining obj
 Using encoded proposal glimpse extracted from a predicted location has solved this issue.
 % \ak{should we create a "discussion" appendix and move this paragraph there?}
 
-To condition \gls{disc} on propagated latent variables (\Cref{l:latent_enc} in \Cref{algo:sqair_disc}), we encode the latter by using a two-layer \gls{MLP} similarly to \cite{Zaheer2017deeps},
+To condition \gls{disc} on propagated latent variables (\Cref{l:latent_enc} in \Cref{algo:sqair_disc}), we encode the latter by using a two-layer \gls{MLP} similarly to \cite{Zaheer2017},
 \begin{equation}
     \blt = \sum_{i \in \mathcal{P}_t} \operatorname{MLP} \left( \bzt^{\mathrm{what}, i}, \bzt^{\mathrm{where}, i} \right).
 \end{equation}

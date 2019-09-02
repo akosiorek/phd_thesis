@@ -4,7 +4,7 @@
 \item[Object Tracking]
     There have been many approaches to modelling objects in images and videos. 
     Object detection and tracking are typically learned in a supervised manner, where object bounding boxes and often additional labels are part of the training data.
-    Single-object tracking commonly use Siamese networks, which can be seen as an \gls{RNN} unrolled over two time-steps \citep{Valmadre2017end}. Recently, \cite{Kosiorek2017hierch} used an \gls{RNN} with an attention mechanism in the \textsc{hart} model to predict bounding boxes for single objects, while robustly modelling their motion and appearance. Multi-object tracking is typically attained by detecting objects and performing data association on bounding-boxes \citep{Bewley2016sort}.
+    Single-object tracking commonly use Siamese networks, which can be seen as an \gls{RNN} unrolled over two time-steps \citep{Valmadre2017}. Recently, \cite{Kosiorek2017hierch} used an \gls{RNN} with an attention mechanism in the \textsc{hart} model to predict bounding boxes for single objects, while robustly modelling their motion and appearance. Multi-object tracking is typically attained by detecting objects and performing data association on bounding-boxes \citep{Bewley2016sort}.
     \cite{Schulter2017deepnf} used an end-to-end supervised approach that detects objects and performs data association.
     In the unsupervised setting, where the training data consists of only images or videos, the dominant approach is to distill the inductive bias of spatial consistency into a discriminative model.  \cite{Cho2015unsupervised} detect single objects and their parts in images, and \cite{Kwak2015unsupervised,Xiao2016track} incorporate temporal consistency to better track single objects.
     \Gls{SQAIR} is unsupervised and hence it does not rely on bounding boxes nor additional labels for training, while being able to learn arbitrary motion and appearance models similarly to \textsc{hart} \citep{Kosiorek2017hierch}.
@@ -14,14 +14,14 @@
 \item[Video Prediction]
      Many works on video prediction learn a deterministic model conditioned on the current frame to predict the future ones \citep{Ranzato2014video,Srivastava2015unsupervised}.
      Since these models do not model uncertainty in the prediction, they can suffer from the multiple futures problem --- since perfect prediction is impossible, the model produces blurry predictions which are a mean of possible outcomes.
-     This is addressed in stochastic latent variable models trained using variational inference to generate multiple plausible videos given a sequence of images \citep{babaeizadeh2017stochastic, denton2018stochastic}.
+     This is addressed in stochastic latent variable models trained using variational inference to generate multiple plausible videos given a sequence of images \citep{Babaeizadeh2017stochastic, Denton2018stochastic}.
      Unlike \gls{SQAIR}, these approaches do not model objects or their positions explicitly, thus the representations they learn are of limited interpretability. 
      
 \item[Learning Decomposed Representations of Images and Videos]
     Learning decomposed representations of object appearance and position lies at the heart of our model.
     This problem can be also seen as perceptual grouping, which involves modelling pixels as spatial mixtures of entities.
     \cite{Greff2016tagger} and \cite{Greff2017neuralem} learn to decompose images into separate entities by iterative refinement of spatial clusters using either learned updates or the Expectation Maximization algorithm;
-    \cite{Ilin2017recurrentln} and \cite{Steenkiste2018relationalnem} extend these approaches to videos, achieving very similar results to \gls{SQAIR}.
+    \cite{Ilin2017recurrentln} and \cite{Steenkiste2018} extend these approaches to videos, achieving very similar results to \gls{SQAIR}.
     Perhaps the most similar work to ours is the concurrently developed model of \cite{Hsieh2018ddpae}.
     The above approaches rely on iterative inference procedures, but do not exhibit the object-counting behaviour of \gls{SQAIR}.
     For this reason, their computational complexities are proportional to the predefined maximum number of objects, while \gls{SQAIR} can be more computationally efficient by adapting to the number of objects currently present in an image.
