@@ -33,24 +33,42 @@ See \Cref{fig:capsule_arch,fig:sca_arch} for illustration; formal description fo
 \end{equation}
 The model is trained without supervision by maximizing the likelihood of part capsules in \Cref{eq:constellation_likelihood} subject to sparsity constraints, \textit{cf}.\ \Cref{sec:losses}.
 The part capsule $m$ can be assigned to the object capsule $k^\star$ as $k^\star = \operatorname{arg\,max}_{k}~a_k a_{k,n}\;\p{\bx_m}{k,n}$.\footnote{We treat parts as independent and evaluate their probability under the same mixture model. While there are no clear 1:1 connections between parts and predictions, it seems to work well in practice.}
-\begin{figure} 
-    \centering
-    \begin{minipage}[c]{0.35\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{figures/SCA/consinvert5}
-    \end{minipage}
-    \hfill
-    \begin{minipage}[c]{0.63\linewidth}
-        \centering
-        \caption{
-            Unsupervised segmentation of points belonging to up to three constellations of squares and triangles at different positions, scales and orientations. 
-            The model is trained to reconstruct the points (top row) under the \gls{CCAu} mixture model. The bottom row colors the points based on the parent with highest posterior probability in the mixture model. 
-            The right-most column shows a failure case.
-            Note that the model uses sets of points, not pixels, as its input; we use images  only to visualize the constellation arrangements.
-        }
-        \label{fig:constellations}
-    \end{minipage}
-\end{figure}
+%\begin{figure} 
+%    \centering
+%    \begin{minipage}[c]{0.35\linewidth}
+%        \centering
+%        \includegraphics[width=\linewidth]{figures/SCA/consinvert5}
+%    \end{minipage}
+%    \hfill
+%    \begin{minipage}[c]{0.63\linewidth}
+%        \centering
+%        \caption{
+%            Unsupervised segmentation of points belonging to up to three constellations of squares and triangles at different positions, scales and orientations. 
+%            The model is trained to reconstruct the points (top row) under the \gls{CCAu} mixture model. The bottom row colors the points based on the parent with highest posterior probability in the mixture model. 
+%            The right-most column shows a failure case.
+%            Note that the model uses sets of points, not pixels, as its input; we use images  only to visualize the constellation arrangements.
+%        }
+%        \label{fig:constellations}
+%    \end{minipage}
+%\end{figure}
+\begin{SCfigure}[50]
+	\centering
+%	\begin{minipage}[c]{0.35\linewidth}
+%		\centering
+		\includegraphics[width=.35\linewidth]{figures/SCA/consinvert5}
+%	\end{minipage}
+%	\hfill
+%	\begin{minipage}[c]{0.63\linewidth}
+%		\centering
+		\caption{
+			Unsupervised segmentation of points belonging to up to three constellations of squares and triangles at different positions, scales and orientations. 
+			The model is trained to reconstruct the points (top row) under the \gls{CCAu} mixture model. The bottom row colors the points based on the parent with highest posterior probability in the mixture model. 
+			The right-most column shows a failure case.
+			Note that the model uses sets of points, not pixels, as its input; we use images  only to visualize the constellation arrangements.
+		}
+		\label{fig:constellations}
+%	\end{minipage}
+\end{SCfigure}
 Empirical results show that this model is able to perform unsupervised instance-level segmentation of points belonging to different constellations, even in data which is difficult to interpret for humans. See \Cref{fig:constellations} for an example and \Cref{sec:constellation_expr} for details.
 
 \subsection{Part Capsule Autoencoder (\textsc{pcae})}
@@ -73,12 +91,12 @@ Their mixing probabilities are proportional to both presence probabilities of pa
 Templates are assumed to be sparse; if there exists a template that has a non-zero value at a given location, then this templates should be used.}, where $c$ is the number of image channels. 
 More formally:
 \begin{align}
-    &\bx_{1:M}, d_{1:M}, \bz_{1:M} = \operatorname{h^{\mathrm{enc}}}(\by) &\text{encode the image to part capsule parameters,}\\
-    &\widehat{T}_m = \operatorname{TransformImage} (T_m, \bx_m)  &\text{apply affine transforms to image templates,}\\
+    &\bx_{1:M}, d_{1:M}, \bz_{1:M} = \operatorname{h^{\mathrm{enc}}}(\by) \qquad\text{encode the image to part capsule params,}\\
+    &\widehat{T}_m = \operatorname{TransformImage} (T_m, \bx_m)  \qquad\text{affine transforms image templates,}\\
     % 
-    &p^y_{m,i,j} \propto d_m \operatorname{f_c}\left(\widehat{T}_{m,i,j}\right) &\text{compute mixing probabilities,}\\
+    &p^y_{m,i,j} \propto d_m \operatorname{f_c}\left(\widehat{T}_{m,i,j}\right) \qquad\text{compute mixing probabilities,}\\
     % 
-    &\p{\by} = \prod_{i,j} \sum_{m=1}^M p^y_{m,i,j}\, \gauss{y_{i,j} \mid \widehat{T}_{m,i,j}, \sigma^2_y} &\text{calculate image likelihood.} \label{eq:im_likelihood}
+    &\p{\by} = \prod_{i,j} \sum_{m=1}^M p^y_{m,i,j}\, \gauss{y_{i,j} \mid \widehat{T}_{m,i,j}, \sigma^2_y} \qquad\text{calculate image likelihood.} \label{eq:im_likelihood}
 \end{align}
 
 \subsection{Object Capsule Autoencoder (\textsc{ocae})}
@@ -103,47 +121,51 @@ Consequently, the part-capsule likelihood is given by,
     \,\p{\bx_m}{k,m}\right]^{d_m}\,. \label{eq:mod_constellation_likelihood}
 \end{equation}
 
+%\begin{figure}
+%    \centering
+%    \begin{minipage}[b]{.47\linewidth}
+%    \includegraphics[width=\linewidth]{figures/SCA/templates}
+%    \end{minipage}
+%    \hfill
+%    \begin{minipage}[b]{.52\linewidth}
+%    \caption{Templates learned on \textsc{mnist} (left) as well as sobel-filtered \textsc{svhn} (middle) and \textsc{cifar10} (right). In each case templates converge to strokes. For \textsc{svhn} they often take the form of double strokes---this is due to sobel filtering, which effectively extracts edges.}
+%    \label{fig:learned_templates}
+%    \end{minipage}
+%\end{figure}
 \begin{figure}
-    \centering
-    \begin{minipage}[b]{.47\linewidth}
-    \includegraphics[width=\linewidth]{figures/SCA/templates}
-    \end{minipage}
-    \hfill
-    \begin{minipage}[b]{.52\linewidth}
-    \caption{Templates learned on \textsc{mnist} (left) as well as sobel-filtered \textsc{svhn} (middle) and \textsc{cifar10} (right). In each case templates converge to strokes. For \textsc{svhn} they often take the form of double strokes---this is due to sobel filtering, which effectively extracts edges.}
-    \label{fig:learned_templates}
-    \end{minipage}
+	\centering
+		\includegraphics[width=.85\linewidth]{figures/SCA/templates}
+		\caption{Templates learned on \textsc{mnist} (left) as well as sobel-filtered \textsc{svhn} (middle) and \textsc{cifar10} (right). In each case templates converge to strokes. For \textsc{svhn} they often take the form of double strokes---this is due to sobel filtering, which effectively extracts edges.}
+		\label{fig:learned_templates}
 \end{figure}
 \begin{figure}
     \centering
-    % \includegraphics[width=\linewidth]{figures/SCA/mnist_rec}
-    % \includegraphics[width=.5\linewidth]{figures/SCA/mnist_strokes}
-    \begin{subfigure}[c]{.045\linewidth}
+    \begin{subfigure}[c]{.09\linewidth}
         \includegraphics[width=\linewidth]{figures/SCA/mnist/inputs}
         \caption{}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[c]{.045\linewidth}
+    \begin{subfigure}[c]{.09\linewidth}
         \includegraphics[width=\linewidth]{figures/SCA/mnist/recs}
         \caption{}
     \end{subfigure}
         \hfill
-    \begin{subfigure}[c]{.0295\linewidth}
+    \begin{subfigure}[c]{.059\linewidth}
         \includegraphics[width=\linewidth]{figures/SCA/mnist/acts}
         \caption{}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[c]{.09\linewidth}
+    \begin{subfigure}[c]{.18\linewidth}
         \includegraphics[width=\linewidth]{figures/SCA/mnist/caps_recs}
         \caption{}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[c]{.225\linewidth}
+    \begin{subfigure}[c]{.45\linewidth}
         \includegraphics[width=\linewidth]{figures/SCA/mnist/transformed_templates}
         \caption{}
     \end{subfigure}
-    \hfill
-    \begin{minipage}[c]{.52\linewidth}
+%    \hfill
+%    \begin{minipage}[c]{.52\linewidth}
         \caption{
         $40\times40$ \textsc{mnist} (a) images and their (b) reconstructions from part capsules in red and object capsules in green, with overlapping regions in yellow.
         Only a few object capsules are activated for every input (c) a priori (left) and even fewer are needed to reconstruct it (right).
@@ -151,7 +173,7 @@ Consequently, the part-capsule likelihood is given by,
         Finally, (e) affine-transformed templates show how exactly parts are used to reconstruct the images.
         }
         \label{fig:mnist_rec}
-    \end{minipage}
+%    \end{minipage}
 \end{figure}
 \subsection{Achieving Sparse and Diverse Capsule Presences}
 \label{sec:losses}

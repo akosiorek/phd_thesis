@@ -36,17 +36,11 @@ This shows that wiring in an inductive bias towards modelling geometric relation
 
 \begin{table}
 \centering
-\begin{minipage}[c]{.28\linewidth}
-    \centering
     \caption{
         Unsupervised classification results in \% with (standard deviation) are averaged over 5 runs. Methods based on mutual information are shaded. Results marked with $\mathcal{y}$ use data augmentation, ${\mathcal{r}}$ use \textsc{imagenet}-pretrained features instead of images, while ${\mathcal{x}}$ are taken from \cite{Ji2018iic}. We highlight the best results and those that are are within its 98\% confidence interval according to a two-sided t test.
     }
     \label{tab:results}
-\end{minipage}
-\hfill
-\begin{minipage}[c]{.7\linewidth}
-    \centering
-    \small
+    {\small
     \begin{tabular}{@{}llll@{}}
         Method & \textsc{mnist} & \textsc{cifar10} & \textsc{svhn} \\
         \midrule
@@ -65,8 +59,7 @@ This shows that wiring in an inductive bias towards modelling geometric relation
         \textsc{lin-match} (\gls{SCAu}) & \textbf{98.5 (.10)} & 25.01 (1.0) & \textbf{55.33 (3.4)} \\ 
         \textsc{lin-pred} (\gls{SCAu}) & \textbf{98.9 (.07)} & 33.48 (0.3) & \textbf{67.27 (4.5)} \\
     \end{tabular}
-\end{minipage}
-\vspace*{-.5em}
+	}
 \end{table}
 % The goal of capsule networks was always to discover objects as an arrangement of parts. If this is the case, then presence probabilities of object capsules should be highly informative of object class.
 To allow for multimodality in the appearance of objects of a specific class, we typically use more object capsules than the number of class labels. We expect that the vector of presence probabilities of object capsules should be highly informative of the class label.
@@ -94,15 +87,11 @@ This task was used by \cite{Rawlinson2018sparsecaps} to evaluate Sparse Unsuperv
 We choose the \textsc{lin-match} performance metric, since it is the one favoured by the unsupervised classification community.
 \begin{table}
 \centering
-\begin{minipage}[c]{.24\linewidth}
     \caption{
         Ablation study on \textsc{mnist}. All used model components contribute to its final performance. \textsc{Affnist} results show out-of-distribution generalization properties and come from a model trained on $40\times40$ \textsc{mnist}. Numbers represent average \% and (standard deviation) over 10 runs. We highlight the best results and those that are are within its 98\% confidence interval according to a two-sided t test.
     }
     \label{tab:ablation}
-\end{minipage}
-\hfill
-\begin{minipage}[c]{.75\linewidth}
-    \small
+    {\small
     \begin{tabular}{@{}lllll@{}}
         & Method & \textsc{mnist} & $40\times40$ \textsc{mnist} & \textsc{affnist} \\
         \midrule
@@ -125,8 +114,7 @@ We choose the \textsc{lin-match} performance metric, since it is the one favoure
         e)& \gls{MLP} enc for object caps	& 73.0	(6.34) &	70.3	(11.2) &	52.5	(11.29)\\
         f)& no special features &	63.1	(10.55) &	66.9	(23.59) &	50.5	(18.26)\\
     \end{tabular}
-\end{minipage}
-\vspace*{-1em}
+	}
 \end{table}
 Results are split into several groups and shown in \Cref{tab:ablation}.
 We describe each group in turn.

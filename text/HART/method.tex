@@ -15,19 +15,22 @@
 		\label{fig:system}
 	\end{figure}
 	
-    \begin{figure}
-      \begin{minipage}[c]{0.3\textwidth}
-        \usebox{\archfig}
-      \end{minipage}\hfill
-      \begin{minipage}[c]{0.6\textwidth}
-        \caption{Architecture of the appearance attention. V1 is implemented as a CNN shared among the dorsal stream (DFN) and the ventral stream (CNN). The $\odot$ symbol represents the Hadamard product and implements masking of visual features by the foreground/background segmentation.}
-    	\label{fig:arch}
-      \end{minipage}
-    \end{figure}
+%    \begin{figure}
+%     \begin{minipage}[c]{0.3\textwidth}
+%        \usebox{\archfig}
+%     \end{minipage}\begin{minipage}[c]{0.6\textwidth}
+%        \caption{Architecture of the appearance attention. V1 is implemented as a CNN shared among the dorsal stream (DFN) and the ventral stream (CNN). The $\odot$ symbol represents the Hadamard product and implements masking of visual features by the foreground/background segmentation.}
+%    	\label{fig:arch}
+%      \end{minipage}
+%    \end{figure}
+
+    \begin{SCfigure}[50]
+		\usebox{\archfig}
+		\caption{Architecture of the appearance attention. V1 is implemented as a CNN shared among the dorsal stream (DFN) and the ventral stream (CNN). The $\odot$ symbol represents the Hadamard product and implements masking of visual features by the foreground/background segmentation.}
+		\label{fig:arch}
+	\end{SCfigure}
 
 	Inspired by the architecture of the human visual cortex, we structure our system around working memory responsible for storing the motion pattern and an appearance description of the tracked object. If both quantities were known, it would be possible to compute the expected location of the object at the next time step. Given a new frame, however, it is not immediately apparent which visual features correspond to the appearance description. If we were to pass them on to an RNN, it would have to implicitly solve a data association problem. As it is non-trivial, we prefer to model it explicitly by outsourcing the computation to a separate processing stream conditioned on the expected appearance. This results in a location-map, making it possible to neglect features inconsistent with our memory of the tracked object. We now proceed with describing the information flow in our model.
-	    
-    % Inspired by the architecture of human visual cortex, we implement the hierarchical attention mechanism as follows (see the model in \cref{fig:system}). Given attention parameters $\bat$, the \emph{spatial attention} module extracts a glimpse $\bgt$ from the input image $\bxt$. We then apply \emph{appearance attention}, parametrised by appearance $\bappt$ and comprised of V1 and dorsal and ventral streams, to obtain object-specific features $\bvt$, which are used to update the hidden state $\B{h}_t$ of the LSTM. The LSTM's output is then decoded to predict both spatial and appearance attention parameters for the next time-step along with a bounding box correction $\Delta \widehat{\bb}_t$ for the current time-step.
     
     Given attention parameters $\bat$, the \emph{spatial attention} module extracts a glimpse $\bgt$ from the input image $\bxt$. We then apply \emph{appearance attention}, parametrised by appearance $\bappt$ and comprised of V1 and dorsal and ventral streams, to obtain object-specific features $\bvt$, which are used to update the hidden state $\B{h}_t$ of an LSTM. The LSTM's output is then decoded to predict both spatial and appearance attention parameters for the next time-step along with a bounding box correction $\Delta \widehat{\bb}_t$ for the current time-step.
     Spatial attention is driven by top-down signal $\bat$, while appearance attention depends on top-down $\bappt$ as well as bottom-up (contents of the glimpse $\bgt$) signals. Bottom-up signals have local influence and depend on stimulus salience at a given location, while top-down signals incorporate global context into local processing. This attention hierarchy, further enhanced by recurrent connections, mimics that of the human visual cortex \cite{Ungerleider2000}. We now describe the individual components of the system.
@@ -126,7 +129,10 @@
    	
    	\item[Regularisation]
    	
-   	    We apply the L2 regularisation to the model parameters $\theta$ and to the expected value of dynamic parameters $\bdparamt \fences{\bappt}$ as $\reg{ \data, \theta } = \frac{1}{2} \norm{ \theta }_2^2 + \frac{1}{2} \norm*{ \expc[\p{\bappTs}{\bxTs, \bb_1}]{\B{\Psi}_t}{\bappt} }_2^2$.
+   	    We apply the L2 regularisation to the model parameters $\theta$ and to the expected value of dynamic parameters $\bdparamt \fences{\bappt}$ as 
+   	    \begin{equation}
+	   	    \reg{ \data, \theta } = \frac{1}{2} \norm{ \theta }_2^2+ \frac{1}{2} \norm*{ \expc[\p{\bappTs}{\bxTs, \bb_1}]{\B{\Psi}_t}{\bappt} }_2^2\, .
+   	    \end{equation}
    	
    	\item[Adaptive Loss Weights] 
    	

@@ -18,16 +18,15 @@
 \usepackage{thmtools} 	% for tighter bounds
 \usepackage{thm-restate}  % for tighter bounds
 \usepackage{cancel}
-\usepackage{wrapfig}
+%\usepackage{wrapfig}
+
+\usepackage[rightcaption]{sidecap}
 
 % for RRWS and TB
 \usepackage{tikz}
 \usetikzlibrary{calc,backgrounds,positioning,bayesnet,arrows.meta,patterns,fit,trees}
 
 
-\usepackage[acronym,smallcaps,nowarn,section,nogroupskip,nonumberlist]{glossaries}
-
-\usepackage{todonotes}
 \usepackage[linesnumbered,ruled,vlined]{algorithm2e}
 \usepackage{bm} % uniform bold
 
@@ -40,6 +39,9 @@
 \newcommand*{\defeq}{\mathrel{\vcenter{\baselineskip0.5ex \lineskiplimit0pt
                      \hbox{\scriptsize.}\hbox{\scriptsize.}}}%
                      =}
+                 
+                 
+\usepackage{todonotes}
 
 \presetkeys{todonotes}{%
   backgroundcolor=blue!10!white,
@@ -48,7 +50,7 @@
 }{}
 
 
-\usepackage[skip=5pt,font=small]{caption}
+%\usepackage[skip=5pt,font=small]{caption}
 \usepackage{subcaption}
 
 \usepackage{graphicx}

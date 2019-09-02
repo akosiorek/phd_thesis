@@ -21,9 +21,11 @@
   \subsection{Scaling to Real-World Data: KITTI}
 	
 % 
-\begin{table}
+\begin{figure}
     % \hfill
-    \begin{minipage}[r]{0.6\linewidth}
+    \RawFloats
+    \centering
+    \begin{minipage}[c]{0.6\linewidth}
         \centering
 	   % \todo[inline]{other results are on their way}
 	    \includegraphics[width=\textwidth]{HART/kitti_iou_fig}
@@ -31,8 +33,10 @@
 	    \label{fig:kitti_iou_fig}
     \end{minipage}
     \hfill
-    \begin{minipage}[t]{0.35\linewidth}
+    \begin{minipage}[c]{0.35\linewidth}
     	\centering
+    	\hspace{-1em}
+    	{\small
     	 \begin{tabular}{c|c}
     		\toprule
     		Method                      &   Avg. IoU\\
@@ -44,11 +48,14 @@
     		HART                        &   \B{0.81}   \\
     		\bottomrule
     	\end{tabular}
-    	\ak{add caption!!!}
+    	}
+    	\vspace*{3.3em}
+%    	\ak{add caption!!!}
 %    	\caption{Average IoU on KITTI over 60 time-steps.}
+		\captionof{table}{Average IoU on KITTI over 60 time-steps.}
     	\label{tab:kitti}
     \end{minipage}
-\end{table}
+\end{figure}
 
     Since we demonstrated that pedestrian tracking is feasible using the proposed architecture, we proceed to evaluate our model in a more challenging multi-class scenario on the KITTI dataset \cite{Geiger2013}. It consists of 21 high resolution video sequences with multiple instances of the same class posing as potential distractors. We split all sequences into 80/20 sequences for train and test sets, respectively. As images in this dataset are much more varied, we implement V1 as the first three convolutional layers of a modified AlexNet \cite{Krizhevsky2012}. The original AlexNet takes inputs of size $227 \times 227$ and downsizes them to $14 \times 14$ after \emph{conv3} layer. Since too low resolution would result in low tracking performance, and we did not want to upsample the extracted glimpse, we decided to replace the initial stride of four with one and to skip one of the max-pooling operations to conserve spatial dimensions. This way, our feature map has the size of $14 \times 14 \times 384$ with the input glimpse of size $\fences{h, w} = \fences{56, 56}$. We apply dropout with probability 0.25 at the end of V1. The ventral stream is comprised of a single convolutional layer with a $1 \times 1$ kernel and five output feature maps. The dorsal stream has two dynamic filter layers with kernels of size $1 \times 1$ and $3 \times 3$, respectively and five feature maps each. We used 100 hidden units in the RNN with orthogonal initialisation and Zoneout \cite{Krueger2016} with probability set to 0.05. The system was trained via curriculum learning \cite{Bengio2009}, by starting with sequences of length five and increasing sequence length every 13 epochs, with epoch length decreasing with increasing sequence length. We used the same optimisation settings, with the exception of the learning rate, which we set to $3.33 \times 10^{-6}$.
     
