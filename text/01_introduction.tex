@@ -1,0 +1,69 @@
+\chapter{Introduction}
+\label{ch:introduction}
+%
+%	- objects are important and occur in many applications
+%   - many models learn about objets only implicitly
+
+
+	Our natural environments are filled with objects, and we interact with objects all the time: when driving a car we need to think about other cars and pedestrians; opening a door often requires using a key, and virtually anything we do involves objects in some way.
+	Objects are inherently of interest to us, and what follows is that they are also of interest to computer vision and machine learning communities.
+	While there exists a vast body of literature on object detection and tracking \addref, these two problems are typically solved using enormous amounts of human-labelled data. 
+	The resulting models allow locating objects in images and tracking them in videos, but offer no further information about object behaviour, its intent, or its relationship with the environment and other objects.
+	It is possibly for this reason that the majority of machine learning models used for other tasks do no rely on detection or tracking.
+	Instead, these models treat objects only implicitly and gain knowledge about objects as a by-product of solving the main task, such as playing Atari games \citep{dqn}, visual question answering \citep{vqa} or image captioning \citep{image caption}.
+	Meanwhile, it has been demonstrated that having explicit representations of different objects in the scene can lead to faster learning and more accurate predictive models \addref. 
+ 	Explicit object representations can also be used with relational reasoning modules, and therefore improve results on a wide variety of tasks: ranging from comparing objects \citep{Santoro2017} to learning to use tools \citep{hideandseek}.
+ 	Interestingly, we also know that humans (and other mammals) can learn about objects without any supervision \addref, contrary to current approaches to detection and tracking.
+ 	Given the above findings, it is natural to ask whether it is possible to build a machine learning system that learns about objects without supervision, and ideally one that can provide more information than just object location.
+ 	Trying to answer this question is the main subject of this thesis.
+ 	
+ 	\Cref{ch:lit_review} contains literature review.
+ 	
+ 	In order to answer this question, we first simplify it and ask what does it take to learn object representations end-to-end, but with using supervision? \Cref{ch:hart} describes a supervised single-object tracking algorithm that uses a \gls{RNN} to learn to predict where the object is going to go in the next time-step, and uses an attention mechanism to extract the corresponding image.
+ 	The state of the \gls{RNN} is also used to predict expected object appearance, which forces the state to contain useful information about object looks and motion.
+ 	
+ 	While tracking single objects might be enough in some scenarios, it is often desirable to track multiple objects at the same time. In \Cref{ch:mohart} we extend our recurrent tracking approach to multiple objects. To do so, we run multiple trackers in parallel and use a self-attention mechanism to facilitate communication between the trackers. This approach achieves better tracking performance in the presence of global motion (\!\eg when the camera moves), when objects occlude each other or when objects affect each other in a nonlinear manner.
+ 	
+ 	In \Cref{ch:sqair} we go back to the original question, and build a system capable of generative modelling of multiple moving objects, which it learnt without any human supervision. Using this system, we can detect and track objects as well as predict their future trajectories. We apply it to videos from static CCTV cameras, where it allows to detect and track pedestrians without supervision.
+ 	
+ 	Finally, in \Cref{ch:sca} we take a different approach and build a model that can classify objects without any human supervision. To do so, we build a generative model of images that has in-built knowledge of 2D geometry and can compose images out of objects and their parts. We then train an encoder to do amortized inference for this model, which results in learning representations that are invariant to viewpoint changes. It turns out that the latent representations form tight clusters and can be assigned to different object classes.
+ 	
+ 	\Cref{ch:discussion} discusses implications of ours work and possible future research directions, as well as inherent limitations that approaches of this kind face. 
+ 	
+ 	
+ 	
+ 	
+	
+%	Typical machine learning use cases might involve (1) object detection and (2) tracking, (3) comparing objects with each other, (4) navigation in a cluttered environment, and (5) tool use \addref.
+%	
+%	Given how often reasoning about objects occurs in machine learning applications, one could think that there exist myriad models dealing with objects explicitly, and that objects might even be a structural component in many of these models.
+%	
+%	This is, however, not the case, and objects are usually neglected.
+%	As an example, consider the three following applications: (1) learning to play Atari games \citep{dqn}, (2) visual question answering \citep{vqa}, and (3) image captioning \citep{image_caption}. 
+%	Each of these applications requires learning about objects:\eg it is impossible to play Pong without knowing there the pads and the ball are, and it is difficult to describe an image without knowing what objects it contains.
+%	Despite this, models used for these tasks are comprised of a \gls{CNN} followed by either a fully-connected or a recurrent network neural network, and are not structured at all\footnote{What we mean by structure here is similar to a structure of a graphical model, where all variables and dependencies between them are explicit.}.
+%	It follows that objects have to be represented implicitly in these models.
+%	Acquiring such implicit representations might be  computationally expensive in the sense that it might take many training cycles before such representations emerge. 
+%	Additionally, a significant part of the model might be devoted to extracting those representations. 
+%	In contrast, a structured model that describes objects explicitly might be smaller and could be trained faster.
+%	Such a model would still have to learn how to use such representations, but we conjecture that this is an easier task, as suggested by the relevant literature \addref.
+%	
+%	Therefore, in this work we propose adding a structure to a typical deep learning model.
+%	The typical model consists of a black-box neural network that consumes input (data) and produces output (answers), as shown in \Cref{fig:basic_arch}.
+%	Instead, we suggest splitting this neural network into two components: (a) object representations, and (b) relational reasoning, cf.\ \Cref{fig:object_arch}. 
+%	The first part should be able to parse the input and extract information about objects from it, ideally describing every object by a separate vector-valued variable\footnote{It should also encode information about the context.}.
+%	The second part can then reason about objects and their context explicitly, and produce the desired output.
+%	
+%	Before diving into specifics of these two blocks, it is interesting to see an example of an application where such structure can be helpful.
+%	
+%	describe openai hide and seek
+%	
+%	The above example uses the proposed general architecture, with an important twist.
+%	That is, instead of learning object-centric representations, the agents have access to the ground-truth state of the simulator.
+%	While this is probably the best possible description of the objects, it is also out of reach in the majority of tasks where we simply have no access to their ground-truth state.
+%	In practice, one has to infer object state from observations.
+%	Unfortunately, the literature on this topic is rather sparse, with the notable exceptions of \cite{Greff2016tagger,Greff2017neuralem,Burgess2019monet,Eslami2016air}, as well as the work described in this thesis.
+%	Relational reasoning, on the other hand, has been widely considered in recent literature, and there are many approaches for it, including relational networks \citep{Santoro2017}, self-attention \citep{Vaswani17,Lee2019set}, and graph neural networks \citep{gnns}.
+%	For this reason we do not discuss relational reasoning approaches, and leave the choice of an appropriate method to practitioners.
+%	
+	

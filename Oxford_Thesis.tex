@@ -162,7 +162,7 @@
 \setlength{\baselineskip}{\textbaselineskip}
 
 
-%%%%% CHOOSE YOUR SECTION NUMBERING DEPTH HERE
+%%%%% CHOOSE YOUR  NUMBERING DEPTH HERE
 % You have two choices.  First, how far down are sections numbered?  (Below that, they're named but
 % don't get numbers.)  Second, what level of section appears in the table of contents?  These don't have
 % to match: you can have numbered sections that don't show up in the ToC, or unnumbered sections that
@@ -177,9 +177,9 @@
 %%%%% ABSTRACT SEPARATE
 % This is used to create the separate, one-page abstract that you are required to hand into the Exam
 % Schools.  You can comment it out to generate a PDF for printing or whatnot.
-\begin{abstractseparate}
-	\input{text/abstract} % Create an abstract.tex file in the 'text' folder for your abstract.
-\end{abstractseparate}
+%\begin{abstractseparate}
+%	\input{text/00_abstract} % Create an abstract.tex file in the 'text' folder for your abstract.
+%\end{abstractseparate}
 
 
 % JEM: Pages are roman numbered from here, though page numbers are invisible until ToC.  This is in
@@ -196,14 +196,14 @@
 %for some special reason\\
 %\end{dedication}
 
-%%%%% ACKNOWLEDGEMENTS -- Nothing to do here except comment out if you don't want it.
-\begin{acknowledgements}
- 	\input{text/acknowledgements}
-\end{acknowledgements}
+%%%%%% ACKNOWLEDGEMENTS -- Nothing to do here except comment out if you don't want it.
+%\begin{acknowledgements}
+% 	\input{text/acknowledgements}
+%\end{acknowledgements}
 
 %%%%% ABSTRACT -- Nothing to do here except comment out if you don't want it.
 \begin{abstract}
-	\input{text/abstract}
+	\input{text/00_abstract}
 \end{abstract}
 
 %%%%% MINI TABLES
@@ -244,10 +244,26 @@
 %\include{text/ch1-intro}
 %\include{text/ch2-litreview}
 
-\include{text/HART/hart}
-\include{text/MOHART/mohart}
-\include{text/SQAIR/sqair}
-\include{text/SCA/sca}
+\include{text/01_introduction}
+\include{text/02_literature_review}
+
+\chapter{Hierarchical Attentive Recurrent Tracking}
+\label{ch:hart}
+%\include{text/HART/hart}
+
+\chapter{End-to-end Recurrent Multi-Object Tracking and Trajectory Prediction with Relational Reasoning}
+\label{ch:mohart}
+%\include{text/MOHART/mohart}
+
+\chapter{Sequential Attend, Infer, Repeat: Generative Modelling of Moving Objects}
+\label{ch:sqair}
+%\include{text/SQAIR/sqair}
+
+\chapter{Stacked Capsule Autoencoders}
+\label{ch:sca}
+%\include{text/SCA/sca}
+\include{text/09_discussion}
+
 
 %\include{text/tighter_bounds/tighter_bounds}
 %\include{text/RRWS/rrws}

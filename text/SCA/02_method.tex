@@ -1,11 +1,11 @@
-\section{Stacked Capsule Autoencoders (\textsc{scae})}
+\section{Stacked Capsule Autoencoders (\textsc{SCAE})}
 \label{sec:caps_decoders}
 Segmenting an image into parts is non-trivial, so we begin by abstracting away pixels and the part-discovery stage, and develop the \gls{CCAu} (\Cref{sec:constellation}).
 It uses two-dimensional points as parts, and their coordinates are given as the input to the system. \Gls{CCAu} learns to model sets of points as arrangements of familiar constellations, each of which has been transformed by an independent similarity transform. The \gls{CCAu} learns to assign individual points to their respective constellations—without knowing the number of constellations or their individual shapes in advance.  Next, in Section 2.2, we develop the \glsreset{PCAu}\gls{PCAu} which learns to infer parts and their poses from images. Finally, we stack the \glsreset{OCAu}\gls{OCAu}, which closely resembles the \gls{CCAu}, on top of the \gls{PCAu} to form the \glsreset{SCAu}\gls{SCAu}.
 
 
 
-\subsection{Constellation Autoencoder (\textsc{ccae})}
+\subsection{Constellation Autoencoder (\textsc{CCAE})}
 \label{sec:constellation}
 
 Let $\set{\bx_m\mid m=1,\dots,M}$ be a set of two-dimensional input points, where every point belongs to a constellation as in \Cref{fig:constellations}.
@@ -71,7 +71,7 @@ The part capsule $m$ can be assigned to the object capsule $k^\star$ as $k^\star
 \end{SCfigure}
 Empirical results show that this model is able to perform unsupervised instance-level segmentation of points belonging to different constellations, even in data which is difficult to interpret for humans. See \Cref{fig:constellations} for an example and \Cref{sec:constellation_expr} for details.
 
-\subsection{Part Capsule Autoencoder (\textsc{pcae})}
+\subsection{Part Capsule Autoencoder (\textsc{PCAE})}
 \label{sec:img_capsule}
 Explaining images as geometrical arrangements of parts requires first inferring what parts the images are composed of, as well as the relationships of the parts to the viewer (which we call their poses). For the \gls{CCAu} a part is just a 2D point, but here each part capsule has a six \gls{DOF} pose, a presence variable and a unique identity. We frame the part-discovery problem as auto-encoding: the encoder learns to infer the poses and presences of different part capsules, while the decoder learns an image template for each part (\cref{fig:learned_templates}) similar to \cite{Tieleman2014thesis,Eslami2016air}. The templates corresponding to present parts are affine-transformed using their poses, and the pixels of these transformed templates are used to create a separate mixture model for each image pixel.
 The \gls{PCAu} is followed by an \glsreset{OCAu}\gls{OCAu}, which closely resambles the \gls{CCAu} and is described in \Cref{sec:ocae}.
@@ -99,7 +99,7 @@ More formally:
     &\p{\by} = \prod_{i,j} \sum_{m=1}^M p^y_{m,i,j}\, \gauss{y_{i,j} \mid \widehat{T}_{m,i,j}, \sigma^2_y} \qquad\text{calculate image likelihood.} \label{eq:im_likelihood}
 \end{align}
 
-\subsection{Object Capsule Autoencoder (\textsc{ocae})}
+\subsection{Object Capsule Autoencoder (\textsc{OCAE})}
 \label{sec:ocae}
 % \todo{\ak{explain why constellation and object aes are differnet}}
 
