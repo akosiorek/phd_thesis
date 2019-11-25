@@ -1,17 +1,10 @@
-\section{Introduction}
-    
-    
-	
-    % In computer vision, the task of class-agnostic object tracking is challenging since no target-specific model can be learnt \emph{a priori} and yet the model has to handle target appearance changes, varying lighting conditions and occlusion. 
     In computer vision, designing an algorithm for model-free tracking of anonymous objects is challenging, since no target-specific information can be gathered \emph{a priori} and yet the algorithm has to handle target appearance changes, varying lighting conditions and occlusion. 
     To make it even more difficult, the tracked object often constitutes but a small fraction of the visual field. 
     The remaining parts may contain \emph{distractors}, which are visually salient objects resembling the target but hold no relevant information. 
     Despite this fact, recent models often process the whole image,
-    % exposing them to noise 
     which exposes them to noise
     and increases the associated computational cost or they use heuristic methods to decrease the size of search regions. 
     This in contrast to human visual perception, which does not process the visual field in its entirety, but rather acknowledges it briefly and focuses on processing small fractions thereof, which we dub \emph{visual attention}.
-    
     
 \begin{figure}[ht!]
 	\centering
@@ -47,9 +40,6 @@
         \label{fig:img_with_att}
 	\end{minipage}
 \end{figure}
-    
-    
-    %%% Neural attention mechanisms are cool and widely studied in CV and neuroscience
     Attention mechanisms have recently been explored in machine learning in a wide variety of contexts \cite{Vinyals2014, Jaderberg2015}, often providing new capabilities to machine learning algorithms \cite{Graves2016dnc,Gregor2016towards, Eslami2016air}. While they improve efficiency \cite{Graves2014recurrent} and performance on state-of-the-art machine learning benchmarks \cite{Vinyals2014}, their architecture is much simpler than that of the mechanisms found in the human visual cortex \cite{Dayan2001}. Attention has also been long studied by neuroscientists \cite{Ungerleider2000}, who believe that it is crucial for visual perception and cognition \cite{Olshausen2016foveal}, since it is inherently tied to the architecture of the visual cortex and can affect the information flow inside it. Whenever more than one visual stimulus is present in the receptive field of a neuron, all the stimuli compete for computational resources due to the limited processing capacity. 
 	%%% How attention is relevant to tracking in cv
 	% 	Types of attention
@@ -75,7 +65,6 @@
     Firstly, a hierarchy of attention mechanisms that leads to suppressing distractors and computational efficiency is introduced.
     Secondly, a biologically plausible combination of attention mechanisms and recurrent neural networks is presented for object tracking.
     Finally, our attention-based tracker is demonstrated using real-world sequences in challenging scenarios where previous recurrent attentive trackers have failed.
-    
     \iffalse
     \begin{itemize}
         \item a biologically plausible way of combining attention mechanisms with recurrent neural networks for object tracking,
@@ -83,7 +72,6 @@
         \item the scaling of an attention-based tracker to real-world exceeding prior recurrent attentive tracking models. 
     \end{itemize}
     \fi
-    
     Next we briefly review related work (\Cref{sec:background}) before describing how information flows through the components of our hierarchical attention in \Cref{sec:att}. \Cref{sec:loss} details the losses applied to guide the attention. \Cref{sec:exp} presents experiments on KTH and KITTI datasets with comparison to related attention-based trackers. \Cref{sec:hart_discussion} discusses the results and intriguing properties of our framework and \Cref{sec:conclusion} concludes the work. Code and results are available online\footnote{\url{https://github.com/akosiorek/hart}}.
         
 
