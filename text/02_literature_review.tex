@@ -3,7 +3,7 @@
 
 	Learning object-centric representations lies at the intersection of several areas of machine learning research. 
 	Concretely, these are \begin{inparaenum}[(1)\!]
-	\item relational reasoning, because having representations of objects can facilitate reasoning about their relations, but also because we can discover objects by analysing relations between different elements of the scene,
+	\item relational reasoning, because having representations of objects can facilitate reasoning about their relations, but also because we can discover objects by analysing relations between different elements of a visual scene,
 	\item object detection and tracking, as these two areas of research focus on locating objects in images and videos, respectively,
 	\item representation learning, since the objective of our task it to learn representations, albeit ones that describe objects and not entire scenes, and finally
 	\item compositional generative modelling, because object-centric representations can be useful for this task, but also because this area of research is among the most-promising candidates for learning object-centric representations.
@@ -14,60 +14,81 @@
 \section{Relational Reasoning}
 \label{sec:relational_reasoning}
 
-	We define relational reasoning as making inferences about a group of entities such as physical objects with certain properties (shape, mass) that exist in a shared context.
-	 Importantly, we can make inferences about relations between any objects in a group, or we can use the knowledge of such relations to answer other (externally-posed) questions about the entities.
-	 This definition closely follows that of \cite{Battaglia2018relnets}, who also present an overview of this field of research. 
+	We define relational reasoning as making inferences about a group of entities such as physical objects with certain properties (\!\eg shape, mass) that exist in a shared context.
+	 Importantly, we can make inferences about relations between any objects in a group, or we can use the knowledge of such relations to answer other (externally-posed) questions about the entities\footnote{Note that such answer can depend on the shared context, which can affect how objects relate to each other.}.
+	 This definition closely follows that of \ak{fix this reference to be Battaglia et.\ al.} \cite{Battaglia2018relnets}, who also present an overview of this field of research. 
 	 A typical example of relational reasoning is that of inferring which object in a scene is the biggest, or counting all objects made of metal \citep{Santoro2017}.
-	 In a more complicated example, agents can learn the relations between objects in the environment, and use some objects to indirectly interact with other objects \citep{Baker2019tooluse}.
-	 If relations between objects are known, one can use this knowledge to build a \gls{GNN} \citep{Schlichtkrull2017relgraph} whose structure reflects these relations, and where different types of relations can be processed by dedicated neural net modules.
+	 In a more complicated example, agents can learn the relations between objects in the environment, and use some objects to indirectly interact with other objects, which constitutes tool use \citep{Baker2019tooluse}.
+	 If the existence and/or type of relations between objects are known, one can use this knowledge to build a \gls{GNN} \citep{Schlichtkrull2017relgraph} whose structure reflects these relations, and where different types of relations can be processed by dedicated neural modules.
 	 If the number of entities is too large, or if relations only between neighbouring entities are known, one can process the graph of entities iteratively using message passing.
 	 Alternatively, especially if relations between all objects exist or if their nature is not known, one could consider self-attention \citep{Vaswani17}, which performs relational reasoning on a fully-connected graph of entities.
-	 The downside is the quadratic (in the number of entities) computational complexity of this approach.
+	 The downside is the quadratic computational complexity (in the number of entities) of this approach.
 	 Fortunately, this can be improved to linear computational complexity by using inducing points \citep{Lee2019set} or local self-attention \citep{Ramachandran2019standalone}.
 	 
 	 Relational reasoning can be useful for inferring which parts of the scene constitute objects, but in order to reason about relations, one has to know what entities are present in the scene. 
-	 Typically, this data is not available and one has to resort to heuristics solutions.
-	 \cite{Santoro2017} uses a \gls{CNN} to embed an image and assumes that each location in a feature map can correspond to an object, and then considers pairwise relations between every pair of locations.
+	 Typically, this data is not available and one has to resort to heuristic solutions.
+	 \cite{Santoro2017} use a \gls{CNN} to embed an image into a feature map and assumes that each location in this feature map can correspond to an object. 
+	 They then consider pairwise relations between every pair of locations.
 	 \cite{Battaglia2016,Baker2019tooluse} assume access to the ground-truth state of different entities,
 	 and \cite{Yi2019cleverer} use \textsc{mask r-cnn} \citep{He2017maskrcnn} for segmenting out different objects before feeding them into a relational reasoning module.
-
-
+	 More generally, one can use any object detection, segmentation, or region proposal\footnote{Regions of interest need not correspond to objects.} algorithm to identify \textit{interesting} parts of the scene and supply information about their whereabouts and appearance to a relational reasoning module.
+	 In the context of timeseries, it is useful to know temporal characteristics of objects, which can be provided by object tracking algorithms.
+	 Therefore, we now discuss object detection and tracking methods, and their suitability for relational reasoning applications.
+	 
 \section{Object Detection and Tracking}
 \label{sec:object_det_track}
 
-	In order to reason about relations between objects in an environment, we first need to know what objects exist in that environment and where they are.
-	It is also useful to know their temporal characteristics,\ie how they move, how their appearance changes or if they are attracted by certain parts of the environment.
-	Object detection and tracking algorithms can provide valuable information that can be used as input to relational reasoning algorithms, but the extracted information is typically limited to the the location and possibly the history of object location.
-	Given the location, it is possible to extract appearance information and possibly other characteristics, but this requires complicated post-processing.
-	Alternatively, one could use an end-to-end tracking algorithm that is closely integrated with the relational reasoning module, but as the following overview shows, this is not possibly with the current state-of-the-art object tracking methods.
+	Object detection and tracking have been of long-standing interest to the computer vision community, with early works that appeared in XXX and YYY, respecitvely \addref.
+	Both problems are typically addressed in a supervised manner, where object bounding boxes and/or segmentation masks and often additional labels are provided as a part of the training data.
+	\paragraph{Object detection}
+	rcnn family of the models as SOTA
 	
-	%attention in tracking  
-	In the context of single object tracking, both attention mechanisms and RNNs appear to be perfectly suited, yet their success has mostly been limited to simple monochromatic sequences with plain backgrounds \cite{Kahou2015ratm}. \citet{Cheung2016gtc} applied STNs \cite{Jaderberg2015} as attention mechanisms for real-world object tracking, but failed due to exploding gradients potentially arising from the difficulty of the data.
-	\citet{Ning2016} achieved competitive performance by using features from an object detector as inputs to a long-short memory network (LSTM), but requires processing of the whole image at each time-step. 
+	\paragraph{Object tracking}
+	Object tracking is typically initialised with an object bounding box (either ground-truth or from a detector) and can be divided into two broad categories of long- or short-term single-object tracking and multi-object tracking.
+	In short-term tracking, the algorithm is not provided with further detections, while in long-term tracking it typically has access to external detections and can restart in case of a failure.
 	
-	Two recent state-of-the-art trackers employ convolutional Siamese networks which can be seen as an RNN unrolled over two time-steps \cite{Held2016goturn, Valmadre2017}. Both methods explicitly process small search areas around the previous target position to produce a bounding box offset \cite{Held2016goturn} or a correlation response map with the maximum corresponding to the target position \cite{Valmadre2017}. 
-	We acknowledge the recent work\footnote{\cite{Gordon2018re3} only became available at the time of submitting this paper.} of \citet{Gordon2018re3} which employ an RNN based model and use explicit cropping and warping as a form of non-differentiable spatial attention.
-	The work presented in this paper is closest to \cite{Kahou2015ratm} where we share a similar spatial attention mechanism which is guided through an RNN to effectively learn a motion model that spans multiple time-steps. The next section describes our additional attention mechanisms in relation to their biological counterparts.
+%	
+%
+	\textbf{Single-object tracking} commonly uses Siamese networks \citep{Valmadre2017,Held2016goturn}, first introduced in \citep{Bromley1993siamese}.
+	These approaches typically work by comparing a source patch containing the object of interest to patches at several locations in the target image.
+	The highest-scoring patch in the target image is deemed to match the source patch, and its centre is taken as the new position of the tracked object.
+	In order to handle scale differences, the source patch is compared to the target image at several different scales.
+	Instead of comparing it to the whole target image, one typically constrains the region of interest to an area around the last known location of the object.
+	Sometimes simple motion models (\!\eg Kalman filter, \cite{Swerling1959kalman,Kalman1961kalman}) are used to further reduce the size of the search region.
 	
-	\paragraph{Tracking-by-Detection} Vision-based tracking approaches typically follow a tracking-by-detection paradigm: objects are first detected in each frame independently, and then a tracking algorithm links the detections from different frames to propose a coherent trajectory \cite{Zhang2008,Milan2014,Bae2017confidence,Keuper2018motion}.
-	Motion models and appearance are often used to improve the association between detected bounding-boxes and multiple trackers in a postprocessing step.
-	Recently, elements of this pipeline have been replaced with learning-based approaches such as deep learning \cite{Nam2016,Ning2017,Keuper2018motion,Bae2017confidence} or reinforcement learning \cite{Xiang2015}. Some approaches are targeted towards robustness across domains, for example by using a category-agnostic object detector and performing classification only in a post-processing step \cite{Osep2017,Posner2016}.
+	These types of algorithms can provide relational reasoning modules with a sequence of locations, but no other information is available.
+	Similarly to object detection algorithms, one could use intermediate representation from one of the layers of a Siamese net as an input for relational reasoning.
+	However, since these methods perform only appearance-based matching of source and target features, there is no guarantee for these features to contain any useful information\eg about appearance changes.
+	Moreover, since these methods do not aggregate information through time, they are unable to inform about object intent or its motion.
+	This is in contrast to end-to-end tracking approaches, where models do estimate object state and learn to anticipate position and appearance changes.
+	More specifically, Siamese networks can be seen as an \gls{RNN} unrolled over two time-steps.
+	Recently, we used an \gls{RNN} with an attention mechanism in the \textsc{hart} model (\Cref{ch:hart}) to predict bounding boxes for single objects, while robustly modelling their motion and appearance.
+	\textsc{Hart} is based on \textsc{ratm} \citep{Kahou2015ratm}, but decouples attention and bounding-box prediction and features an additional attention mechanism.
+	At the time, \textsc{hart} was the best-performing \gls{RNN}-based tracker, outperfomed only by the concurrently developed \textsc{re3} of \cite{Gordon2018re3}, which is also based on an \gls{RNN}, but is not end-to-end due to the use of hard attention for cropping.
+	\textsc{Hart} was extended to handle \textsc{rgbd} inputs in \cite{Danesh2019deep}. 
+	It was also augmented with a meta-learning update to better remember the tracked object in \cite{Li2019metahart}. We also extended it to multi-object tracking in \Cref{ch:mohart}, which is discussed further below.
 	
+%	
+%
+	\textbf{Multi-object tracking} is typically attained by detecting objects and performing data association on bounding-boxes in order to link them into coherent trajectories \citep{Zhang2008,Milan2014,Bae2017confidence,Keuper2018motion}, which differs considerably from the single-object tracking paradigm.
+	Many approaches additionally use motion models and appearance to improve data association, see\eg \cite{Bewley2016sort}.
+	While recent approaches replace some steps of this method with learned elements \citep{Schulter2017deepnf,Nam2016,Ning2017,Keuper2018motion,Bae2017confidence,Xiang2015}, no truly end-to-end multi-object tracking method exists, with the exception of unsupervised video-modelling models described in \Cref{sec:gen_modelling} and including \textsc{sqair} of \Cref{ch:sqair}.
 	
-	\paragraph{End-to-End Tracking} A newly established and much less explored stream of work approaches tracking in an end-to-end fashion. A key difficulty here is that extracting an image crop (according to bounding-boxes provided by a detector), is non-differentiable and results in high-variance gradient estimators.
-	\citet{Kahou2015ratm} propose an end-to-end tracker with soft spatial-attention using a 2D grid of Gaussians instead of a hard bounding-box. \Gls{HART} draws inspiration from this idea, employs an additional attention mechanism, and shows promising performance on the real-world KITTI dataset \cite{Kosiorek2017hierch}.
-	\Gls{HART}, which forms the foundation of this work, is explained in detail in \Cref{sec:method}. It has also been extended to incorporate depth information from \textsc{rgbd} cameras \cite{Danesh2019deep}. \citet{Gordon2018re3} propose an approach in which the crop corresponds to the scaled up previous bounding-box. This simplifies the approach, but does not allow the model to learn where to look---\ie no gradient is backpropagated through crop coordinates.
-	To the best of our knowledge, there are no successful implementations of any such end-to-end approaches for multi-object tracking beyond \textsc{sqair} \citep{Kosiorek2018sqair}, which works only on datasets with static backgrounds. On real-world data, the only end-to-end approaches correspond to applying multiple single-object trackers in parallel---a method which does not leverage the potential of scene context or inter-object interactions. 
+%	\textbf{Discussion}
+%	Object detection and tracking algorithms can provide valuable information that can be used as input to relational reasoning algorithms, but the extracted information is typically limited to the the location and possibly the history of object locations.
+%	Given the location, it is possible to extract information about appearance and possibly other characteristics, but this requires complicated post-processing.
 	
-		[Object Tracking]
-	There have been many approaches to modelling objects in images and videos. 
-	Object detection and tracking are typically learned in a supervised manner, where object bounding boxes and often additional labels are part of the training data.
-	Single-object tracking commonly use Siamese networks, which can be seen as an \gls{RNN} unrolled over two time-steps \citep{Valmadre2017}. Recently, \cite{Kosiorek2017hierch} used an \gls{RNN} with an attention mechanism in the \textsc{hart} model to predict bounding boxes for single objects, while robustly modelling their motion and appearance. Multi-object tracking is typically attained by detecting objects and performing data association on bounding-boxes \citep{Bewley2016sort}.
-	\cite{Schulter2017deepnf} used an end-to-end supervised approach that detects objects and performs data association.
-	In the unsupervised setting, where the training data consists of only images or videos, the dominant approach is to distill the inductive bias of spatial consistency into a discriminative model.  \cite{Cho2015unsupervised} detect single objects and their parts in images, and \cite{Kwak2015unsupervised,Xiao2016track} incorporate temporal consistency to better track single objects.
-	\Gls{SQAIR} is unsupervised and hence it does not rely on bounding boxes nor additional labels for training, while being able to learn arbitrary motion and appearance models similarly to \textsc{hart} \citep{Kosiorek2017hierch}.
-	At the same time, is inherently multi-object and performs data association implicitly (\textit{cf}. \Cref{app:algo}).
-	Unlike the other unsupervised approaches, temporal consistency is baked into the model structure of \gls{SQAIR} and further enforced by lower \gls{KL} divergence when an object is tracked.
+%	\cite{Schulter2017deepnf} used an end-to-end supervised approach that detects objects and performs data association.
+%	In the unsupervised setting, where the training data consists of only images or videos, the dominant approach is to distill the inductive bias of spatial consistency into a discriminative model.  \cite{Cho2015unsupervised} detect single objects and their parts in images, and \cite{Kwak2015unsupervised,Xiao2016track} incorporate temporal consistency to better track single objects.
+%	\Gls{SQAIR} is unsupervised and hence it does not rely on bounding boxes nor additional labels for training, while being able to learn arbitrary motion and appearance models similarly to \textsc{hart} \citep{Kosiorek2017hierch}.
+%	At the same time, is inherently multi-object and performs data association implicitly (\textit{cf}. \Cref{app:algo}).
+%	Unlike the other unsupervised approaches, temporal consistency is baked into the model structure of \gls{SQAIR} and further enforced by lower \gls{KL} divergence when an object is tracked.
+	
+%	\paragraph{End-to-End Tracking} A newly established and much less explored stream of work approaches tracking in an end-to-end fashion. A key difficulty here is that extracting an image crop (according to bounding-boxes provided by a detector), is non-differentiable and results in high-variance gradient estimators.
+%	\citet{Kahou2015ratm} propose an end-to-end tracker with soft spatial-attention using a 2D grid of Gaussians instead of a hard bounding-box. \Gls{HART} draws inspiration from this idea, employs an additional attention mechanism, and shows promising performance on the real-world KITTI dataset \cite{Kosiorek2017hierch}.
+%	\Gls{HART}, which forms the foundation of this work, is explained in detail in \Cref{sec:method}. It has also been extended to incorporate depth information from \textsc{rgbd} cameras \cite{Danesh2019deep}. \citet{Gordon2018re3} propose an approach in which the crop corresponds to the scaled up previous bounding-box. This simplifies the approach, but does not allow the model to learn where to look---\ie no gradient is backpropagated through crop coordinates.
+%	To the best of our knowledge, there are no successful implementations of any such end-to-end approaches for multi-object tracking beyond \textsc{sqair} \citep{Kosiorek2018sqair}, which works only on datasets with static backgrounds. On real-world data, the only end-to-end approaches correspond to applying multiple single-object trackers in parallel---a method which does not leverage the potential of scene context or inter-object interactions. 
+	
 
 
 \section{Representation Learning and Disentanglement}
