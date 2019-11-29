@@ -38,27 +38,43 @@
 \section{Object Detection and Tracking}
 \label{sec:object_det_track}
 
-	Object detection and tracking have been of long-standing interest to the computer vision community, with early works that appeared in XXX and YYY, respecitvely \addref.
-	Both problems are typically addressed in a supervised manner, where object bounding boxes and/or segmentation masks and often additional labels are provided as a part of the training data.
+	Object detection and tracking have been of long-standing interest to the computer vision community;
+	both problems are typically addressed in a supervised manner, where object bounding boxes and/or segmentation masks and often additional labels are provided as a part of the training data.
 	\paragraph{Object detection}
-	rcnn family of the models as SOTA
+	A user of object detection algorithms is interested in knowing how many objects there are in an image, where they are and often what they are. 
+	Historically, this problem has been typically addressed by matching patterns within a sliding window.
+	For example, the seminal work of \cite{Viola2001face} uses a cascade of simple filters found with boosting \citep{Schapire1999boosting} that are matched against small image patches at every possible image location to find faces.
+	This is computationally expensive, and recent state-of-the-art approaches use \gls{CNN}s to predict locations in which objects might exist.
+	Next, algorithms evaluate every location separately, possibly predicting some additional attributes like object class in \textsc{rcnn} \citep{Girshick2013rcnn,Ren2015fasterrcnn} or the corresponding segmentation mask in \textsc{mask-rcnn} \citep{He2017maskrcnn}.
+	
+	In terms of relational reasoning, these methods provide segmentation masks or bounding boxes and often a class label.
+	Moreover, one could extract the hidden representation of the \gls{CNN} to use it as an input to a relational reasoning module.
+	There is no guarantee that these features would contain any useful information for this task, however, since the decision of whether object exists at any particular location is made independently of other locations.
+	Additionally, the majority of object detection algorithms are supervised, which constraints their use cases to modalities for which large labelled datasets exists.
+	The last two properties strongly contrast with unsupervised object detection methods,\eg \gls{AIR} of \cite{Eslami2016air}, which needs no labels to train, but which also generates latent variables that are highly informative of discovered objects.
+	\gls{AIR} has been recently scaled to hundreds of objects and applied to Atari games \citep{Crawford2019spair} and enabled to infer the posterior distribution over object appearance exactly with sum-product networks \citep{Stelzner2019supair}.
+	We provide an extension of \gls{AIR} to image sequences in \Cref{ch:sqair}.
+	Also applicable to relational reasoning are compositional generative algorithms, which in effect perform image segmentation without supervision.
+	These are further discussed in \Cref{sec:gen_modelling}.
 	
 	\paragraph{Object tracking}
+	The task of object tracking is to estimate the location of an object of interest in a video frame, and to maintain that estimate over time as the video progresses.
+	Importantly, unlike in object detection, here the user is interested in how the location of the tracked object changes,\ie it is important to know if an object at a given timestep was present in the video before and where it was.
 	Object tracking is typically initialised with an object bounding box (either ground-truth or from a detector) and can be divided into two broad categories of long- or short-term single-object tracking and multi-object tracking.
 	In short-term tracking, the algorithm is not provided with further detections, while in long-term tracking it typically has access to external detections and can restart in case of a failure.
 	
 %	
 %
-	\textbf{Single-object tracking} commonly uses Siamese networks \citep{Valmadre2017,Held2016goturn}, first introduced in \citep{Bromley1993siamese}.
+	\textbf{Single-object tracking} commonly uses Siamese networks \citep{Valmadre2017,Held2016goturn}, first introduced in \citep{Bromley1993siamese,Schmidhuber1993dicovering}.
 	These approaches typically work by comparing a source patch containing the object of interest to patches at several locations in the target image.
 	The highest-scoring patch in the target image is deemed to match the source patch, and its centre is taken as the new position of the tracked object.
 	In order to handle scale differences, the source patch is compared to the target image at several different scales.
 	Instead of comparing it to the whole target image, one typically constrains the region of interest to an area around the last known location of the object.
-	Sometimes simple motion models (\!\eg Kalman filter, \cite{Swerling1959kalman,Kalman1961kalman}) are used to further reduce the size of the search region.
+	Sometimes simple motion models,\eg Kalman filter  \citep{Swerling1959kalman,Kalman1961kalman}, are used to further reduce the size of the search region.
 	
 	These types of algorithms can provide relational reasoning modules with a sequence of locations, but no other information is available.
 	Similarly to object detection algorithms, one could use intermediate representation from one of the layers of a Siamese net as an input for relational reasoning.
-	However, since these methods perform only appearance-based matching of source and target features, there is no guarantee for these features to contain any useful information\eg about appearance changes.
+	However, since these methods perform only appearance-based matching of source and target features, there is no guarantee for these features to contain any useful information\eg about appearance changes or motion of the object.
 	Moreover, since these methods do not aggregate information through time, they are unable to inform about object intent or its motion.
 	This is in contrast to end-to-end tracking approaches, where models do estimate object state and learn to anticipate position and appearance changes.
 	More specifically, Siamese networks can be seen as an \gls{RNN} unrolled over two time-steps.
@@ -91,11 +107,75 @@
 	
 
 
-\section{Representation Learning and Disentanglement}
+\section{Generative Modelling and Representation Learning}
 \label{sec:repr_learning}
 
+	Learning representations is the main topic of this thesis, and the last two sections show that one can learn representations by learning to detect and track objects, and that such representations can be used for relational reasoning purposes.
+	
+	Formally, the goal of representation learning is to learn a concise representation $\bz \in \mathbb{Z}$, typically $\mathbb{Z} \subseteq \RR^d$, which summarizes information contained in some high-dimensional input $\bx \in \mathbb{X}$.
+	The usual requirements for the learned representations are to be low-dimensional and easy to use in downstream tasks:\eg it should be possible to classify images by using a linear classifier on $\bz$.
+	This is different from transfer learning, which can use similar methods to representation learning, but where the goal is to pre-train a feature extractor without supervision and fine-tune it on a target task using supervised data \citep{He2019moco,Devlin2019bert}.
+	
+	While there exists a plethora of representation learning methods, an exhaustive review of available approaches is beyond the scope of this work, and we are going to discuss some recent methods focused on 
+	\begin{inparaenum}[(i)]
+		\item generative modelling, and especially its 
+		\item disentangled and
+		\item compositional flavours, as well as
+		\item contrastive learning.
+	\end{inparaenum}
+	\AK{Say why those three.}
+%	The main categories of representation learning approaches relevant for this work are those that rely on contrastive learning, which can often be shown to maximise mutual information $\operatorname{I}(\bx, \bz)$ \citep{Tschannen2019onmi}, and those based on compositional generative modelling.
+	
+	\paragraph{Generative modelling}
+	In parametric\footnote{Nonparametric modelling is also possible, but is out of scope of this work.} generative modelling, the goal is to approximate the data distribution $\p{\bx}{}{\mathrm{data}}$ with a parametric distribution $\p{\bx}{}{\theta}$ with parameters $\theta$.
+	Recently, the most popular approaches revolve around the \gls{VAE} and \gls{GAN} frameworks as well as flow-based and autoregressive methods.
+	
+	Of these, only \gls{VAE} is a viable candidate for representation learning, and we explain shortly why.
+	\Gls{GAN}s estimate the data distribution implicitly, and provide no usable features \citep{Radford2016gan,Goodfellow2014generative}.
+	The bidirectional \gls{GAN} equips a traditional \gls{GAN} with an encoder which can learn to extract good representations \citep{Donahue2017bigan, Donahue2019bigbigan}, but learning becomes unstable as is typical for \gls{GAN}s.
+	Flow-based models can provide an exact estimate of the data likelihood, but do not use latent variables \citep{Rezende2015flow,Dinh2016realnvp,Kingma2018glow}.
+	Since all data modelling is done by bijective transformations of some simple random variable, flow-based models cannot reduce the original data dimensionality, which is in contrast with our requirements.
+	Finally, autoregressive models need not use latent variables to model data well \citep{Uria2016nade,Oord2016wavenet}, and even if combined with latent variables, they often choose not to use them, therefore not learning useful representations \citep{Gulrajani2016pixelvae}.
+	
+	\Gls{VAE}s were first introduced in \cite{Rezende2014stochastic,Kingma2014auto} and model the data distribution by introducing a latent variable as $\p{\bx}{}{\theta} = \int \p{\bx}{\bz}{\theta} \p{\bz}{}{\theta} \dint \bz$.
+	Learning in a \Gls{VAE} is accomplished by maximizing the \gls{ELBO}, where $\q{\bz}{\bx}{\phi}$ approximates the true posterior distribution $\p{\bz}{\bx}{\theta}$:
+%	\vspace{-1em}
+	\begin{equation}
+		\loss[\textsc{elbo}]{\bx; \theta, \phi} = 
+		\expc{\log \frac{\p{\bx, \bz}{}{\theta}}{\q{\bz}{\bx}{\phi}}}{}{\q{\bz}{\bx}{\phi}}\,.
+	\end{equation}
+	The approximate posterior $q$ can be used as an encoder that learns to extract representations from data.
+	While the majority of recent works on \gls{VAE}s focuses on improving density estimation as opposed to learning representations,\eg \cite{Kingma2016improving,Maale2019biva,Razavi2019vqvae2}, there are two streams of work, that of disentangled representation learning and compositional generative modelling, that are of interest to this thesis.
+	It is worth noting that \gls{VAE}s built upon autoencoding that was perhaps started with works on  Boltzmann and Helmholtz machines \addref and continued with discriminative autoencoders \addref.
+	
+	\paragraph{Disentangled Representation Learning}
+	The majority of representation learning literature is concerned with learning \textit{global} representations.
+	In this setting, the input $\bx$ is described by a single vector-valued $\bz$.
+	Since we would like the learned representations to be easily readable (or usable),\eg by using linear predictors, it is desirable to have a representation with a compositional structure.
+	That is, the learned representation should be composed of a number of parts, with different parts being independent of each other and describing different factors of variations in the data.
+	Such representations are called \textit{disentangled}, though there exists no universally-agreed upon definition of this property.
+	The concept was introduced \AK{not sure if true} in \cite{Higgins2017betavae}, with the majority of approaches focused on \gls{VAE}-style models with an additional objective encouraging disentanglement \citep{Higgins2017betavae,Kim2018disentangling} or using specifically-structured decoders \citep{Watters2019broadcast}.
+	
+	\ak{Recent studies show that learning disentangled representations can lead to more sample-efficient learning and better performance \cite{Sjord...}...}
+	
+	Learning object-centric representations means learning representations that separately describe each object in a scene, and as such is a subset of disentangled representation learning.
+	However, in disentangled representation literature there is no focus on separating the representation into specific parts corresponding to different objects; different objects and their properties are seen simply as different factors of variation in the data. 
+	We now turn to compositional generative modelling, which tries to model data as a composition of effects caused by different latent variables.
+	
+	\paragraph{Compositional Generative Modelling}
+	In compositional generative models we are interested in cases where the data can be explained as a composition of effects caused by different latent variables.
+	In vision, that is in images and videos, this can often happen when different latent variables correspond to different objects present in the scene, hence leading to learning object-centric representations.
+	
+	air and extentions
+	
+	sqair and extensions
+	
+	tagger + recurrent ladder
+	
+	nem and rnem
+	
+	monet, iodine, genesis
 
-		[Learning Decomposed Representations of Images and Videos]
 	Learning decomposed representations of object appearance and position lies at the heart of our model.
 	This problem can be also seen as perceptual grouping, which involves modelling pixels as spatial mixtures of entities.
 	\cite{Greff2016tagger} and \cite{Greff2017neuralem} learn to decompose images into separate entities by iterative refinement of spatial clusters using either learned updates or the Expectation Maximization algorithm;
@@ -106,33 +186,22 @@
 	
 	Another interesting line of work is the \textsc{gan}-based unsupervised video generation that decomposes motion and content \citep{Tulyakov2017mocogan,Denton2017unsupervised}. These methods learn interpretable features of content and motion, but deal only with single objects and do not explicitly model their locations. Nonetheless, adversarial approaches to learning structured probabilistic models of objects offer a plausible alternative direction of research.
 
-
-
-\section{Generative Modelling}
-\label{sec:gen_modelling}
-
-	There are two main approaches to unsupervised object category detection in computer vision.
-	The first one is based on representation learning and typically requires discovering clusters or learning a classifier on top of the learned representation.
-	\cite{Eslami2016air,Kosiorek2018sqair} use an iterative procedure to infer a variable number of latent variables, one for every object in a scene, that are highly informative of object class, while \cite{Greff2019multi,Burgess2019monet} perform unsupervised instance-level segmentation in an iterative fashion.
-	While similar to our work, these approaches cannot decompose objects into their constituent parts and do not provide explicit description of object shape (\!\eg templates and their poses in our model).
-	
-	The second approach targets classification explicitly by minimizing mutual information (\textsc{mi})-based losses and directly learning class-assignment probabilities.
-	\textsc{Iic} \citep{Ji2018iic} maximizes an exact estimator of \textsc{mi} between two discrete probability vectors describing (transformed) versions of the input image.
-	DeepInfoMax \citep{Hjelm2019deepinfomax} relies on negative samples and maximizes \textsc{mi} between the predicted probability vector and its input via noise-contrastive estimation \citep{Gutmann2010nce}.
-	This class of methods directly maximizes the amount of information contained in an assignment to discrete clusters and they hold state-of-the-art results on most unsupervised classification tasks.
-	\textsc{Mi}-based methods suffer from typical drawbacks of mutual information estimation: they require heavy data augmentation and large batch sizes.
-	This is in contrast to our method, which achieves comparable performance with batch size no bigger than 128 and with no data augmentation.
-	
-	
-	
-	[Video Prediction]
+		[Video Prediction]
 	Many works on video prediction learn a deterministic model conditioned on the current frame to predict the future ones \citep{Ranzato2014video,Srivastava2015unsupervised}.
 	Since these models do not model uncertainty in the prediction, they can suffer from the multiple futures problem --- since perfect prediction is impossible, the model produces blurry predictions which are a mean of possible outcomes.
 	This is addressed in stochastic latent variable models trained using variational inference to generate multiple plausible videos given a sequence of images \citep{Babaeizadeh2017stochastic, Denton2018stochastic}.
 	Unlike \gls{SQAIR}, these approaches do not model objects or their positions explicitly, thus the representations they learn are of limited interpretability. 
 	
-
-
+	
+%	% contrastive stuff
+%	The second approach targets classification explicitly by minimizing mutual information (\textsc{mi})-based losses and directly learning class-assignment probabilities.
+%	\textsc{Iic} \citep{Ji2018iic} maximizes an exact estimator of \textsc{mi} between two discrete probability vectors describing (transformed) versions of the input image.
+%	DeepInfoMax \citep{Hjelm2019deepinfomax} relies on negative samples and maximizes \textsc{mi} between the predicted probability vector and its input via noise-contrastive estimation \citep{Gutmann2010nce}.
+%	This class of methods directly maximizes the amount of information contained in an assignment to discrete clusters and they hold state-of-the-art results on most unsupervised classification tasks.
+%	\textsc{Mi}-based methods suffer from typical drawbacks of mutual information estimation: they require heavy data augmentation and large batch sizes.
+%	This is in contrast to our method, which achieves comparable performance with batch size no bigger than 128 and with no data augmentation.
+	
+	
 %\textbf{Capsule Networks}\ \ 
 %Our work combines ideas from Transforming Autoencoders \citep{Hinton2011tae} and \textsc{em} Capsules \citep{Hinton2018capsule}.
 %Transforming autoencoders discover affine-aware capsule \textit{instantiation parameters} by training an autoencoder to predict an affine-transformed version of the input image from the original image plus an extra input, which explicitly represents the transformation.

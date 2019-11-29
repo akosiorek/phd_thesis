@@ -21,6 +21,13 @@
 %   organization={Springer}
 }
 
+@inproceedings{Higgins2017betavae,
+	title={beta-VAE: Learning Basic Visual Concepts with a Constrained Variational Framework},
+	author={Irina Higgins and Lo{\"i}c Matthey and Arka Pal and Christopher Burgess and Xavier Glorot and Matthew M Botvinick and Shakir Mohamed and Alexander Lerchner},
+	booktitle={International Conference on Learning Representations},
+	year={2017}
+}
+
 @inproceedings{Bengio2007greedy,
   title={Greedy Layer-wise Training of Deep Networks},
   author={Bengio, Yoshua and Lamblin, Pascal and Popovici, Dan and Larochelle, Hugo},
@@ -301,6 +308,13 @@ eprint = {1511.07289},
 	year={2017}
 }
 
+@inproceedings{Crawford2019spair,
+	title={Spatially Invariant Unsupervised Object Detection with Convolutional Neural Networks},
+	author={Eric Crawford and Joelle Pineau},
+	booktitle={Association for the Advancement of Artificial Intelligence},
+	year={2019}
+}
+
 @article{Danesh2019deep,
 author = {Rasouli Danesh, Maryam and Yadav, Srishti and Herath, Sachini and Vaghei, Yasaman and Payandeh, Shahram},
 year = {2019},
@@ -442,10 +456,18 @@ volume = {32},
 year = {2013}
 }
 
+@article{Girshick2013rcnn,
+	title={Rich Feature Hierarchies for Accurate Object Detection and Semantic Segmentation},
+	author={Ross B. Girshick and Jeff Donahue and Trevor Darrell and Jitendra Malik},
+	journal={Conference on Computer Vision and Pattern Recognition},
+	year={2013},
+	pages={580-587}
+}
+
 @inproceedings{Goodfellow2014generative,
   title={Generative adversarial nets},
   author={Goodfellow, Ian and Pouget-Abadie, Jean and Mirza, Mehdi and Xu, Bing and Warde-Farley, David and Ozair, Sherjil and Courville, Aaron and Bengio, Yoshua},
-  booktitle={Advances in neural information processing systems},
+  booktitle={Advances in Neural Information Processing Systems},
   pages={2672--2680},
   year={2014}
 }
@@ -551,10 +573,10 @@ year = {2016}
   year         = 2016
 }
 
-@article{Gulrajani2016pixelvae,
+@inproceedings{Gulrajani2016pixelvae,
   title={Pixelvae: A latent variable model for natural images},
   author={Gulrajani, Ishaan and Kumar, Kundan and Ahmed, Faruk and Taiga, Adrien Ali and Visin, Francesco and Vazquez, David and Courville, Aaron},
-  journal={CoRR},
+  booktitle={International Conference on Learning Representations},
     archivePrefix = {arXiv},
 eprint = {1611.05013},
   year={2016}
@@ -596,6 +618,15 @@ eprint = {1603.10122},
 	journal={IEEE Transactions n Pattern Analysis and Machine Intelligence},
 	year={2017}
 }
+
+@article{He2019moco,
+	title={Momentum Contrast for Unsupervised Visual Representation Learning},
+	author={He, Kaiming and Fan, Haoqi and Wu, Yuxin and Xie, Saining and Girshick, Ross},
+	eprint={1911.05722},
+	archivePrefix = {arXiv},
+	year={2019}
+}
+
 
 @inproceedings{Held2016goturn,
 abstract = {Machine learning techniques are often used in computer vision due to their ability to leverage large amounts of training data to improve performance. Unfortunately, most generic object trackers are still trained from scratch online and do not benefit from the large number of videos that are readily available for offline training. We propose a method for using neural networks to track generic objects in a way that allows them to improve performance by training on labeled videos. Previous attempts to use neural networks for tracking are very slow to run and not practical for real-time applications. In contrast, our tracker uses a simple feed-forward network with no online training required, allowing our tracker to run at 100 fps during test time. Our tracker trains from both labeled video as well as a large collection of images, which helps prevent overfitting. The tracker learns generic object motion and can be used to track novel objects that do not appear in the training set. We test our network on a standard tracking benchmark to demonstrate our tracker's state-of-the-art performance. Our network learns to track generic objects in real-time as they move throughout the world.},
@@ -677,7 +708,6 @@ year = {2016}
 @article{Hjelm2019deepinfomax,
   title={Learning Deep Representations by Mutual Information Estimation and Maximization},
   author={R. Devon Hjelm and Alex Fedorov and Samuel Lavoie-Marchildon and Karan Grewal and Adam Trischler and Yoshua Bengio},  
-  journal={CoRR},
   archivePrefix = {arXiv},
   year={2019},
   eprint={1808.06670}
@@ -894,15 +924,6 @@ eprint = {1802.05983},
   year={2018}
 }
 
-@article{Kingma2014adam,
-  title={Adam: A method for stochastic optimization},
-  author={Kingma, Diederik and Ba, Jimmy},
-  journal={CoRR},
-      archivePrefix = {arXiv},
-  eprint = {1412.6980},
-  year={2014}
-}
-
 @inproceedings{Kingma2014auto,
   title={Auto-encoding variational {Bayes}},
   author={Kingma, Diederik P and Welling, Max},
@@ -927,6 +948,13 @@ eprint = {1412.6980},
         archivePrefix = {arXiv},
   eprint = {1606.04934},
   year={2016}
+}
+
+@inproceedings{Kingma2018glow,
+	title={Glow: Generative Flow with Invertible 1x1 Convolutions},
+	author={Diederik P. Kingma and Prafulla Dhariwal},
+	booktitle={Advances in Neural Information Processing Systems},
+	year={2018}
 }
 
 @inproceedings{Klein2003parsing,
@@ -1145,6 +1173,14 @@ year = {2017}
 	pages={1 - 58}
 }
 
+@article{Tschannen2019onmi,
+	title={On Mutual Information Maximization for Representation Learning},
+	author={Michael Tschannen and Josip Djolonga and Paul K. Rubenstein and Sylvain Gelly and Mario Lucic},
+	archivePrefix = {arXiv},
+	year={2019},
+	eprint={1907.13625}
+}
+
 @inproceedings{Maddison2017concrete,
   title        = {The Concrete Distribution: A Continuous Relaxation of Discrete Random Variables},
   author       = {Maddison, Chris J and Mnih, Andriy and Teh, Yee Whye},
@@ -1152,10 +1188,12 @@ year = {2017}
   year         = 2017
 }
 
-@article{Maddison2017filtering,
+@inproceedings{Maddison2017filtering,
   title={Filtering Variational Objectives},
   author={Maddison, Chris J and Lawson, Dieterich and Tucker, George and Heess, Nicolas and Norouzi, Mohammad and Mnih, Andriy and Doucet, Arnaud and Teh, Yee Whye},
-  journal={arXiv preprint arXiv:1705.09279},
+  eprint={1705.09279},
+  archivePrefix={arXiv},
+  booktitle={Advances in Neural Information Processing Systems},
   year={2017}
 }
 
@@ -1164,6 +1202,15 @@ year = {2017}
 	author={Mateusz Malinowski and Marcus Rohrbach and Mario Fritz},
 	booktitle={IEEE International Conference on Computer Vision},
 	year={2015}
+}
+
+@article{Maale2019biva,
+	title={BIVA: A Very Deep Hierarchy of Latent Variables for Generative Modeling},
+	author={Lars Maal{\o}e and Marco Fraccaro and Valentin Li{\'e}vin and Ole Winther},
+	archivePrefix={arXiv},
+	year={2019},
+	eprint={1902.02102},
+	booktitle={Advances in Neural Information Processing Systems},
 }
 
 @inproceedings{Mallat,
@@ -1334,6 +1381,13 @@ url = {http://arxiv.org/abs/1606.05328},
 year = {2016}
 }
 
+@inproceeding{Oord2016wavenet,
+	title={WaveNet: A Generative Model for Raw Audio},
+	author={A{\"a}ron van den Oord and Sander Dieleman and Heiga Zen and Karen Simonyan and Oriol Vinyals and Alex Graves and Nal Kalchbrenner and Andrew W. Senior and Koray Kavukcuoglu},
+	booktitle={ISCA Speech Synthesis Workshop},
+	year={2016}
+}
+
 @inproceedings{Osep2017,
 author = {O{\v{s}}ep, Aljo{\v{s}}a and Mehner, Wolfgang and Voigtlaender, Paul and Leibe, Bastian},
 booktitle = {International Conference on Robotics and Automation},
@@ -1404,9 +1458,18 @@ eprint = {1412.6604},
 @inproceedings{Rasmussen2000infinite,
   title={The infinite {G}aussian mixture model},
   author={Rasmussen, Carl Edward},
-  booktitle={Advances in neural information processing systems},
+  booktitle={Advances in Neural Information Processing Systems},
   pages={554--560},
   year={2000}
+}
+
+@article{Razavi2019vqvae2,
+	title={Generating Diverse High-Fidelity Images with VQ-VAE-2},
+	author={Ali Razavi and Aaron van den Oord and Oriol Vinyals},
+	archivePrefix={arXiv},
+	year={2019},
+	eprint={1906.00446},
+	 booktitle={Advances in Neural Information Processing Systems},
 }
 
 @article{Redmon15,
@@ -1419,11 +1482,29 @@ eprint = {1412.6604},
   year      = {2016},
 }
 
+@article{Ren2015fasterrcnn,
+	title={Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks},
+	author={Shaoqing Ren and Kaiming He and Ross B. Girshick and Jian Sun},
+	journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+	year={2015},
+	volume={39},
+	pages={1137-1149}
+}
+
 @inproceedings{Rezende2014stochastic,
   author = {Rezende, Danilo Jimenez and Mohamed, Shakir and Wierstra, Daan },
   title = {Stochastic backpropagation and approximate inference in deep generative models},
   booktitle = {International Conference on Machine Learning},
   year = {2014},
+}
+
+@inproceedings{Rezende2015flow,
+	title={Variational Inference with Normalizing Flows},
+	author={Danilo Jimenez Rezende and Shakir Mohamed},
+	archivePrefix={arXiv},
+	booktitle = {International Conference on Machine Learning},
+	year={2015},
+	eprint={1505.05770}
 }
 
 @inproceedings{Ristani2016performance,
@@ -1501,6 +1582,15 @@ year = {2017}
 	year={2017}
 }
 
+@article{Schmidhuber1993dicovering,
+	title={Discovering Predictable Classifications},
+	author={J{\"u}rgen Schmidhuber and Daniel Prelinger},
+	journal={Neural Computation},
+	year={1993},
+	volume={5},
+	pages={625-635}
+}
+
 @article{Scholler2019simpler,
   title={The Simpler the Better: Constant Velocity for Pedestrian Motion Prediction},
   author={Sch{\"o}ller, Christoph and Aravantinos, Vincent and Lay, Florian and Knoll, Alois},
@@ -1531,6 +1621,13 @@ year = {2017}
   author={Sisson, Scott A and Fan, Yanan and Beaumont, Mark},
   year={2018},
   publisher={Chapman and Hall/CRC}
+}
+
+@inproceedings{Stelzner2019supair,
+	title={Faster Attend-Infer-Repeat with Tractable Probabilistic Models},
+	author={Karl Stelzner and Robert Peharz and Kristian Kersting},
+	booktitle={International Conference on Machine Learning},
+	year={2019}
 }
 
 @article{Swerling1959kalman,
@@ -1637,6 +1734,13 @@ year = {2014}
   publisher={Cambridge, UK: Cambridge Univ. Press}
 }
 
+@inproceedings{Titsias2015localeg,
+	title={Local Expectation Gradients for Black Box Variational Inference},
+	author={Michalis K. Titsias and Miguel L{\'a}zaro-Gredilla},
+	booktitle={Advances in Neural Information Processing Systems},
+	year={2015}
+}
+
 @inproceedings{Trautman2010unfreezing,
 	title={Unfreezing the robot: Navigation in dense, interacting crowds},
 	author={Trautman, Peter and Krause, Andreas},
@@ -1672,6 +1776,15 @@ year = {2000}
   author={Upadhyay, Yash and Schrater, Paul},
   journal={arXiv preprint arXiv:1806.03796},
   year={2018}
+}
+
+@article{Uria2016nade,
+	title={Neural Autoregressive Distribution Estimation},
+	author={Benigno Uria and Marc-Alexandre C{\^o}t{\'e} and Karol Gregor and Iain Murray and Hugo Larochelle},
+	journal={Journal of Machine Learning Research},
+	year={2016},
+	volume={17},
+	pages={205:1-205:37}
 }
 
 @inproceedings{Vahdat2018dvaehash,
@@ -1718,7 +1831,7 @@ year = {2017}
                Lukasz Kaiser and
                Illia Polosukhin},
   title     = {Attention Is All You Need},
-  journal   = {Neural Information Processing Systems},
+  journal   = {Advances in Neural Information Processing Systems},
   year      = {2017}
 }
 
@@ -1744,6 +1857,13 @@ pmid = {14527267},
 title = {{Grammar as a Foreign Language}},
 opturl = {http://arxiv.org/abs/1409.0473 http://arxiv.org/abs/1412.7449},
 year = {2015}
+}
+
+@article{Viola2001face,
+	title={Rapid object detection using a boosted cascade of simple features},
+	author={Paul A. Viola and Michael J. Jones},
+	journal={IEEE Conference on Computer Vision and Pattern Recognition},
+	year={2001}
 }
 
 @inproceedings{Vot2016,
@@ -1778,6 +1898,14 @@ author = {Watters, Nicholas and Zoran, Daniel and Weber, Theophane and Battaglia
 journal = {Advances in Neural Information Processing Systems},
 title = {{Visual Interaction Networks: Learning a Physics Simulator from Video}},
 year = {2017}
+}
+
+@article{Watters2019broadcast,
+	title={Spatial Broadcast Decoder: A Simple Architecture for Learning Disentangled Representations in VAEs},
+	author={Nicholas Watters and Lo{\"i}c Matthey and Christopher P. Burgess and Alexander Lerchner},
+	archivePrefix={arXiv},
+	year={2019},
+	eprint={1901.07017}
 }
 
 
@@ -1951,6 +2079,13 @@ year = {2008}
 	year={2015}
 }
 
+@inproceedings{Schapire1999boosting,
+	title={A Brief Introduction to Boosting},
+	author={Robert E. Schapire},
+	booktitle={International Joint Conferences on Artificial Intelligence},
+	year={1999}
+}
+
 @inproceedings{Su2016crowd,
 	title={Crowd Scene Understanding with Coherent Recurrent Neural Networks},
 	author={Su, Hang and Dong, Yinpeng and Zhu, Jun and Ling, Haibin and Zhang, Bo},
@@ -2023,6 +2158,40 @@ year = {2008}
 	author={Denton, Emily and Fergus, Rob},
 	booktitle={International Conference on Machjine Learning},
 	year={2018}
+}
+
+@inproceedings{Devlin2019bert,
+	title={BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding},
+	author={Jacob Devlin and Ming-Wei Chang and Kenton Lee and Kristina Toutanova},
+	booktitle={Annual Conference of the North American Chapter of the Association for Computational Linguistics},
+	year={2019}
+}
+
+@inproceedings{Dinh2016realnvp,
+	title={Density estimation using Real NVP},
+	author={Laurent Dinh and Jascha Sohl-Dickstein and Samy Bengio},
+	archivePrefix={arXiv},
+	year={2016},
+	eprint={1605.08803},
+	booktitle={International Conference on Learning Representations},
+}
+
+@inproceedings{Donahue2017bigan,
+	title={Adversarial Feature Learning},
+	author={Jeff Donahue and Philipp Kr{\"a}henb{\"u}hl and Trevor Darrell},
+	archivePrefix = {arXiv},
+	year={2017},
+	eprint={1605.09782},
+	booktitle={International Conference on Learning Representations},
+}
+
+@article{Donahue2019bigbigan,
+	inproceedings={Large Scale Adversarial Representation Learning},
+	author={Jeff Donahue and Karen Simonyan},
+	archivePrefix = {arXiv},
+	year={2019},
+	eprint={1907.02544},
+	booktitle={Advances in Neural Information Processing Systems},
 }
 
 @inproceedings{Keuper2018motion,
