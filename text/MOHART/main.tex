@@ -1,0 +1,159 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2020_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+%\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+
+
+% added by FAFU
+
+%\usepackage[utf8]{inputenc} % allow utf-8 input
+%\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+%\usepackage{hyperref}       % hyperlinks
+%\usepackage{url}            % simple URL typesetting
+%\usepackage{booktabs}       % professional-quality tables
+%\usepackage{amsfonts}       % blackboard math symbols
+%\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+%\usepackage{microtype}      % microtypography
+
+% \usepackage[noabbrev,capitalize]{cleveref}
+\usepackage{cleveref}
+% \usepackage{caption}
+% \usepackage[font=small]{caption}
+\usepackage{subcaption}
+% uncommented \input{math_commands.tex} for ICLR because then the following line caused an error
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{times}
+%\usepackage[numbers]{natbib}
+\usepackage{multicol}
+\usepackage{graphicx}
+% for tables side-by-side
+\usepackage{geometry}
+\usepackage{array, caption, floatrow, tabularx, makecell, booktabs}%
+\captionsetup{labelfont = sc}
+\setcellgapes{3pt}
+\usepackage{mlmacros} % needs file mlmacros.sty
+\usepackage[T1]{fontenc}
+\usepackage[acronym,smallcaps,nowarn,section,nogroupskip,nonumberlist]{glossaries}
+\renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}
+\glsdisablehyper % disable hyperlinks to gls commands globally
+\input{glossary}
+\renewcommand{\citep}[1]{(\citet{#1})}
+\variables{a,g,t,x,y,z} % needs file mlmacros.sty
+
+\newcommand{\opj}[1]{\textcolor{blue}{\textbf{opj}: #1}}
+\newcommand{\OPJ}[1]{\todo{\opj{#1}}}
+
+\newcommand{\ff}[1]{\textcolor{black}{\textbf{ff}: #1}}
+\newcommand{\FF}[1]{\todo{\ff{#1}}}
+
+% \usepackage{titlesec}
+
+% \titlespacing*{\section}{0pt}{.1\baselineskip}{.1\baselineskip}
+% \titlespacing*{\subsection}{0pt}{0.1\baselineskip}{0.1\baselineskip}
+
+% \setlength\floatsep{0.1\baselineskip plus 3pt minus 2pt}
+% \setlength\textfloatsep{1.\baselineskip plus 3pt minus 2pt}
+% \setlength\intextsep{1.0\baselineskip plus 3pt minus 2 pt}
+
+% \title{Permutation Invariance and \\ Relational Reasoning in Multi-Object Tracking}
+% \title{Improving End-to-End Object Tracking Using\\Relational Reasoning}
+\title{End-to-end Recurrent Multi-Object Tracking and Trajectory Prediction with Relational Reasoning}                                                                                             
+% Authors must not appear in the submitted version. They should be hidden                            
+% as long as the \iclrfinalcopy macro remains commented out below.                                   
+% Non-anonymous submissions will be rejected without review.                                         
+                                                                                                     
+% \author{Antiquus S.~Hippocampus, Natalia Cerebro \& Amelie P. Amygdale\\
+% % \thanks{ Use footnote for providing further information
+% % about author (webpage, alternative address)---\emph{not} for acknowledging
+% % funding agencies.  Funding acknowledgements go at the end of the paper.} \\
+% Department of Computer Science\\
+% Cranberry-Lemon University\\
+% Pittsburgh, PA 15213, USA \\
+% \texttt{\{hippo,brain,jen\}@cs.cranberry-lemon.edu} \\
+% \And
+% Ji Q. Ren \& Yevgeny LeNet \\
+% Department of Computational Neuroscience \\
+% University of the Witwatersrand \\
+% Joburg, South Africa \\
+% \texttt{\{robot,net\}@wits.ac.za} \\
+% \AND
+% Coauthor \\
+% Affiliation \\
+% Address \\
+% \texttt{email}
+% }
+
+\author{Fabian B. Fuchs,\, Adam R. Kosiorek,\, Li Sun,\, Oiwi Parker Jones,\,Ingmar Posner\\
+Applied AI Lab,  University of Oxford \\
+\texttt{\{fabian, adamk, kevin, oiwi, ingmar\}@robots.ox.ac.uk} \\
+}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+    % Tracking-by-detection is a well-established multi-object tracking paradigm, which however cannot handle cases of tracking objects from unseen categories often required in rich real-world environments.
+    % In this work, we introduce MOHART, a class-agnostic end-to-end multi-object tracking algorithm, which estimates objects' states and considers relations between objects, while also allowing for future trajectory prediction, which is essential for planning purposes.
+    % We use three real-world tracking datasets to show that adding relational reasoning capabilities increases the tracking and trajectory prediction performance, particularly in the presence of ego-motion, occlusions, crowded scenes, and faulty sensor inputs. To the best of our knowledge, MOHART is the first fully end-to-end multi-object tracking from vision approach applied to real-world data reported in the literature. 
+    
+	Relational reasoning---the ability to model interactions and relations between objects---is valuable for robust multi-object tracking and pivotal for trajectory prediction. In this paper, we propose MOHART, a class-agnostic, end-to-end multi-object tracking and trajectory prediction algorithm, which explicitly accounts for permutation invariance in its relational reasoning. We explore a number of permutation invariant architectures and show that multi-headed self-attention outperforms the provided baselines and better accounts for complex physical interactions in a challenging toy experiment. We show on three real-world tracking datasets that adding relational reasoning capabilities in this way increases the tracking and trajectory prediction performance, particularly in the presence of ego-motion, occlusions, crowded scenes, and faulty sensor inputs. To the best of our knowledge, MOHART is the first fully end-to-end multi-object tracking from vision approach applied to real-world data reported in the literature. 
+
+% 	Relational reasoning, the ability to model interactions and relations between objects, is valuable for robust multi-object tracking and pivotal for trajectory prediction. In this paper we propose MOHART, a class-agnostic, end-to-end multi-object tracking and trajectory prediction algorithm, which explicitly accounts for permutation invariance in its relational reasoning. We explore a number of permutation invariant architectures and show that those using only a single permutation invariant operation like \emph{DeepSets}, despite, in theory, being universal function approximators, are nonetheless outperformed by a more complex architecture based on multi-headed attention. We show on three real-world tracking datasets that adding relational reasoning capabilities in this way increases the tracking and trajectory prediction performance, particularly in the presence of ego-motion, occlusions, crowded scenes, and faulty sensor inputs. To the best of our knowledge, MOHART is the first fully end-to-end multi-object tracking from vision approach applied to real-world data reported in the literature. 
+
+
+% 	Relational reasoning, the ability to model interactions and relations between objects, is pivotal for robust multi-object tracking and trajectory prediction. In this paper we propose MOHART, a class-agnostic, end-to-end multi-object tracking algorithm, which explicitly accounts for permutation invariance in its relational reasoning. We explore a number of permutation invariant architectures and show that those using only a single permutation invariant operation like \emph{DeepSets}, despite, in theory, being universal function approximators, are nonetheless outperformed by a more complex architecture based on multi-headed attention. We show on three real-world tracking datasets that adding relational reasoning capabilities in this way increases the tracking and trajectory prediction performance, particularly in the presence of ego-motion, occlusions, crowded scenes, and faulty sensor inputs. To the best of our knowledge, MOHART is the first fully end-to-end multi-object tracking from vision approach applied to real-world data reported in the literature. 
+	
+	%Relational reasoning is the ability to model interactions between objects and is critical for a number of cognitive functions and machine learning applications. In this paper, we explore relational reasoning in the context of multi-object tracking and the role of \emph{permutation invariance}. Specifically, we find that permutation-invariant models outperform non-permutation-invariant alternatives. We also find that architectures using a single permutation invariant operation like DeepSets, despite, in theory, being universal function approximators, are nonetheless outperformed by a more complex architecture based on multi-headed attention. To the best of our knowledge, we propose the first fully end-to-end multi-object tracking algorithm. We show on three real-world tracking datasets that adding relational reasoning capabilities in our proposed way increases the tracking and trajectory prediction performance, particularly in the presence of ego-motion, occlusions, crowded scenes, and faulty sensor inputs.
+\end{abstract}
+
+\input{1_introduction}
+%previous bounding-box. This simplif, \ie asdqwe
+%previous bounding-box. This simplifies the approach, but does not allow the model to learn where to look---\ie no gradient is backpropagated through crop coordinates.
+%To the best of our knowledge, there are no successful implementations of any such end-to-end approaches for multi-object tracking beyond \textsc{sqair} \citep{Kosiorek2018sqair}, which works only on datasets with static backgrounds. On real-world data, the only end-to-end approaches correspond to applying multiple single-object trackers in parallel---a method which does not leverage the potential of scene context or inter-object interactions. 
+
+
+\input{1b_related_work}
+\input{2_model}
+\input{3_validation}
+\input{4_experiments}
+\input{5_discussion}
+\section*{Acknowledgements}
+We thank Stefan Saftescu for his contributions, particularly for integrating the Stanford Drone Dataset, and Adam Golinski as well as Stefan Saftescu for proof-reading. This research was funded by the EPSRC AIMS Centre for Doctoral Training at Oxford University and an EPSRC Programme Grant (EP/M019918/1).
+We acknowledge use of Hartree Centre resources in this work. The STFC Hartree Centre is a research collaboratory in association with IBM providing High Performance Computing platforms funded by the UK's investment in e-Infrastructure. The Centre aims to develop and demonstrate next generation software, optimised to take advantage of the move towards exa-scale computing.
+{
+\small
+\bibliographystyle{plainnat}
+\newpage\bibliography{main.bib}  % .bib
+}
+\newpage\clearpage
+\appendix
+
+
+
+\input{6_experimental_details.tex}
+\input{6_architecture_details.tex}
+\input{6_first_toy_experiment.tex}
+\input{6_exp_prediction.tex}
+\input{6_blackout.tex}
+
+\end{document}
