@@ -1,1 +1,17 @@
-Your abstract text goes here.  Check your departmental regulations, but generally this should be less than 300 words. 
+%Your abstract text goes here.  Check your departmental regulations, but generally, this should be less than 300 words. 
+
+Whenever an agent interacts with its environment, it has to take into account and interact with any objects present in this environment.
+And yet, the majority of machine learning solutions either treat objects only implicitly or employ highly-engineered solutions that account for objects through object detection algorithms.
+In this thesis, we explore supervised and unsupervised methods for learning object-centric representations from vision.
+We focus on end-to-end learning, where information about objects can be extracted directly from images, and where every object can be separately described by a single vector-valued variable.
+Specifically, we present three novel methods:
+\begin{itemize}
+	\item \textsc{Hart} and \textsc{mohart}, which track single- and multiple-objects in video, respectively, by using \textsc{rnn}s with a hierarchy of differentiable attention mechanisms.
+	These algorithms learn to anticipate future appearance changes and movement of tracking objects, thereby learning representations that describe every tracked object separately.
+	\item \textsc{Sqair}, a \textsc{vae}-based generative model of moving objects, which explicitly models disappearance and appearance of new objects in the scene.
+	It models every object with a separate latent variable, and disentangles appearance, position and scale of each object.
+	Posterior inference in this model allows for unsupervised object detection and tracking.
+	\item \textsc{Scae}, an unsupervised autoencoder with in-built knowledge of two-dimensional geometry and object-part decomposition, which is based on capsule networks.
+	It learns to discover parts present in an image, and group those parts into objects.
+	Each object is modelled by a separate \textit{object capsule}, whose activation probability is highly correlated with the object class, therefore allowing for state-of-the-art unsupervised image classification. 
+\end{itemize}
