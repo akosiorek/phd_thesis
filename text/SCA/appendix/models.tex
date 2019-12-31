@@ -3,7 +3,6 @@
 
 \subsection{Constellation Experiments}
 \label{app:constellation_model}
-% Implementation:
 The \gls{CCAu} uses a four-layer Set Transformer as its encoder.
 Every layer has four attention heads, 128 hidden units per head, and is followed by layer norm \citep{Ba2016layern}.
 The encoder outputs three 32-dimensional vectors---one for each object capsule.
@@ -15,7 +14,6 @@ In this experiment, each object$\rightarrow$part relationship \gls{OP} is just a
 We use a convolutional encoder for part capsules and a set transformer encoder \citep{Lee2019set} for object capsules.
 Decoding from object capsule to part capsules is done with \glspl{MLP}, while the input image is reconstructed with affine-transformed learned templates.
 Details of the architectures we used are available in \Cref{tab:arch}.
-% \comment{
 \begin{center}
 \centering
     \captionof{table}{
@@ -31,7 +29,6 @@ Details of the architectures we used are available in \Cref{tab:arch}.
         num capsules & 3 & 24 & 32 & 64\\
         part \textsc{cnn} & N/A & 2x(128:2)-2x(128:1) & 2x(128:1)-2x(128:2) & \textsc{s} \\
         set transformer & 4x(4-128)-32  & 3x(1-16)-256 & 3x(2-64)-128 & \textsc{s}
-        % \midrule
 \end{tabular}
 \end{center}
 
@@ -67,7 +64,6 @@ Models were trained for up to $3*10^5$ iterations on single Tesla V100 GPUs, whi
         posterior within sparsity & 0 & 10 & 8.62 & 1.39 \\
         posterior between sparsity & 0 & 10 & 0.26 & 7.32 \\
         too-few-active-capsules & 10 & 0 & 0 & 0
-        % \midrule
 \end{tabular}
 \end{center}
 
@@ -85,20 +81,3 @@ CIFAR10 &
     \label{fig:svhn_recons}
 \end{center}
 
-% \begin{figure}
-%     \centering
-%     \vspace*{.5em}
-%     \begin{minipage}[b]{0.58\linewidth}
-%     \centering
-%     \includegraphics[width=\linewidth]{figures/SCA/constellation_read.png}
-%     \vspace*{.05em}
-%     \end{minipage}
-%     \hfill
-%     \begin{minipage}[b]{.4\linewidth}
-%     \caption{Constellation Autoencoder. 
-%     The set transformer encoder $h^\mathrm{caps}$ predicts parameters of two object capsules, which predict affine transformations, precisions and presences of object and part capsules. 
-%     Finally, input points are explained by a mixture of predictions, where the size of the circle corresponds to its precision.
-%     }
-%     \label{fig:constellation_capsule}
-%     \end{minipage}
-% \end{figure}

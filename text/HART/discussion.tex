@@ -2,12 +2,6 @@
 \label{sec:hart_discussion}
     
     
-    % \begin{figure}
-    %     \centering
-    %     \includegraphics[width=\textwidth]{att_loss_expr}
-    %     \caption{Setup for tracking a single white dot on a black background. This simple setup allows to evaluate influence of different loss components on learning.}
-    %     \label{fig:att_min_setup}
-    % \end{figure}
     
       \begin{figure}
       \centering
@@ -31,14 +25,10 @@
     
   
     The experiments in the previous section show that it is possible to track real-world objects with a recurrent attentive tracker. While similar to the tracker by \citet{Kahou2015ratm}, our approach uses additional building blocks, specifically: 
-%    \begin{enumerate*}[label=(\roman*)]
-	\begin{inparaenum}[(i)]
-        \item bounding-box regression loss,
-        \item loss on spatial attention,
-        \item appearance attention with an additional loss term, and
-        \item combines all of these in a unified approach.
-%    \end{enumerate*}
-	\end{inparaenum}
+        (1) bounding-box regression loss,
+        (2) loss on spatial attention,
+        (3) appearance attention with an additional loss term, and
+        (4) combines all of these in a unified approach.
     We now discuss properties of these modules.
     \begin{description}[leftmargin=\parindent]
         \item[Spatial Attention Loss prevents Vanishing Gradients]        

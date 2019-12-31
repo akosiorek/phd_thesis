@@ -19,11 +19,8 @@ We then model each input part as a Gaussian mixture, where $\mu_{k,n}$ and $\lam
 See \Cref{fig:capsule_arch,fig:sca_arch} for illustration; formal description follows:
 \begin{align}
     &\textsc{ov}_{1:K}, \bc_{1:K}, a_{1:K} = \operatorname{h^\mathrm{caps}} (\bx_{1:M}) &\text{encode object capsule parameters,}\\
-    % 
     &\textsc{op}_{k,1:N}, a_{k, 1:N}, \lambda_{k, 1:N} = \operatorname{h_k^\mathrm{part}} (\bc_k) &\text{decode candidate parameters from $c_k$'s,}\\
-    % 
     &V_{k,n} = \textsc{ov}_k \textsc{op}_{k,n} &\text{decode a part pose candidate,}\\
-    % 
     &\p{\bx_m}{k,n} = \gauss{\bx_m \mid \mu_{k,n}, \lambda_{k,n}} &\text{turn candidates into mixture components,}\label{eq:component}
 \end{align}
 \begin{equation}
@@ -33,33 +30,9 @@ See \Cref{fig:capsule_arch,fig:sca_arch} for illustration; formal description fo
 \end{equation}
 The model is trained without supervision by maximizing the likelihood of part capsules in \Cref{eq:constellation_likelihood} subject to sparsity constraints, \textit{cf}.\ \Cref{sec:losses}.
 The part capsule $m$ can be assigned to the object capsule $k^\star$ as $k^\star = \operatorname{arg\,max}_{k}~a_k a_{k,n}\;\p{\bx_m}{k,n}$.\footnote{We treat parts as independent and evaluate their probability under the same mixture model. While there are no clear 1:1 connections between parts and predictions, it seems to work well in practice.}
-%\begin{figure} 
-%    \centering
-%    \begin{minipage}[c]{0.35\linewidth}
-%        \centering
-%        \includegraphics[width=\linewidth]{figures/SCA/consinvert5}
-%    \end{minipage}
-%    \hfill
-%    \begin{minipage}[c]{0.63\linewidth}
-%        \centering
-%        \caption{
-%            Unsupervised segmentation of points belonging to up to three constellations of squares and triangles at different positions, scales and orientations. 
-%            The model is trained to reconstruct the points (top row) under the \gls{CCAu} mixture model. The bottom row colors the points based on the parent with highest posterior probability in the mixture model. 
-%            The right-most column shows a failure case.
-%            Note that the model uses sets of points, not pixels, as its input; we use images  only to visualize the constellation arrangements.
-%        }
-%        \label{fig:constellations}
-%    \end{minipage}
-%\end{figure}
 \begin{SCfigure}[50]
 	\centering
-%	\begin{minipage}[c]{0.35\linewidth}
-%		\centering
 		\includegraphics[width=.35\linewidth]{figures/SCA/consinvert5}
-%	\end{minipage}
-%	\hfill
-%	\begin{minipage}[c]{0.63\linewidth}
-%		\centering
 		\caption{
 			Unsupervised segmentation of points belonging to up to three constellations of squares and triangles at different positions, scales and orientations. 
 			The model is trained to reconstruct the points (top row) under the \gls{CCAu} mixture model. The bottom row colors the points based on the parent with highest posterior probability in the mixture model. 
@@ -67,7 +40,6 @@ The part capsule $m$ can be assigned to the object capsule $k^\star$ as $k^\star
 			Note that the model uses sets of points, not pixels, as its input; we use images  only to visualize the constellation arrangements.
 		}
 		\label{fig:constellations}
-%	\end{minipage}
 \end{SCfigure}
 Empirical results show that this model is able to perform unsupervised instance-level segmentation of points belonging to different constellations, even in data which is difficult to interpret for humans. See \Cref{fig:constellations} for an example and \Cref{sec:constellation_expr} for details.
 
@@ -93,15 +65,12 @@ More formally:
 \begin{align}
     &\bx_{1:M}, d_{1:M}, \bz_{1:M} = \operatorname{h^{\mathrm{enc}}}(\by) \qquad\text{encode the image to part capsule params,}\\
     &\widehat{T}_m = \operatorname{TransformImage} (T_m, \bx_m)  \qquad\text{affine transforms image templates,}\\
-    % 
     &p^y_{m,i,j} \propto d_m \operatorname{f_c}\left(\widehat{T}_{m,i,j}\right) \qquad\text{compute mixing probabilities,}\\
-    % 
     &\p{\by} = \prod_{i,j} \sum_{m=1}^M p^y_{m,i,j}\, \gauss{y_{i,j} \mid \widehat{T}_{m,i,j}, \sigma^2_y} \qquad\text{calculate image likelihood.} \label{eq:im_likelihood}
 \end{align}
 
 \subsection{Object Capsule Autoencoder (\textsc{OCAE})}
 \label{sec:ocae}
-% \todo{\ak{explain why constellation and object aes are differnet}}
 
 The next step is to find objects in the already discovered parts\footnote{
     Discovered objects are {\it not} used top-down to refine the presences or poses of the parts during inference. However, the derivatives backpropagated via \gls{OCAu} refine the lower-level encoder network that infers the parts.
@@ -109,7 +78,6 @@ The next step is to find objects in the already discovered parts\footnote{
 To do so, we use concatenated poses $\bx_m$, special features $\bz_m$ and flattened templates $T_m$ (which convey the identity of the part capsule)
 as an input to the \gls{OCAu}, which differs from the \gls{CCAu} in the following ways.
 Firstly, we feed part capsule presence probabilities $d_m$ into the \gls{OCAu}'s encoder---these are used to bias the Set Transformer's attention mechanism to not take absent points into account.
-% ; see \Cref{app:set_transformer} for details.
 Secondly, $d_m$'s are also used to weigh the part-capsules' log-likelihood, \textit{cf}. \Cref{eq:constellation_likelihood}.
 Additionally, we stop the gradient on all of \gls{OCAu}'s inputs except the special features to improve training stability and avoid the problem of collapsing latent variables; see\eg \cite{Rasmus2015ladder}.
 Finally, parts discovered by the \gls{PCAu} have independent identities (templates and special features rather than 2D points).
@@ -121,17 +89,6 @@ Consequently, the part-capsule likelihood is given by,
     \,\p{\bx_m}{k,m}\right]^{d_m}\,. \label{eq:mod_constellation_likelihood}
 \end{equation}
 
-%\begin{figure}
-%    \centering
-%    \begin{minipage}[b]{.47\linewidth}
-%    \includegraphics[width=\linewidth]{figures/SCA/templates}
-%    \end{minipage}
-%    \hfill
-%    \begin{minipage}[b]{.52\linewidth}
-%    \caption{Templates learned on \textsc{mnist} (left) as well as sobel-filtered \textsc{svhn} (middle) and \textsc{cifar10} (right). In each case templates converge to strokes. For \textsc{svhn} they often take the form of double strokes---this is due to sobel filtering, which effectively extracts edges.}
-%    \label{fig:learned_templates}
-%    \end{minipage}
-%\end{figure}
 \begin{figure}
 	\centering
 		\includegraphics[width=.85\linewidth]{figures/SCA/templates}
@@ -164,8 +121,6 @@ Consequently, the part-capsule likelihood is given by,
         \includegraphics[width=\linewidth]{figures/SCA/mnist/transformed_templates}
         \caption{}
     \end{subfigure}
-%    \hfill
-%    \begin{minipage}[c]{.52\linewidth}
         \caption{
         $40\times40$ \textsc{mnist} (a) images and their (b) reconstructions from part capsules in red and object capsules in green, with overlapping regions in yellow.
         Only a few object capsules are activated for every input (c) a priori (left) and even fewer are needed to reconstruct it (right).
@@ -173,7 +128,6 @@ Consequently, the part-capsule likelihood is given by,
         Finally, (e) affine-transformed templates show how exactly parts are used to reconstruct the images.
         }
         \label{fig:mnist_rec}
-%    \end{minipage}
 \end{figure}
 \subsection{Achieving Sparse and Diverse Capsule Presences}
 \label{sec:losses}
@@ -201,7 +155,6 @@ respectively; the former is the maximum presence probability among predictions f
         +
          \frac{1}{K} \sum_{k=1}^K || \overline{u}_k  - \frac{B}{C} ||_2\,. \label{eq:prior_sparsity}
     \end{equation}
-    % 
 \item[Posterior Sparsity]
     Similarity, let $\overline{v}_k$ and $\widehat{v}_b$ be the the normalized versions of  $\sum_{k,m} a^\mathrm{posterior}_{b,k,m}$
     and $\sum_{b,m} a^\mathrm{posterior}_{b,k,m}$, respectively.
@@ -209,12 +162,10 @@ respectively; the former is the maximum presence probability among predictions f
     \begin{equation}
         \loss[\mathrm{posterior}]{} = \frac{1}{K} \sum_{k=1}^K \mathcal{H}(\overline{v}_k) - \frac{1}{B} \sum_{b=1}^B \mathcal{H}(\widehat{v}_b)\,. \label{eq:posterior_sparsity}
     \end{equation}
-% 
 \item[Every active object capsule should explain at least two parts]
     We say that an object capsule has `won' a part if it has the highest posterior mixing probability for that part among other object capsules.
     We then create binary labels for each of object capsules, where the label is $1$ if the capsule wins at least two parts and it is $0$ otherwise.
     The final loss takes the form of binary cross-entropy between the generated label and the prior capsule presence. This loss is used only for the stand-alone constellation model experiments on point data, \textit{cf}. \Cref{sec:constellation,sec:constellation_expr}.
-% 
 \end{description}
 \begin{figure}
     \centering

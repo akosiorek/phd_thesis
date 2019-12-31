@@ -14,7 +14,6 @@ The propagation posterior for a single object can be expanded as follows,
         &\quad \qp{\bzt^{\mathrm{where}, i}}{\bz_{t-1}^{\mathrm{what}, i}, \bz_{t-1}^{\mathrm{where}, i}, \hT{t-1}{i}, \hR{t}{i}}{\phi}\\
         &\quad \qp{\bzt^{\mathrm{what}, i}}{\bxt, \bzt^{\mathrm{where}, i}, \bz_{t-1}^{\mathrm{what}, i}, \hT{t}{i}, \hR{t}{i}}{\phi}\\
         &\quad \qp{\zt^{\mathrm{pres}, i}}{\bzt^{\mathrm{what}, i}, \bzt^{\mathrm{where}, i}, z_{t-1}^{\mathrm{pres}, i}, \hT{t}{i}, \hR{t}{i}}{\phi}.
-        % &\quad \qp{\zt^{\mathrm{pres}, i}}{\bxt, \bzt^{\mathrm{what}, i}, \bzt^{\mathrm{where}, i}, \bm{h}_t^{T, i}, \bm{h}_t^{P,i}}{\phi}\delta( z_{t-1}^{\mathrm{pres}, i} - 1).
 \end{aligned}
 \end{equation}
 In the second line, we condition the object location $\bzt^{\mathrm{where}, i}$ on its previous appearance and location as well as its dynamics and relation with other objects.

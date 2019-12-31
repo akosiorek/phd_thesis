@@ -1,144 +1,82 @@
-% !tex root=./main.tex
 
 \section{Revisiting Reweighted Wake-Sleep}
 \label{sec:method}
 
 \Acrfull{RWS}~\citep{Bornschein2015reweighted} comes from a family of algorithms~\citep{Hinton1995wake,Dayan1995helmholtz} for learning deep generative models, eschewing a single objective over parameters~\(\theta\) and~\(\phi\) in favour of individual objectives for each.
-%
 We review the \gls{RWS} algorithm and discuss its pros and cons.
 
 \subsection{Reweighted Wake-Sleep}
 
-% context and overal framework of RWS
 \Acrfull{RWS}~\citep{Bornschein2015reweighted} is an extension of the \acrlong{WS} algorithm~\citep{Hinton1995wake,Dayan1995helmholtz} both of which, like \gls{IWAE}, jointly learn a generative model and an inference network given data.
-%
 While \gls{IWAE} targets a single objective, \gls{RWS} alternates between objectives, updating the generative model parameters $\theta$ using a \emph{wake-phase $\theta$ update} and the inference network parameters $\phi$ using either a \emph{sleep-} or a \emph{wake-phase $\phi$ update} (or both).
 
 \paragraph{Wake-phase $\theta$ update.}%
-%
 Given~$\phi$, $\theta$~is updated using an unbiased estimate of $\nabla_\theta -\big(\frac{1}{N}\!\sum_{n = 1}^N \!\ELBO_{\text{IS}}^K(\theta, \phi, x^{(n)})\!\big)$, obtained without reparameterization or control variates, as the sampling distribution $Q_\phi(\cdot | x)$ is independent of $\theta$\!.%
-%
 \footnote{We assume that the deterministic mappings induced by the parameters~\(\theta, \phi\) are themselves differentiable, such that they are amenable to gradient-based learning.}
 
 \paragraph{Sleep-phase $\phi$ update.}%
-%
 Here, $\phi$ is updated to minimize the \gls{KL} divergence between the posteriors under the generative model and the inference network, averaged over the data distribution of the current generative model
-%
 \begin{align}
   \E_{p_\theta(x)}&[\KL(p_\theta(z \given x), q_\phi(z \given x))] \nonumber\\
   &= \E_{p_\theta(z, x)}[\log p_\theta(z \given x) - \log q_\phi(z \given x)].
   \label{eq:sleep-phi-obj}
 \end{align}
-%
 Its gradient, $\E_{p_\theta(z, x)}[-\nabla_\phi \log q_\phi(z \given x)]$, is estimated by evaluating $-\nabla_\phi \log q_\phi(z \given x)$, where $z, x \sim p_\theta(z, x)$.
-%
 The estimator's variance can be reduced at a standard Monte Carlo rate by increasing the number of samples of $z, x$.
 
 \paragraph{Wake-phase $\phi$ update.}%
-%
 \hspace*{-0.5ex}Here, \(\phi\) is updated to minimize the \gls{KL} divergence between the posteriors under the generative model and the inference network, averaged over the true data distribution
-%
 \begin{align}
   \hspace*{-0.35em}
   \E_{p(x)}&[\KL(p_\theta(z \given x), q_\phi(z \given x))] \nonumber \\
   &= \E_{p(x)}[\E_{p_\theta(z \given x)}[\log p_\theta(z \given x) - \log q_\phi(z \given x)]]. \label{eq:wake-phi-obj}
 \end{align}
-%
 The outer expectation $\E_{p(x)}[\E_{p_\theta(z \given x)}[-\nabla_\phi \log q_\phi(z \given x)]]$ of the gradient is estimated using a single sample $x$ from the true data distribution $p(x)$, given which, the inner expectation is estimated using self-normalized importance sampling with $K$ particles, using $q_\phi(z \given x)$ as the proposal distribution.
-%
 This results in the following estimator
-%
 \begin{align}
   \sum_{k = 1}^K \frac{w_k}{\sum_{\ell = 1}^K w_\ell} \left(-\nabla_\phi \log q_\phi(z_k \given x)\right), \label{eq:wake-phi-est}
 \end{align}
-%
 where, similar to \cref{eq:elbo_is}, $x \sim p(x)$, $z_k \sim q_\phi(z_k \given x)$, and $w_k = p_\theta(z_k, x) / q_\phi(z_k \given x)$.
-%
 Note that \cref{eq:wake-phi-est} is the negative of the second term of the \acrshort{REINFORCE} estimator of the \gls{IWAE} \gls{ELBO} in \cref{eq:iwae-reinforce}.
-% \cref{eq:iwae-sampling-dist-weight}.
-%
 The crucial difference between the \emph{wake-phase $\phi$ update} and the \emph{sleep-phase $\phi$ update} is that the expectation in \cref{eq:wake-phi-obj} is over the \emph{true data distribution} $p(x)$ and the expectation in \cref{eq:sleep-phi-obj} is under the \emph{current model distribution} $p_\theta(x)$.
-%
 The former is desirable from the perspective of amortizing inference over data from~\(p(x)\), and although its estimator is biased, this bias decreases as $K$ increases.
 
-% While \citet{Bornschein2015reweighted} refer to the use of the \emph{sleep-phase $\phi$ update} followed by an equally-weighted mixture of the \emph{wake-phase} and \emph{sleep-phase} updates of~\(\phi\), we here use \gls{RWS} to refer to the variant that employs just the \emph{wake-phase $\phi$ update}, and not the mixture.
-% %
-% The rationale for our preference will be made clear from the empirical evaluations (\cref{sec:experiments}).~\tal{delete this paragraph?}
 
 \subsection{Pros of Reweighted Wake-Sleep}
 
 While the gradient update of $\theta$ targets the same objective as \gls{IWAE}, the gradient update of $\phi$ targets the objective in \cref{eq:sleep-phi-obj} in the sleep case and \cref{eq:wake-phi-obj} in the wake case.
-% This leads to three advantages of \gls{RWS} over \gls{IWAE} for learning inference networks.
 This makes \gls{RWS} a preferable option to \gls{IWAE} for learning inference networks because
 the $\phi$ updates in \gls{RWS} directly target minimization of the expected \gls{KL} divergences from the true to approximate posterior.
-%
 With an increased computational budget, using more Monte Carlo samples in the \emph{sleep-phase $\phi$ update} case and more particles $K$ in the \emph{wake-phase $\phi$ update}, we obtain a better estimator of these expected \gls{KL} divergences.
-%
 This is in contrast to \gls{IWAE}, where optimizing $\ELBO_{\acrshort{IS}}^K$ targets a \gls{KL} divergence on an extended sampling space~\citep{Le2018autoencoding} which for $K > 1$ doesn't correspond to a \gls{KL} divergence between true and approximate posteriors (in any order).
-%
 Consequently, increasing~\(K\) in \gls{IWAE} leads to impaired learning of inference networks~\citep{Rainforth2018tighter}.
 
 Moreover, targeting $\KL(p, q)$ as in \gls{RWS} can be preferable to targeting $\KL(q, p)$ as in \glspl{VAE}.
-%
 The former encourages \emph{mean-seeking behavior}, having the inference network to put non-zero mass in regions where the posterior has non-zero mass, whereas the latter encourages \emph{mode-seeking behavior}, having the inference network to put mass on one of the modes of the posterior~\citep{Minka2005divergence}.
-%
 Using the inference network as an \gls{IS} proposal requires mean-seeking behavior~\citep[Theorem 9.2]{owen2013monte}.
-%
 Moreover, \citet{Chatterjee2018sample} show that the number of particles required for \gls{IS} to accurately approximate expectations of the form $\E_{p(z \given x)}[f(z)]$ is directly related to $\exp(\KL(p, q))$.
 
 \subsection{Cons of Reweighted Wake-Sleep}
 \label{sec:disadvantages}
 
 While a common criticism of the wake-sleep family of algorithms is the lack of a unifying objective, we have not found any empirical evidence where this is a problem.
-%
 Perhaps a more relevant criticism is that both the sleep and wake-phase $\phi$ gradient estimators are biased with respect to $\nabla_\phi \E_{p(x)}[\KL(p_\theta(z \given x), q_\phi(z \given x))]$.
-%
 The bias in the sleep-phase $\phi$ gradient estimator arises from targeting the expectation under the model rather than the true data distribution, and the bias in the wake-phase $\phi$ gradient estimator results from estimating the \gls{KL} divergence using self-normalized \gls{IS}.
 
 In theory, these biases should not affect the fixed point of optimization $(\theta^*\!, \phi^*)$ where $p_{\theta^*}(x) = p(x)$ and $q_{\phi^*}(z \given x) = p_{\theta^*}(z \given x)$.
-%
-% First, the data distribution bias should reduce to zero as $\theta \rightarrow \theta^*$ through the wake-phase $\theta$ update.
 First, if $\theta \rightarrow \theta^*$ through the wake-phase $\theta$ update, the data distribution bias reduces to zero.
-%
 Second, although the wake-phase $\phi$ gradient estimator is biased, it is consistent---with large enough $K$, convergence of stochastic optimization is theoretically guaranteed on convex objectives and empirically on non-convex objectives~\citep{Chen2018stochastic}.
-%
 Further, this gradient estimator follows the central limit theorem, so its asymptotic variance decreases linearly with $K$~\citep[Eq. (9.8)]{owen2013monte}.
-%
 Thus, using larger $K$ improves learning of the inference network.
 
 In practice, the families of generative models, inference networks, and the data distributions determine which of the biases are more significant.
-%
 In most of our findings, the bias of the data distribution appears to be the most detrimental.
-%
 This is due to the fact that initially $p_\theta(x)$ is quite different from $p(x)$, and hence using sleep-phase $\phi$ updates performs worse than using wake-phase $\phi$ updates.
-%
 An exception to this is the \gls{PCFG} experiment (c.f. \cref{sec:experiments/pcfg}) where the data distribution bias is not as large and inference using self-normalized \gls{IS} is extremely difficult.
 
-% In theory, the data distribution bias should reduce to zero as since the model distribution match the true distribution
-% The data distribution bias is detrimental to learning
-
-% The objective of the \emph{sleep-phase $\phi$ update} in \eqref{eq:sleep-phi-obj} is an expectation of \gls{KL} under the current model distribution $p_\theta(x)$ rather than the true one $p(x)$.
-% This makes the \emph{sleep-phase $\phi$ update} suboptimal since the inference network must always follow a ``doubly moving'' target (both $p_\theta(x)$ and $p_\theta(z \given x)$ change during the optimization).
-
-% Moreover, using a small number of particles $K$ in the \emph{wake-phase $\phi$ update} results in a biased estimator of the gradient of \cref{eq:wake-phi-obj} which leads to mode collapse in the inference network which in turn affects the learning of the generative model (\cref{sec:experiments/gmm}).
-% For mode collapse of the inference network, consider its entropy (conditioned on $x$) denoted by $H(q_\phi(z \given x))$ whose gradient $\nabla_\phi H(q_\phi(z \given x))$ can be written as $\E_{q_\phi(z \given x)}[-\nabla_\phi \log q_\phi(z \given x)(1 + \log q_\phi(z \given x))]$.
-% Now, when $K = 1$, the estimator in \eqref{eq:wake-phi-est} becomes $-\nabla_\phi \log q_\phi(z \given x)$.
-% This can be seen as a biased estimator of $\nabla_\phi H(q_\phi(z \given x))$ where the bias is the entropy itself.
-% Hence, minimizing the \emph{wake-phase $\phi$ update} with low $K$ can lead to mode collapse of the inference network in the sense of minimizing $H(q_\phi(z \given x))$.
-% Once mode collapse occurs in the inference network, the \emph{wake-phase $\theta$ update} also suffers since we can no longer guarantee that $q_\phi(z \given x) > 0$ whenever $p_\theta(x) \neq 0$ for the underlying importance sampler in \cref{eq:elbo_is}.
-% The prior~$p_\theta(z)$ tends to have high mass at the delta mass $q_\phi(z \given x)$, which further constrains $q_\phi(z \given x)$ from changing due to the weight in \cref{eq:wake-phi-est}.
-% This issue is illustrated in a \gls{GMM} experiment (\cref{sec:experiments/gmm}).
-
-% Finally, a common criticism of \gls{RWS} is that it doesn't have one unifying objective.
-% However, empirically this doesn't adversely affect the performance of \gls{RWS}
 
 
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "main"
-%%% End:
 
-%  LocalWords:  REWEIGHTED RWS bornschein reweighted hinton dayan WS
-%  LocalWords:  helmholtz favour IWAE reparameterization variates le
-%  LocalWords:  differentiable ELBO autoencoding rainforth VAE minka
-%  LocalWords:  owen monte chatterjee chen Eq PCFG
+
+
+

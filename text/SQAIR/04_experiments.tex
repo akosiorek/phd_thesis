@@ -73,16 +73,13 @@ We use \gls{AIR} and \gls{VRNN} \citep{Chung2015} as baselines for comparison.  
     \vspace{5pt}
     \caption{\gls{SQAIR} achieves higher performance than the baselines across a range of metrics. The third column refers to the \gls{KL} divergence between the approximate posterior and the prior. Counting refers to accuracy of the inferred number of objects present in the scene, while addition stands for the accuracy of a supervised digit addition experiment, where a classifier is trained on the learned latent representations of each frame.}
     \label{tab:quant}
-    %\vspace{-15pt}
 \end{table}
 
 The quantitative analysis consists of comparing all models in terms of the marginal log-likelihood $\log \p{\bxTs}{}{\theta}$ evaluated as the $\loss[\textsc{IWAE}]$ bound with $K=1000$ particles, reconstruction quality evaluated as a single-sample approximation of $\expc[\q{}{}{\phi}]{\log \p{\bxTs}{\bzTs}{\theta}}$ and the \gls{KL}-divergence between the approximate posterior and the prior (\Cref{tab:quant}). Additionally, we measure the accuracy of the number of objects modelled by \gls{SQAIR} and \gls{AIR}. \Gls{SQAIR} achieves superior performance across a range of metrics --- its convolutional variant outperforms both \gls{AIR} and the corresponding \gls{VRNN} in terms of model evidence and reconstruction performance. 
-% 
 The \gls{KL} divergence for \gls{SQAIR} is almost twice as low as for \gls{VRNN} and by a yet larger factor for \gls{AIR}.
 We can interpret \gls{KL} values as an indicator of the ability to compress, and we can treat \gls{SQAIR}/\gls{AIR} type of scheme as a version of run-length encoding.
 While \gls{VRNN} has to use information to explicitly describe every part of the image, even if some parts are empty, \gls{SQAIR} can explicitly allocate content information ($\bz^\mathrm{what}$) to specific parts of the image (indicated by $\bz^\mathrm{where}$).
 \Gls{AIR} exhibits the highest values of \gls{KL}, but this is due to encoding every frame of the sequence independently --- its prior cannot take \textit{what} and \textit{where} at the previous time-step into account, hence higher KL.
-% 
 The fifth column of \Cref{tab:quant} details the object counting accuracy, that is indicative of the quality of the approximate posterior. It is measured as the sum of $\zt^\mathrm{pres}$ for a given frame against the true number of objects in that frame. As there is no $z^\mathrm{pres}$ for \gls{VRNN} no score is provided. Perhaps surprisingly, this metric is much higher for \gls{SQAIR} than for \gls{AIR}. This is because \gls{AIR} mistakenly infers overlapping objects as a single object. Since \gls{SQAIR} can incorporate temporal information, it does not exhibit this failure mode (\textit{cf}. \Cref{fig:partial_glimpse}).
 Next, we gauge the utility of the learnt representations by using them to determine the sum of the digits present in the image (\Cref{tab:quant}, column six). To do so, we train a 19-way classifier (mapping from any combination of up to two digits in the range $[0, 9]$ to their sum) on the extracted representations and use the summed labels of digits present in the frame as the target. \Cref{app:mnist_details} contains details of the experiment. 
 \Gls{SQAIR} significantly outperforms \gls{AIR} and both variants of \gls{VRNN} on this tasks.
@@ -94,57 +91,6 @@ We see that the model can preserve appearance over time, and that the simulated 
 \Cref{fig:partial_glimpse} shows reconstructions and corresponding glimpses of \gls{AIR} and \gls{SQAIR}. Unlike \gls{SQAIR}, \gls{AIR} is unable to recognize objects from partial observations, nor can it distinguish strongly overlapping objects (it treats them as a single object; columns five and six in the figure).
 We analyze failure cases of \gls{SQAIR} in \Cref{app:fail}.
 
-% ## 10 timesteps, 3 objects
-% # conv-sqair 500k
-% # {'data_ll': 199.5723372428648,
-% #  'iwae': 1338.4910140498991,
-% #  'kl': 65.56289869739163,
-% #  'log_p_z': 47.66771562637821,
-% #  'log_q_z_given_x': 113.23061346238659,
-% #  'steps': 2.366231826043898,
-% #  'steps_acc': 0.3843745406596891,
-% #  'vae': 556.3954507150958}
-% 
-% # mlp-sqair 900k
-% {'data_ll': 345.1663582094254,
-%  'iwae': 2829.1831290952623,
-%  'kl': 62.08844412526777,
-%  'log_p_z': 2.4096233662097686,
-%  'log_q_z_given_x': 64.49806619459584,
-%  'steps': 2.1725647372584187,
-%  'steps_acc': 0.2108948781125007,
-%  'vae': 2377.875941122732}
-% 
-% ## digit adding
-% mlp-sqair 0.09997
-% mlp-air   0.8609
-% conv-vrnn 0.8419
-% 
-% ## 10 timesteps, {0, 1, 2} objects
-% # iwae-5
-% conv-sqair 6719.108
-% mlp-sqair 6607.305
-% mlp-air   6385
-% 
-% # iwae-1000
-% conv-sqair 6778.93453369
-% mlp-sqair 6541.71697559
-% mlp-air 6443.57998547
-% 
-% # num step acc
-% conv-sqair 0.9974
-% mlp-sqair  0.9846 
-% mlp-air    0.9058 0.905345526785
-% 
-% # rec
-% conv-sqair 6919.84491394
-% mlp-sqair  6741.62037109
-% mlp-air    6830.56475928
-% 
-% # kl
-% conv-sqair 136.518626827
-% mlp-sqair  195.4172697
-% mlp-air    352.594786018
 
 
 \subsection{Generative Modelling of Walking Pedestrians}
@@ -155,14 +101,12 @@ We analyze failure cases of \gls{SQAIR} in \Cref{app:fail}.
     \begin{minipage}[c]{0.49\linewidth}
         \centering
         \includegraphics[width=\linewidth]{figures/SQAIR/duke_rec/front/000065}
-        % \includegraphics[width=\linewidth]{figures/SQAIR/duke_sample/front/000296}
         \includegraphics[width=\linewidth]{figures/SQAIR/duke_sample/front/sqair_duke_sample_with_label_296}
     \end{minipage}
     \hfill
     \begin{minipage}[c]{0.49\linewidth}
         \centering
         \includegraphics[width=\linewidth]{figures/SQAIR/duke_rec/front/000099}
-        % \includegraphics[width=\linewidth]{figures/SQAIR/duke_sample/front/000020}
        \includegraphics[width=\linewidth]{figures/SQAIR/duke_sample/front/sqair_duke_sample_with_label_020}
     \end{minipage}
     \includegraphics[width=.95\linewidth]{figures/SQAIR/duke_cond_gen/front/sqair_duke_cond_after_four}

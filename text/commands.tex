@@ -1,4 +1,3 @@
-% Comment commands
 \newcommand{\ak}[1]{\textcolor{blue}{\textbf{ak}: #1}}
 \newcommand{\yw}[1]{\textcolor{pink}{\textbf{yw}: #1}}
 \newcommand{\hjk}[1]{\textcolor{green}{\textbf{hjk}: #1}}
@@ -6,10 +5,8 @@
 
 \newcommand{\AK}[1]{\todo{\ak{#1}}}
 
-% bold text that can be used anywhere
 \newcommand*{\B}[1]{\ifmmode\bm{#1}\else\textbf{#1}\fi}
 
-% \DeclarePairedDelimiter{\fences}{(}{)}
 \newcommand{\MLP}{\operatorname{MLP}}
 \newcommand{\RNN}{\operatorname{RNN}}
 \newcommand{\STN}{\operatorname{ST}}
@@ -24,14 +21,12 @@
 \newcommand{\reg}[1]{ \ensuremath{R} \fences{#1} }
 
 
-% colors
 \definecolor{pink}{HTML}{ff00ff}
 \definecolor{orange}{HTML}{ff9900}
 \definecolor{blue}{HTML}{0000ff}
 \definecolor{darkgreen}{rgb}{0,.502,0}
 
 
-% keyword for algrithm2e
 \SetKw{Continue}{continue}
 
 
@@ -41,18 +36,16 @@
 
 \newcommand{\RT}{\textcolor{blue}{\operatorname{R}_\phi^T}}
 \newcommand{\Rr}{\textcolor{orange}{\operatorname{R}_\phi^R}}
-% for some reason \RR gives \mathbb{R}, so using \Rr instead
 \newcommand{\RD}{\textcolor{pink}{\operatorname{R}_\phi^D}}
 
 
-\newcommand{\sidecaption}[1]% #1 = label name
+\newcommand{\sidecaption}[1]%
 {\raisebox{\abovecaptionskip}{\begin{subfigure}[t]{1.6em}
-		\caption[singlelinecheck=off]{}% do not center
+		\caption[singlelinecheck=off]{}%
 		\label{#1}
 \end{subfigure}}\ignorespaces}
 
 
-% appendix after every chapter
 \AtBeginEnvironment{subappendices}{%
 	\chapter*{Appendix}
 	\addcontentsline{toc}{chapter}{Appendices}
@@ -105,10 +98,5 @@
 \theoremstyle{remark}
 \newtheorem{remark}{Remark}
 
-%\theoremstyle{lemma}
-%\newtheorem{lemma}{Lemma}
-%
-%\theoremstyle{corollary}
-%\newtheorem{corollary}{Corollary}
 
 \setlength{\parindent}{0pt}

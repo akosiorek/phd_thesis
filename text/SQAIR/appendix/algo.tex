@@ -18,7 +18,6 @@ Secondly, even though the information is limited, it can still provide a high-re
 Initially, our implementation used encoding of the raw observation ($\operatorname{h_\phi^\mathrm{enc}} \left( \bxt \right)$, similarly to \Cref{l:img_encoder} in \Cref{algo:sqair_disc}) as an input to the relation-\gls{RNN} (\Cref{l:rel_rnn} in \Cref{algo:sqair_prop}). We have also experimented with other bottlenecks: (1) low resolution image as an input to the image encoder and (2) a low-dimensional projection of the image encoding before the relation-\gls{RNN}. 
 Both approaches have led to \textit{ID swaps}, where the order of explaining objects were sometimes swapped for different frames of the sequence (see \Cref{fig:id_swap} in \Cref{app:fail} for an example). 
 Using encoded proposal glimpse extracted from a predicted location has solved this issue.
-% \ak{should we create a "discussion" appendix and move this paragraph there?}
 
 To condition \gls{disc} on propagated latent variables (\Cref{l:latent_enc} in \Cref{algo:sqair_disc}), we encode the latter by using a two-layer \gls{MLP} similarly to \cite{Zaheer2017},
 \begin{equation}
@@ -38,14 +37,12 @@ Note that other encoding schemes are possible, though we have experimented only 
          \bzt^\mathrm{where}$ 
          - latent variables from the current time-step.\\
     }
-    % 
     $\mathcal{O}_t = \operatorname{indices} \left( \bzt^\mathrm{what} \right)$ \tcp*{Indices of all present latent variables.}
     $\byt^0 = \bm{0}$\\
     \For{$i \in \mathcal{O}_t$}{
         $\byt^{\mathrm{att}, i} = \operatorname{f_\theta^\mathrm{dec}} \left( 
             \bzt^{\mathrm{what}, i} 
         \right)$ \tcp*{Decode the glimpse.}
-% 
         $\byt^i = \byt^{i-1} + \STN^{-1} \left( 
             \byt^{\mathrm{att}, i}, \bzt^{\mathrm{where}, i} 
         \right)$
@@ -71,20 +68,15 @@ Note that other encoding schemes are possible, though we have experimented only 
     $\hR{t}{0}, \bm{z}^{\mathrm{what}, 0}_t, \bm{z}^{\mathrm{where}, 0}_t = \operatorname{initialize}()$\\
     $j = 0$ \tcp*{Index of the object processed in the last iteration.}
     \For{$i \in {\mathcal{O}_{t-1}}$}{
-% 
         \uIf{$z_{t-1}^{\mathrm{pres}, i} == 0$}{
             \Continue
         }
-%       
         $\hat{\bz}_t^{\mathrm{where}, i} = \operatorname{f_\phi^1} \left( \bz_{t-1}^{\mathrm{where}, i},
             \hT{t}{i} \right)$ \label{l:prop_where}\tcp*{Proposal location.}
-% 
         $\hat{\bg}^i_t = \STN \left(
             \bxt, \hat{\bz}_t^{\mathrm{where}, i}
         \right)$ \label{l:prop_glimpse}\tcp*{Extract a glimpse from a proposal location.}
-% 
     $\hat{\be}_t^i = \operatorname{h_\phi^\mathrm{glimpse}} \left( \hat{\bg}^i_t \right)$ \label{l:glimpse_enc_prop}\tcp*{Encode the proposal glimpse.}
-% 
         $\textcolor{orange}{\bwt^{R, i}}, \hR{t}{i} = \Rr \left(
             \hat{\be}_t^i,
             \bz_{t-1}^{\mathrm{what}, i}, \bz_{t-1}^{\mathrm{where}, i}, 
@@ -92,25 +84,19 @@ Note that other encoding schemes are possible, though we have experimented only 
             \bzt^{\mathrm{what}, j}, \bzt^{\mathrm{where}, j}
         \right)$  
         \label{l:rel_rnn}\tcp*{Relational state, see \Cref{eq:propagation_state}.}
-%         
         $\bzt^{\mathrm{where}, i} \sim \qp{\bm{z}^\mathrm{where}}{\bm{z}^{\mathrm{where}, k}_{t-1}, \textcolor{orange}{\bwt^{R, i}}}{\phi}$\\
-%        
         $\bgt^i = \STN \left( 
             \bxt,
             \bzt^{\mathrm{where}, i}
         \right)$ \tcp*{Extract the final glimpse.}
-    % 
     $\bet^i = \operatorname{h_\phi^\mathrm{glimpse}} \left( \bgt^i \right)$ \label{l:glimpse_enc_final}\tcp*{Encode the final glimpse.}
-    % 
         $\textcolor{blue}{\bwt^{T, i}}, \hT{t}{i} = \RT \left(
             \bet^i,
             \bzt^{\mathrm{where}, i}, 
             \hT{t-1}{i}, \hR{t}{i}
         \right)$
         \label{l:time_rnn}\tcp*{Temporal state, see \Cref{eq:temporal_state}.}
-%        
         $\bzt^{\mathrm{what}, i} \sim \qp {\bz^\mathrm{what}}{\bet^i, \bz_{t-1}^{\mathrm{what}, i}, \textcolor{orange}{\bwt^{R, i}}, \textcolor{blue}{\bwt^{T, i}}}{\phi}$\\
-%        
         $\zt^{\mathrm{pres}, i} \sim \qp{z^\mathrm{pres}}{
             z_{t-1}^{\mathrm{pres}, i},
             \bzt^{\mathrm{what}, i},
@@ -138,19 +124,14 @@ Note that other encoding schemes are possible, though we have experimented only 
         $\bzt^{\mathcal{P}_t}$ - propagated latent variables for the current time-step,\\
         $N$ - maximum number of inference steps for discovery.
     }
-% 
     $\hD{t}{0}, \bm{z}^{\mathrm{what}, 0}_t, \bm{z}^{\mathrm{where}, 0}_t = \operatorname{initialize}()$\\
-% 
     $j = \operatorname{max\_index} \left( \bzt^{\mathcal{P}_t} \right)$ \tcp*{Maximum index among the propagated latent variables.}
-% 
     $\bet = \operatorname{h_\phi^\mathrm{enc}} \left( \bxt \right)$ \label{l:img_encoder}\tcp*{Encode the image.}
-% 
     $\blt = \operatorname{h_\phi^\mathrm{enc}} \left( 
         \bzt^\mathrm{what},
          \bzt^\mathrm{where},
          \bzt^\mathrm{pres} 
      \right)$ \label{l:latent_enc}\tcp*{Encode latent variables.}
-%  
     \For{$i \in [j + 1, \dots, j + N]$}{
         $\textcolor{pink}{\bwt^{D, i}}, \hD{t}{i} = \RD \left(
             \bet,
@@ -159,22 +140,16 @@ Note that other encoding schemes are possible, though we have experimented only 
             \bzt^{\mathrm{where}, i-1}, 
             \hD{t}{i-1} 
         \right)$\\
-% 
         $\zt^{\mathrm{pres}, i} \sim \qd{z^\mathrm{pres}}{ \textcolor{pink}{\bwt^{D, i}}}{\phi}$\\
-% 
         \If{$z^{\mathrm{pres}, i} = 0$}{
             break
         }
-% 
         $\bzt^{\mathrm{where}, i} \sim \qd{\bz^\mathrm{where}}{\textcolor{pink}{\bwt^{D, i}}}{\phi}$\\
-% 
         $\bgt^i = \STN\left( 
             \bxt,
             \bzt^{\mathrm{where}, i} 
         \right)$\\
-% 
         $\bet^i = \operatorname{h_\phi^\mathrm{glimpse}} \left( \bgt^i \right)$ \label{l:glimpse_enc_disc}\tcp*{Encode the glimpse.}
-% 
         $\bzt^{\mathrm{what}, i} \sim \qd{\bzt^\mathrm{what}}{\bet^i}{\phi}$
     }
     \Output{

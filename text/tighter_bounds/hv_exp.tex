@@ -1,4 +1,3 @@
-% !Tex root=tb_icml_2018.tex
 
 \section{Additional Empirical Analysis of SNR}
 \label{sec:app:emp}
@@ -14,21 +13,11 @@ variance of the estimates decreases with $M$, but not the expected value.
 
 \begin{figure*}[h]
 	\centering
-%	\begin{subfigure}[b]{0.49\textwidth}
-%		\centering
-%		\includegraphics[width=\textwidth]{b_hist_IWAE}
-%		\caption{\gls{IWAE} inference network gradient estimates \label{fig:snr/b_hist_iwae}}
-%	\end{subfigure}
 		\begin{subfigure}[b]{0.45\textwidth}
 			\centering
 			\includegraphics[width=\textwidth]{figures/tighter_bounds/b_hist_VAE}
 			\caption{\gls{VAE} inference network gradient estimates \label{fig:snr/b_hist_vae}}
 		\end{subfigure} ~~~~~~~~~~
-%	\begin{subfigure}[b]{0.49\textwidth}
-%		\centering
-%		\includegraphics[width=\textwidth]{mu_hist_IWAE}
-%		\caption{\gls{IWAE} generative network gradient estimates \label{fig:snr/mu_hist_iwae}}
-%	\end{subfigure}
 		\begin{subfigure}[b]{0.45\textwidth}
 			\centering
 			\includegraphics[width=\textwidth]{figures/tighter_bounds/mu_hist_VAE}
@@ -85,9 +74,6 @@ We see that the behavior is the
 same for variation in $M$, but somewhat distinct for variation in $K$.  
 In particular, the \gls{SNR} and \textsc{dsnr} only decrease slowly with $K$ for the inference network, while increasing $K$ no longer has much benefit for the \gls{SNR} of the
 inference network.
-%Increasing $K$ now also has a remarkably similar impact on the \gls{SNR} and \textsc{dsnr} of
-%the gradients of the generative network as on the
-%inference network.  
 It is clear that, for this
 setup, the problem is very far from the asymptotic regime in $K$ such that our theoretical results no
 longer directly apply.  Nonetheless, the high-level effect observed is still that the \gls{SNR} of 

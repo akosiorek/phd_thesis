@@ -9,7 +9,6 @@
         Inference in \gls{AIR}. 
         The \textcolor{pink}{pink \gls{RNN}} attends to the image sequentially and produces one latent variable $\bzt^i$ at a time. 
         Here, it decides that two latent variables are enough to explain the image and $\bzt^3$ is not generated.
-    % 
     \textit{Right}:
         Inference in \gls{SQAIR} starts with the \gls{prop} phase.
         \gls{prop} iterates over latent variables from the previous time-step $t-1$ and updates them based on the new observation $\bxt$.
@@ -30,7 +29,6 @@ We now formally introduce \gls{SQAIR} by first describing its generative model a
 The model assumes that at every-time step, objects are first propagated from the previous time-step (\gls{prop}). Then, new objects are introduced (\gls{disc}). 
 Let $t \in \mathbb{N}$ be the current time-step.
 Let $\mathcal{P}_t$ be the set of objects propagated from the previous time-step and let $\mathcal{D}_t$ be the set of objects discovered at the current time-step, and let $\mathcal{O}_t = \mathcal{P}_t \cup \mathcal{D}_t$ be the set of all objects present at time-step~$t$.
-% Let $P_t \defeq |\mathcal{P}_t|$ and $D_t \defeq |\mathcal{D}_t|$.
 Consequently, at every time step, the model retains a set of latent variables $\bzt^{\mathcal{P}_t} = \{ \bzt^i \}_{i \in \mathcal{P}_t}$, and generates a set of new latent variables $\bzt^{\mathcal{D}_t} = \{ \bzt^i \}_{i \in \mathcal{D}_t}$. Together they form $\bzt \defeq [\bzt^{\mathcal{P}_t}, \bzt^{\mathcal{D}_t}]$, where the representation of the $i^\mathrm{th}$ object $\bzt^i \defeq [ \bzt^{\mathrm{what}, i}, \bzt^{\mathrm{where}, i}, \zt^{\mathrm{pres}, i}]$ is composed of three components (as in \gls{AIR}): 
 $\bzt^{\mathrm{what},i}$ and $\bzt^{\mathrm{where},i}$ are real vector-valued variables representing appearance and location of the object, respectively. $\zt^{\mathrm{pres},i}$ is a binary variable representing whether the object is present at the given time-step or not.
 

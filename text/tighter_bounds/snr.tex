@@ -1,13 +1,9 @@
-% !Tex root=tb_icml_2018.tex
 
 \section{Assessing the Signal-to-Noise Ratio of the Gradient Estimators}
 \label{sec:snr}
 Because it is not feasible to analytically optimize these \glspl{ELBO} in complex models,  the effectiveness of any particular choice of \gls{ELBO} is linked
 to our ability to numerically solve the resulting optimization problem. This motivates us to examine 
 the effect $K$ has on the variance and magnitude of the gradient estimates of \gls{IWAE} for the two networks. More generally, we study \gls{IWAE} gradient estimators constructed as the average of $M$ estimates, each built from $K$ independent particles. We present a result characterizing the asymptotic signal-to-noise ratio in $M$ and $K$. For the standard case of $M=1$, our result shows that the signal-to-noise ratio of the reparameterization gradients of the inference network for the \gls{IWAE} decreases with rate $O(1/\sqrt{K})$.
-%Therefore, our results
-%suggest that the tighter bound achieved for larger $K$ is actually detrimental to 
-%learning the inference network.  
 
 As estimating the $\ELBO$ requires a Monte Carlo estimation of an expectation over $z$, 
 we have two sample sizes to tune for the estimate:
@@ -47,8 +43,6 @@ defining it to be the absolute value of the expected estimate scaled by its stan
 \begin{align}
 \SNR_{M,K} (\theta) &= \left|\E \left[\Delta_{M,K} (\theta)\right]/
 \sigma\left[\Delta_{M,K} (\theta)\right]\right|
-%\SNR_{M,K} (\phi) = \left|\frac{\E \left[\Delta_{M,K} (\phi)\right]}{
-%	\sigma\left[\Delta_{M,K} (\phi)\right]}\right|
 \end{align}
 where $\sigma [\cdot]$ denotes the standard deviation of a random variable.
 The \gls{SNR} is defined separately on each dimension of the parameter vector and
@@ -129,25 +123,6 @@ that
 \end{align}
 and we see that expected gradient points in the direction of
 $-\nabla_{\phi} \text{Var}\left[w_{1,1}\right]$ as $K \to \infty$.  
-%Furthermore,
-%we also have the following result detailing the rate of this convergence.
-%\begin{restatable}{corollary}{dirproof}
-%Assuming the setup from Theorem~\ref{the:snr} then
-%\begin{align}
-%\label{eq:dir_conv}
-%\left\lVert \frac{\E \left[\Delta_{M,K} (\phi)\right]}
-%{\left\lVert\E \left[\Delta_{M,K} (\phi)\right]\right\rVert_2} 
-%-\frac{-\nabla_{\phi} \textnormal{Var}\left[w_{1,1}\right]}
-%{\left\lVert \nabla_{\phi} \textnormal{Var}\left[w_{1,1}\right]\right\rVert_2}
-%\right\rVert_2 = O\left(\frac{1}{K}\right).
-%\end{align}
-%	\end{restatable}
-%\begin{proof}
-%The result follows straightforwardly by substituting the right hand side 
-%of~\eqref{eq:expt} for $\E \left[\Delta_{M,K} (\phi)\right]$ as shown in
-%Appendix~\ref{sec:dirproof}.
-%\end{proof}
-%The direction of the gradient converges to as $K\to\infty$ 
 This direction is rather interesting: it implies that as $K\to\infty$, the optimal $\phi$
 is that which minimizes the variance of the weights.  This is well known to be 
 the optimal importance sampling
@@ -166,24 +141,14 @@ setting $K$.
 	\centering
 	\begin{subfigure}[b]{0.4\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{figures/tighter_bounds/b_hist_IWAE} %\vspace{-2pt}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/b_hist_IWAE} %
 		\caption{ \gls{IWAE} inference network gradient estimates \label{fig:snr/b_hist_iwae}}
 	\end{subfigure} ~~~~~~~~~~~~~
-	%	\begin{subfigure}[b]{0.49\textwidth}
-	%		\centering
-	%		\includegraphics[width=\textwidth]{b_hist_VAE}
-	%		\caption{\gls{VAE} inference network gradient estimates \label{fig:snr/b_hist_vae}}
-	%	\end{subfigure}\\
 	\begin{subfigure}[b]{0.4\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{figures/tighter_bounds/mu_hist_IWAE} %\vspace{-2pt}
+		\includegraphics[width=\textwidth]{figures/tighter_bounds/mu_hist_IWAE} %
 		\caption{ \gls{IWAE} generative network gradient estimates \label{fig:snr/mu_hist_iwae}}
 	\end{subfigure}\vspace{-6pt}
-	%	\begin{subfigure}[b]{0.49\textwidth}
-	%		\centering
-	%		\includegraphics[width=\textwidth]{mu_hist_VAE}
-	%		\caption{\gls{VAE} generative network gradient estimates \label{fig:snr/mu_hist_vae}}
-	%	\end{subfigure}
 	\caption{Histograms of gradient estimates $\Delta_{M,K}$ for the generative network and 
 		the inference network using the \gls{IWAE} ($M=1$)
 		objective with different values of $K$.
@@ -194,10 +159,6 @@ setting $K$.
 \subsection{Multiple Data Points}
 \label{sec:multi}
 
-%Not only does this show that, for a given budget $T=MK$, then
-%it is (at least asymptotically) better to increase $M$ instead of $K$
-% to improve $\SNR_{M,K} (\phi)$, but also that
-%increasing our overall budget for a fixed $M$ actually diminishes $\SNR_{M,K} (\phi)$.
 
 	Typically when training deep generative models, one does not optimize a single \gls{ELBO}
 	but instead its average over multiple data points, i.e.
@@ -221,98 +182,7 @@ $\SNR_{N,M,K} (\theta) = O(\sqrt{NMK})$ and $\SNR_{N,M,K} (\phi)
 In the rest of the paper, we will implicitly be considering the \glspl{SNR} for $\bar{\Delta}_{N,M,K}$, but
 will omit the dependency on $N$ to simplify the notation.
 
-% \begin{wrapfigure}{r}{0.24\textwidth}
-% 	\centering
-% 	\vspace{-10pt}
-% 	\includegraphics[width=0.24\textwidth,trim={0 0 0 0.7cm},clip]{figures/gaussian_gradient.pdf}
-% 	\vspace{-20pt}
-% 	\caption{Density estimate of $\nabla_{\phi} \ELBO$
-% 		for different $K$ \label{fig:kde}}
-% 	\vspace{-12pt}
-% \end{wrapfigure}
-% %At a high-level, our argument that increasing $K$ can be detrimental to 
-% %training the inference network is that even though
-% %$\sigma[\nabla_{\phi} \log \hat{Z}_K]$ reduces as $K$ increases, 
-% %$\nabla_{\phi} \ELBO$ also decreases because
-% %more accurate estimates for $\hat{Z}_K$ can be achieved
-% %for a wide range of proposal parameters $\phi$ such that the impact of $\phi$
-% %diminishes.
-% %Furthermore, as $\nabla_{\phi} \ELBO$
-% %decreases faster than $\sigma[\nabla_{\phi} \log \hat{Z}_K]$, $\SNR_{\phi}(K)$
-% %decreases as $K$ increases.
-% %Typically, this shrinkage happens faster than
-% %increasing $K$ reduces the standard deviation of the estimate and so the 
-% %\gls{SNR} for inference network actually decreases, even though
-% %it is a lower variance estimate.  
-% The effect suggested by our previous theoretical result
-% is demonstrated in Figure~\ref{fig:kde},
-% showing a kernel density estimator for the distribution of the \gls{ELBO} gradient
-% estimate for different $K$ and a simple Gaussian unknown mean model.  
-% We see that as we increase $K$, both the expected gradient estimate
-% and its standard deviation decrease with $K$, but the former decreases faster
-% such that $\SNR_{\phi}(K)$ decreases.
-% This is perhaps easiest
-% to appreciate by noting that for $K\ge10$, there is a roughly equal probability
-% of the estimate being positive or negative, such that we are equally likely to increase or decrease
-% the parameter value at the next \gls{SGA} iteration, inevitably leading to poor performance.
-% On the other hand, when $K=1$, it is far more likely that the gradient estimate is positive
-% than negative, and so there is clear drift to the gradient steps.  
-% Note that using a larger
-% $K$ should always give better performance at test time -- the implication of our
-% result is that it may be better to learn $\phi$ using a smaller $K$. 
 
 
-%
-%
-%It is already well established that increasing $K$ in the \gls{IWAE} leads to a tighter
-%\gls{ELBO} and that choosing $K>1$ tends to lead to better 
-%performance in learning the generative network~\citep{Burda2016importance}.  Our
-%assertion is that these improvements do not necessarily translate
-%to improved gradient estimators or, by proxy, better \gls{SGA} schemes for
-%the inference network.  Though, as we showed in the last section, 
-%the global optimum for $\{\theta,\phi\}$ is independent of $K$, 
-%changing $K$ can  significantly impact
-%the variance and expected magnitude of the gradients.  
-%
 
-%
-%
-%More formally, we have ...
-%
-%We can further demonstrate our result using an informal theoretical
-%argument.
-%Our gradient estimate for the $K$ particle \gls{IWAE} is
-%\begin{align}
-%\label{eq:iwae}
-%I_{K} = \nabla_{\phi} \log \left(\frac{1}{K} \sum_{k=1}^{K} \frac{p_{\theta}(x^k, y)}{q_{\phi}(x^k \given y)} \right),
-%\end{align}
-%where $I = \lim\limits_{K \rightarrow \infty} I_{K} = 0$ because
-%with infinite samples, the estimate is exact and thus independent
-%of the proposal parameters.  Now adapting the \gls{IWAE} result
-%of~\citet{Rainforth2017opportunities} shows that
-%\begin{align}
-%\label{eq:mse-bound}
-%\E \left[I_{K}^2\right] = \E \left[\left(I_{K}-I\right)^2\right] \le \frac{C_0 ^2 \varsigma_1^4}{4 K^2}+\frac{C_0 ^2 \varsigma_1^4}{4 K^2}
-%+\frac{\kappa_0^2 \varsigma_1^2}{K}+\frac{C_0 \kappa_0 \varsigma_1^3}{K^{3/2}}+O\left(\frac{1}{K^3}\right),
-%\end{align}
-%where $C_0$, $\kappa_0$ ($K_0$ in~\citet{Rainforth2017opportunities}), 
-%and $\varsigma_1$ are constants and we have set $N=1$ in their formulation.  
-%Here the first $\frac{C_0 ^2 \varsigma_1^4}{4 K^2}$ and $O\left(\frac{1}{K^3}\right)$
-%are ``bias terms'', i.e. $\left(\E \left[I_{K}\right]\right)^2 = \left(\nabla_{\phi} \ELBO\right)^2$, and
-%the rest are variance terms.  We can now define our \gls{SNR} as follows
-%\begin{align}
-%\SNR = \frac{\nabla_{\phi} \ELBO}{\sqrt{\mathrm{Var}[I_{K}]}}
-%\approx \sqrt{\frac{\frac{C_0 ^2 \varsigma_1^4}{4 K^2}+O\left(\frac{1}{K^3}\right)}
-%	{\frac{C_0 ^2 \varsigma_1^4}{4 K^2}
-%		+\frac{\kappa_0^2 \varsigma_1^2}{K}+\frac{C_0 \kappa_0 \varsigma_1^3}{K^{3/2}}}}
-%\approx \sqrt{\frac{C_0 ^2 \varsigma_1^2}{4 \kappa_0^2 K}} =
-%O\left(\sqrt{\frac{1}{K}}\right),
-%\end{align}
-%where we have substituted in the bounds for the bias and variance
-%from~\eqref{eq:mse-bound} and the approximations will, in general, become increasingly
-%exact as $K$ increases.  We thus see that increasing $K$ reduces the \gls{SNR} and
-%so a lower $K$ is preferable for training the inference network.  Alternatively
-%we can think of this in terms of the standard deviation of our estimate increasing
-%as $O(\sqrt{K})$ relative to the true gradient.
-%
 

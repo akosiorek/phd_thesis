@@ -2,7 +2,6 @@
 \section{Experiments}
 \label{sec:exp}
 
-%   We use LSTM \addref implementation of RNN and ELU \addref nonlinearities unless stated otherwise.
 
   \subsection{KTH Pedestrian Tracking}
       
@@ -20,14 +19,12 @@
     
   \subsection{Scaling to Real-World Data: KITTI}
 	
-% 
 \begin{figure}
-    % \hfill
     \RawFloats
     \centering
     \begin{minipage}[c]{0.6\linewidth}
         \centering
-	   % \todo[inline]{other results are on their way}
+	   %
 	    \includegraphics[width=\textwidth]{HART/kitti_iou_fig}
 	    \captionof{figure}{IoU curves on KITTI over 60 timesteps. HART (train) presents evaluation on the train set (we do not overfit).}
 	    \label{fig:kitti_iou_fig}
@@ -43,15 +40,12 @@
     		\midrule
     		\citet{Kahou2015ratm}       &   0.14      \\
     		Spatial Att                 &   0.60       \\  
-    % 			Spatial Att with Loss       &   0.70   \\
     		App Att                     &   0.78       \\
     		HART                        &   \B{0.81}   \\
     		\bottomrule
     	\end{tabular}
     	}
     	\vspace*{3.3em}
-%    	\ak{add caption!!!}
-%    	\caption{Average IoU on KITTI over 60 time-steps.}
 		\captionof{table}{Average IoU on KITTI over 60 time-steps.}
     	\label{tab:kitti}
     \end{minipage}

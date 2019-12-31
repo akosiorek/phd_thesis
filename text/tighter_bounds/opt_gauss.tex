@@ -1,4 +1,3 @@
-% !Tex root=./main.tex
 
 \vspace{-4pt}
 
@@ -9,7 +8,7 @@
 
 To derive the optimal parameters for the Gaussian experiment we first note that
 \begin{align*}
-\mathcal J(\theta, \phi) %&:= \frac{1}{N} \sum_{n = 1}^N \ELBO_{\text{IS}}(\theta, \phi, x^{(n)}) \\
+\mathcal J(\theta, \phi) %
 &= \frac{1}{N}\log \prod_{n=1}^{N} p_{\theta}(x^{(n)}) - \frac{1}{N}\sum_{n=1}^{N} \KL{Q_{\phi}(z_{1:K}|x^{(n)})}{P_{\theta}(z_{1:K}|x^{(n)})} \quad \text{where}\\
 P_{\theta}(z_{1:K}|x^{(n)}) &= \frac{1}{K} \sum_{k=1}^{K}
 q_{\phi} (z_1 | x^{(n)}) \dots q_{\phi} (z_{k-1} | x^{(n)}) p_{\theta} (z_k | x^{(n)}) 

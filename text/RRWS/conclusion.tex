@@ -1,29 +1,15 @@
-% !tex root=./main.tex
 
 \section{Discussion}
 \label{sec:discussion}
 
 The central argument here is that where one needs both amortization and model learning for \glspl{SCFM}, the \gls{RWS} family of methods is preferable to \gls{IWAE} with either continuous relaxations or control-variates.
-%
 The \gls{PCFG} experiment (\cref{sec:experiments/pcfg}) demonstrates a setting where continuous relaxations are inapplicable due to potentially infinite recursion, but where \gls{RWS} applies and \gls{WS} outperforms all other methods.
-%
 The \gls{AIR} experiment (\cref{sec:experiments/air}) highlights a case where with more particles, performance of \gls{VIMCO} degrades for the inference network~\citep{Rainforth2018tighter} and consequently the generative model as well, but where \gls{RWS}'s performance on both increases monotonically.
-%
 Finally, the analysis on \glspl{GMM} (\cref{sec:experiments/gmm}) focuses on a simple model to understand nuances in the performances of different methods.
-%
 Beyond implications from prior experiments, it indicates that for the few-particle regime, the \gls{WW} gradient estimator can be biased, leading to poor learning.
-%
-%
 For this, we design an alternative involving defensive sampling that ameliorates the issue.
-%
 The precise choice of which variant of \gls{RWS} to employ depends on which of the two kinds of gradient bias described in \cref{sec:disadvantages} dominates.
-%
 Where the data distribution bias dominates, as with the \gls{AIR} experiment, \gls{WW} is preferable, and where the self-normalized \gls{IS} bias dominates, as in the \gls{PCFG} experiment, \gls{WS} is preferable.
 In the \gls{GMM} experiment, we verify this empirically by studying two optimization procedures with low and high data distribution biases.
 
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "main"
-%%% End:
 
-%  LocalWords:  SCFM RWS IWAE variates PCFG WS VIMCO rainforth GMM

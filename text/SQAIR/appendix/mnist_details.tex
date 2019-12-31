@@ -30,7 +30,6 @@
     The inference network $\q{\bzt}{\bz_{t-1},\bxt}{\phi}$ is a Gaussian with mean and standard deviation given by the output of separate \gls{MLP}s with inputs $[o_t,\psi^{x}(\bxt)]$.
     
     All aforementioned \glspl{MLP} use the same number of hidden units $H$ and the same number of hidden layers $L$.
-    % We refer to this model as \textsc{mlp}-\gls{VRNN}.
     The \textsc{conv}-\gls{VRNN} uses a \gls{CNN} for $\psi^{x}$ and a transposed \gls{CNN} for $\psi^{\mathrm{dec}}$. The \textsc{mlp}-\gls{VRNN} uses an \gls{MLP} with $H'$ hidden units  and $L'$ hidden layers for both. 
     \Gls{ELU} were used throughout as activations. The latent dimensionality was fixed to 165, which is the upper bound of the number of latent dimensions that can be used per time-step in \gls{SQAIR} or \gls{AIR}. Training was done by optimising the \gls{FIVO} bound, which is known to be tighter than the \gls{IWAE} bound for sequential latent variable models \citep{Maddison2017filtering}. We also verified that this was the case with our models on the moving-\textsc{mnist} data. We train with the \gls{RMSprop} optimizer with a learning rate of $10^{-5}$, momentum equal to $0.9$, and training until convergence of test \gls{FIVO} bound.
     

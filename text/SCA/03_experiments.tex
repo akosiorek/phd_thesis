@@ -1,29 +1,24 @@
 \section{Evaluation}
 \label{sec:sca_experiments}
 
-% \todo{\ak{}{this is where I left yesterday}}
 The decoders in the \gls{SCAu} use explicitly parameterised affine transformations
 that allow the encoders' inputs to be explained with a small set of transformed objects or parts. 
 The following evaluations show how the embedded geometrical knowledge helps to discover patterns in data.
-% Firstly, we perform instance-level segmentation on arrangements of simple constellations of two-dimensional points.
 Firstly, we show that the \gls{CCAu} discovers underlying structures in arrangements of constellations made of two-dimensional points, thereby performing instance-level segmentation.
 Secondly, we pair an \gls{OCAu} with a \gls{PCAu} and investigate whether the resulting \gls{SCAu} can discover structure in real images.
 Finally, we present an ablation study that shows which components of the model contribute to the results.
 
 \subsection{Discovering Constellations}
 \label{sec:constellation_expr}
-% Dataset:
 We create arrangements of constellations online, where every input example consists of up to 11 two-dimensional points belonging to up to three different constellations (two squares and a triangle) as well as binary variables indicating presence of the points (points can be missing).
 Each constellation is included with probability $0.5$ and undergoes a similarity transformation, whereby it is randomly scaled, rotated by up to 180\textdegree\ and shifted.
 Finally, every input example is normalized such that all points lie within $\interval{-1, 1}^2$.
 Note that we use sets of points, and not images, as inputs to our model.
 
-% Baseline:
 We compare the \gls{CCAu} against a baseline that uses the same encoder but a simpler decoder: the decoder uses the capsule parameter vector $\bc_k$ to directly predict the location, precision and presence probability of each of the four points as well as the presence probability of the whole corresponding constellation. 
 Implementation details are listed in 
 \Cref{app:constellation_model}.
 
-% Results:
 Both models are trained unsupervised by maximizing the part log-likelihood.
 We evaluate them by trying to assign each input point to one of the object capsules.
 To do so, we assign every input point to the object capsule with the highest posterior probability for this point, \textit{cf}. \Cref{sec:constellation}, and compute segmentation accuracy (\!\ie the true-positive rate).
@@ -61,7 +56,6 @@ This shows that wiring in an inductive bias towards modelling geometric relation
     \end{tabular}
 	}
 \end{table}
-% The goal of capsule networks was always to discover objects as an arrangement of parts. If this is the case, then presence probabilities of object capsules should be highly informative of object class.
 To allow for multimodality in the appearance of objects of a specific class, we typically use more object capsules than the number of class labels. We expect that the vector of presence probabilities of object capsules should be highly informative of the class label.
 To test this hypothesis, we train \gls{SCAu} on \textsc{mnist}, \textsc{svhn} and \textsc{cifar10} and try to assign class labels to vectors of object capsule presences. This is done with one of the following methods: \textsc{max-act}: we search for a training example that maximally activates given object capsule and assign the corresponding label to this capsule; \textsc{cluster-nn}: we perform \textsc{kmeans} clustering into $C$ clusters and then find the training example that is the closest to each cluster’s centroid to assign a label to the cluster; \textsc{lin-match}: after finding 10 clusters\footnote{All considered datasets have 10 classes.} with \textsc{kmeans} we use bipartite graph matching \citep{Kuhn1955hungarian} to find the permutation of cluster indices that minimizes the classification error---this is standard practice in unsupervised classification, see\eg \cite{Ji2018iic};
 \textsc{lin-pred}: we train a linear classifier with supervision given the presence vectors; this learns $K \times 10$ weights and $10$ biases, where $K$ is the number of object capsules, but it does not modify any parameters of the main model.

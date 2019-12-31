@@ -1,35 +1,9 @@
-\vspace*{-1em}
-\begin{abstract}
-\vspace*{-.5em}
-
-
-
-
-
-%Any object can be seen as a geometrically organized set of interrelated parts. Capsule networks model object parts explicitly and use them to predict whole objects. Typically, capsules are trained discriminatively and assume that an object exists if it is predicted by several parts at the same time, while an iterative inference procedure ensures that a single part is not assigned to multiple objects. We devise an unsupervised version, that consists of a two-stage, stacked capsule autoencoder:
-% 
-% the first stage is responsible for segmenting images into parts and their poses, while the second stage organizes these already-discovered parts into objects and their poses.
-% The bottom (\!\ie first) stage is trained to reconstruct the original image as a mixture of discovered parts.
-% The top stage is  trained to reconstruct part poses as  mixtures of predictions made by different objects.
-% the bottom stage is responsible for segmenting images into parts and is trained to reconstruct the original image as a mixture of the already discovered parts. The top stage organizes these parts into objects and their poses; it is trained to reconstruct part poses as a mixture of predictions made by different objects.
-% The top-level decoder predicts the poses of the parts by applying explicitly-parametrized affine transformations to the object pose parameters. These coordinate transformations do not depend on viewpoint, so learning them can be used to acquire viewpoint-invariant knowledge in a statistically efficient manner. We learn objects and their parts on unlabeled data, and when told the names of the learned classes, we achieve state-of-the-art results for unsupervised classification on \textsc{svhn} (55\%) and near state-of-the-art on \textsc{mnist} (98.5\%).
 An object can be seen as a geometrically organized set of interrelated parts.
 A system that makes explicit use of these geometric relationships to recognize objects should be naturally robust to changes in viewpoint, because the intrinsic geometric relationships are viewpoint-invariant.
 We describe an unsupervised version of capsule networks, in which a neural encoder, which looks at all of the parts, is used to infer the presence and poses of object capsules.
 The encoder is trained by backpropagating through a decoder, which predicts the pose of each already discovered part using a mixture of pose predictions.
-%each of which is computed from the pose of a proposed object and the learned object->part relationship. 
 The parts are discovered directly from an image, in a similar manner, by using a neural encoder, which infers parts and their affine transformations.
 The corresponding decoder models each image pixel as a mixture of predictions made by affine-transformed parts.
-%that are learned for each part.  
 We learn object- and their part-capsules on unlabeled data, and then cluster the vectors of presences of object capsules.
 When told the names of these clusters, we achieve state-of-the-art results for unsupervised classification on \textsc{svhn} (55\%) and near state-of-the-art on \textsc{mnist} (98.5\%).
-\end{abstract}
 
-% Any object can be seen as a geometrically organized set of interrelated parts.
-% Capsule networks model object parts explicitly and use them to predict whole objects.
-% Typically, capsules are trained discriminatively and assume that an object exists if it is predicted by several parts at the same time; an iterative inference procedure ensures that a single part is not assigned to multiple objects.
-% We devise an unsupervised version, that consists of a two-stage, stacked capsule autoencoder: the first stage is responsible for segmenting images into parts and their poses, while the second stage organizes these already-discovered parts into objects and their poses.
-% The bottom (\!\ie first) stage is trained to reconstruct the original image as a mixture of discovered parts.
-% The top stage is  trained to reconstruct part poses as  mixtures of predictions made by different objects.
-% The top-level decoder predicts the poses of the parts by applying explicitly-parametrized affine transformations to the object pose parameters.
-% These coordinate transformations do not depend on viewpoint, so learning them can be used to acquire viewpoint-invariant knowledge in a statistically efficient manner. We learn objects and their parts on unlabeled data, and when told the names of the learned classes, we achieve state-of-the-art results for unsupervised classification on \textsc{svhn} (55\%) and near state-of-the-art on \textsc{mnist} (98.5\%).

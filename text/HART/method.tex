@@ -1,12 +1,6 @@
 \section{Hierarchical Attention}
 \label{sec:att}
 
-    % \begin{enumerate}
-    %     \item Hierarchy; refer to the figure, give overview; explain the terms
-    %     \item Spatial Attention; short; it's not novel but requires restating; it's important to have one followed by the other
-    %     \item Appearance Attention; DFN
-    %     \item Highlight the hierarchy; recurrence reinforces it even further
-    % \end{enumerate}
 
 	\begin{figure}[ht]
 		\centering
@@ -15,14 +9,6 @@
 		\label{fig:system}
 	\end{figure}
 	
-%    \begin{figure}
-%     \begin{minipage}[c]{0.3\textwidth}
-%        \usebox{\archfig}
-%     \end{minipage}\begin{minipage}[c]{0.6\textwidth}
-%        \caption{Architecture of the appearance attention. V1 is implemented as a CNN shared among the dorsal stream (DFN) and the ventral stream (CNN). The $\odot$ symbol represents the Hadamard product and implements masking of visual features by the foreground/background segmentation.}
-%    	\label{fig:arch}
-%      \end{minipage}
-%    \end{figure}
 
     \begin{SCfigure}[50]
 		\usebox{\archfig}
@@ -43,7 +29,6 @@
 		\bgt = \bAt^y \bxt \left( \bAt^x \right)^{\mathsf{T}}.
 	\end{equation} 
 	Attention is described by centres $\mu$ of the Gaussians, their variances $\sigma^2$ and strides $\gamma$ between centers of Gaussians of consecutive rows of the matrix, one for each axis. In contrast to the work by \citet{Kahou2015ratm}, only centres and strides are estimated from the hidden state of the LSTM, while the variance depends solely on the stride. This prevents excessive aliasing during training caused when predicting a small variance (compared to strides) leading to smoother convergence. The relationship between variance and stride is approximated using linear regression with polynomial basis functions (up to $4^{th}$ order) before training the whole system. The glimpse size we use depends on the experiment.
-	% detail ->Linear regression was fitted before training the system, with the objective to approximate bicubic interpolation with the resulting attention glimpse. 	
 	
   \item[Appearance Attention]
 
@@ -65,12 +50,11 @@
     Our approach relies on being able to predict future object appearance and location, and therefore it heavily depends on state estimation. We use an LSTM, which can learn to trade-off spatio-temporal and appearance information in a data-driven fashion. It acts like a working memory, enabling the system to be robust to occlusions and oscillating object appearance \eg when an object rotates and comes back to the original orientation.
     \begin{equation} 
         \label{eq:state}
-        % \mathrm{LSTM}: \bvt, \B{h}_{t-1} \mapsto \bot, \B{h}_t
     	\bot, \B{h}_t = \LSTM{ \bvt, \B{h}_{t-1} },
     \end{equation}
     \begin{equation} 
 	    \label{eq:mlp}
-	   % \mathrm{MLP}: \bot, \vec{\bst} \mapsto \bapp_{t+1}, \Delta \ba_{t+1}, \Delta \widehat{\bb}_t
+	   %
 	    \bapp_{t+1}, \Delta \ba_{t+1}, \Delta \widehat{\bb}_t = \MLP{ \bot, \flatten{\bst} },
     \end{equation}
     \begin{equation}
@@ -88,7 +72,6 @@
    \section{Loss}
    \label{sec:loss}
    	
-   	%could also cite Gemp2014 for motivating multiple loss terms
    We train our system by minimising a loss function comprised of: a tracking loss term, a set of terms for auxiliary tasks and regularisation terms. Auxiliary tasks are essential for real-world data, since convergence does not occur without them. They also speed up learning and lead to better performance for simpler datasets. Unlike the auxiliary tasks used by \citet{Jaderberg2016}, ours are relevant for our main objective --- object tracking. In order to limit the number of hyperparameters, we automatically learn loss weighting. The loss $\loss{\cdot}$ is given by
    
    	\begin{equation}
@@ -101,11 +84,8 @@
    	
    	\item[Tracking] 
    	
-        %WHAT: 
         To achieve the main tracking objective (localising the object in the current frame), we base the first loss term on Intersection-over-Union (IoU) of the predicted bounding box \wrt the ground truth, where the IoU of two bounding boxes is defined as $\mathrm{IoU}\fences{\B{a}, \B{b}} = \frac{\B{a} \cap \B{b}}{\B{a} \cup \B{b}} = \frac{\text{area of overlap}}{\text{area of union}}$.
-        %WHY:
         The IoU is invariant to object and image scale, making it a suitable proxy for measuring the quality of localisation. Even though it (or an exponential thereof) does not correspond to any probability distribution (as it cannot be normalised), it is often used for evaluation \cite{Vot2016}.
-        %HOW:
         We follow the work by \citet{Yu2016unitbox} and express the loss term as the negative log of IoU:
   		\begin{equation}
 	   		\loss[\mathrm{t}]{\data, \theta} = \expc[\p{\widehat{\bb}_{1:T}}{\bxTs, \bb_1}]{ -\log \mathrm{IoU} \fences{\widehat{\bb}_t, \bbt}},
@@ -121,7 +101,6 @@
         
    	\item[Appearance Attention]
    		
-%   		TODO: Try to model noisy labels (on the positive side)
         The purpose of appearance attention is to suppress distractors while keeping full view of the tracked object \eg focus on a \emph{particular} pedestrian moving within a group. To guide this behaviour, we put a loss on appearance attention that encourages picking out only the tracked object. Let $\tau \fences { \bat, \bbt } : \RR^4 \times \RR^4 \to \set{0, 1}^{h_v \times w_v} $ be a target function. Given the bounding box $\bb$ and attention $\ba$, it outputs a binary mask of the same size as the output of V1. The mask corresponds to the the glimpse $\bg$, with the value equal to one at every location where the bounding box overlaps with the glimpse and equal to zero otherwise. If we take $H\fences{p, q}~=~-\sum_z \p{z} \log{\q{z}}$ to be the cross-entropy, the loss reads
 	    \begin{equation}
 	   	  \loss[\mathrm{a}]{\data, \theta} =   \expc[\p{\baTs, \bsTs}{\bxTs, \bb_1}]{ H \fences{ \tau \fences { \bat, \bbt }, \bst  } }.
@@ -136,14 +115,7 @@
    	
    	\item[Adaptive Loss Weights] 
    	
-   	    To avoid hyper-parameter tuning, we follow the work by \citet{Kendall2017adaptive} and learn the loss weighting $\B{\lambda}$. After initialising the weights with a vector of ones, we add the following regularisation term to the loss function: $	\reg{\B{\lambda}} = - \sum_i \log \fences{ \B{\lambda}_i^{-1} }$.% We provide a derivation of adaptive loss weights and discuss its properties in \cref{app:adaptive_loss}.
+   	    To avoid hyper-parameter tuning, we follow the work by \citet{Kendall2017adaptive} and learn the loss weighting $\B{\lambda}$. After initialising the weights with a vector of ones, we add the following regularisation term to the loss function: $	\reg{\B{\lambda}} = - \sum_i \log \fences{ \B{\lambda}_i^{-1} }$.%
 
    \end{description}
 
-%   \subsection{Unsupervised Pretraining of Soft Attention}
-%     \begin{enumerate}
-%       \item Crop two random overlapping bounding boxes and convert to glimpses.
-%       \item Treat one as a template and the other one as a feature map.
-%       \item Easy to do with a DFN
-%       \item Unsupervised pretrain by learning overlap mask, scale difference and centre offset.
-%     \end{enumerate}

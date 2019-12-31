@@ -2,13 +2,10 @@
 \label{sec:introduction}
 
 \Glspl{SCFM} describe generative models that employ branching (i.e., the use of {\small \texttt{if} / \texttt{else} / \texttt{cond}} statements) on choices from discrete random variables.
-%
 Recent years have seen such models gain relevance, particularly in the domain of deep probabilistic programming~\citep[Ch. 7]{siddharth2017learning,bingham2019pyro,tran2017deep,vandemeent2018intro}, which allows combining neural networks with generative models expressing arbitrarily complex control flow.
-%
 \Glspl{SCFM} are encountered in a wide variety of tasks including tracking and prediction \citep{Neiswanger2014dependent,Kosiorek2018sequential}, clustering \citep{Rasmussen2000infinite}, topic modeling \citep{Blei2003latent}, model structure learning \citep{Adams2010learning}, counting \citep{Eslami2016attend}, attention \citep{Xu2015show}, differentiable data structures \citep{Graves2014neural,Graves2016hybrid,Grefenstette2015learning}, speech \& language modeling \citep{Juang1991hidden,Chater2006probabilistic}, and concept learning \citep{Kemp2006learning,Lake2018emergence}.
 
 While a variety of approaches for amortized gradient-based learning (targeting model \gls{ELBO}) exist for models using discrete random variables, the majority rely on continuous relaxations of the discrete variables~\citep[e.g.][]{rolfe2016dvae,vahdat2018dvaepp,vahdat2018dvaehash,oord2017neural,maddison2017concrete,jang2017categorical}, enabling gradient computation through reparameterization~\citep{Kingma2014auto,Rezende2014stochastic}.
-%
 The models used by these approaches typically do not involve any control flow on discrete random choices, instead choosing to feed choices from their continuous relaxations directly into a neural network, thereby facilitating the required learning.
 
 
@@ -27,8 +24,8 @@ The models used by these approaches typically do not involve any control flow on
     grow=right,
     ]
     \node[txt,align=center] {Discrete\\Latent-Variable\\Models}
-    child[missing]              % dummy child for spacing
-    child {                     % SCFMs
+    child[missing]              %
+    child {                     %
       node[txt] {\acrshortpl{SCFM}}
       child {
         node[txt,align=left,font=\scriptsize] (eg2) {
@@ -52,7 +49,7 @@ The models used by these approaches typically do not involve any control flow on
         }
       }
     }
-    child {                     % non-SCFMs
+    child {                     %
       node[txt,align=left,text=gray!80!black] {Models w/o\\Stochastic\\Control Flow}
       child {
         node[txt,text=gray!80!black,align=left] (eg1) {
@@ -85,23 +82,14 @@ The models used by these approaches typically do not involve any control flow on
 \end{figure}
 
 In contrast, \glspl{SCFM} do not lend themselves to continuous-relaxation-based approaches due to the explicit branching requirement on choices from the discrete variables.
-%
 Consider for example a simple \gls{SCFM}---a two-mixture \gls{GMM}.
-%
 Computing the \gls{ELBO} for this model involves choosing mixture identity (Bernoulli).
-%
 Since a sample from a relaxed variable denotes a point on the surface of a probability simplex (e.g. [0.2, 0.8] for a Bernoulli random variable), instead of its vertices (0 or 1), computing the \gls{ELBO} would need evaluation of both branches, weighting the resulting computation under each branch appropriately.
-%
 This process can very quickly become intractable for more complex \glspl{SCFM}, as it requires evaluation of \emph{all} possible branches in the computation, of which there may be \emph{exponentially} many, as illustrated in \cref{fig:exponential-all}.
-%
-% sid: include the biased gradient estimator angle here?
 
 Alternatives to continuous-relaxation methods mainly involve the use of the \gls{IWAE}~\citep{Burda2016importance} framework, employing the \acrshort{REINFORCE}~\citep{Williams1992simple} gradient estimator, combined with control-variate schemes~\citep{Mnih2014neural,Mnih2016variational,Gu2016muprop,Tucker2017rebar,Grathwohl2018backpropagation} to help decrease the variance of the na\"ive estimator.
-%
 Although this approach ameliorates the problem with continuous relaxations in that it does not require evaluation of all branches, it has other drawbacks.
-%
 Firstly, with more particles, the \gls{IWAE} estimator adversely impacts inference-network quality, consequently impeding model learning~\citep{Rainforth2018tighter}.
-%
 Secondly, its practical efficacy can still be limited due to high variance and the requirement to design and optimize a separate neural network (c.f. \cref{sec:experiments/gmm}).
 
 \begin{figure}[t]
@@ -121,7 +109,6 @@ Secondly, its practical efficacy can still be limited due to high variance and t
     level 2/.style={level distance=2.2cm, sibling distance=0.8cm},
     grow'=right,
     ]
-    %% base tree
     \node[nd] (c1) {\(\mathtt{if}(c_1)\)}
     child {
       node[nd] (c2) {\(\mathtt{if}(c_2)\)}
@@ -137,7 +124,6 @@ Secondly, its practical efficacy can still be limited due to high variance and t
       }
       child {node[ex] (e3) {\ldots}}
     };
-    %% draw all paths for cont relax
     \edge[cr, red] {c1} {c3};
     \edge[cl, red] {c1} {c2};
     \edge[cr, red] {c2} {e2};
@@ -146,7 +132,6 @@ Secondly, its practical efficacy can still be limited due to high variance and t
     \edge[cl, red] {c3} {c4};
     \edge[cr, red] {c4} {v2};
     \edge[cl, red] {c4} {v1};
-    %% single path for reinforce etc.
     \edge[rr, blue, transform canvas={xshift=-0.6mm}] {c1} {c3};
     \edge[rl, blue] {c3} {c4};
     \edge[rr, blue] {c4} {v2};
@@ -154,7 +139,6 @@ Secondly, its practical efficacy can still be limited due to high variance and t
   \vspace*{-0.2\baselineskip}
   \caption{%
     The challenge faced by continuous-relaxation methods on \glspl{SCFM}---requiring exploration of \textcolor{red}{all branches}, in contrast to exploring only \textcolor{blue}{one branch} at a time.
-    %
     Stochastic control flow proceeds through discrete choices (\(c_i\)) yielding values (\(v_i\)).
   }
   \label{fig:exponential-all}
@@ -162,33 +146,15 @@ Secondly, its practical efficacy can still be limited due to high variance and t
 \end{figure}
 
 Having characterized the class of models we are interested in (c.f. \cref{fig:scfm}), and identified a range of current approaches (along with their characteristics) that might apply to such models, we revisit \gls{RWS}~\citep{Bornschein2015reweighted}.
-%
 Comparing extensively with state-of-the-art methods for learning in \glspl{SCFM}, we
 demonstrate its efficacy in learning better generative models and inference networks, using lower variance gradient estimators, over a range of computational budgets.
-%
 To this end, we first review state-of-the-art methods for learning deep generative models with discrete latent variables (\cref{sec:background}).
-%
 We then revisit \gls{RWS} (\cref{sec:method}) and present an extensive evaluation of these methods (\cref{sec:experiments}) on
-%
 \begin{inparaenum}[i)]
 \item a \gls{PCFG} model on sentences,
 \item the \gls{AIR} model~\citep{Eslami2016attend} to perceive and localize multiple \acrshort{MNIST} digits, and
-\item a pedagogical \gls{GMM} example that exposes a shortcoming of \gls{RWS} which we then design a fix for. %  using defensive \acrlong{IS}~\citep{Hesterberg1995weighted}, and
+\item a pedagogical \gls{GMM} example that exposes a shortcoming of \gls{RWS} which we then design a fix for. %
 \end{inparaenum}
-%
 Our experiments confirm \gls{RWS} as a competitive, often preferable, alternative for learning \glspl{SCFM}.
-% (c.f. \cref{fig:hook-figure}).
 
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "main"
-%%% End:
 
-%  LocalWords:  SCFM cond siddharth bingham pyro tran vandemeent blei
-%  LocalWords:  neiswanger kosiorek rasmussen adams eslami xu juang
-%  LocalWords:  differentiable grefenstette chater kemp ELBO rolfe gu
-%  LocalWords:  dvae vahdat dvaepp dvaehash oord maddison jang kingma
-%  LocalWords:  reparameterization rezende GMM vertices IWAE burda na
-%  LocalWords:  williams mnih variational muprop rebar grathwohl ive
-%  LocalWords:  backpropagation rainforth RWS bornschein reweighted
-%  LocalWords:  PCFG MNIST

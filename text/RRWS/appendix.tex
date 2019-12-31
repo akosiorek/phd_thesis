@@ -1,4 +1,3 @@
-% !tex root=./main.tex
 
 \section{Probabilistic Context-Free Grammars}
 \label{app:pcfg}
@@ -45,7 +44,6 @@ Here, we outline details of our implementation and provide pseudo-code for the i
     \caption{Inference in \gls{AIR}}
     \label{algo:air_inference}
     \DontPrintSemicolon
-    % \SetAlgoLined
     \SetKwInOut{Input}{Input}
     \SetKwInOut{Output}{Output}
     \SetSideCommentLeft
@@ -146,11 +144,8 @@ one for studying $\phi$'s gradient variance (\cref{fig:gmm_just_std}),
 the other for comparing performances of the generative model and inference networks when $\theta$ is initialized closer to $\theta^*$ than in the main paper (\cref{fig:gmm_init_near}).
 
 \Gls{WW} and \gls{WS} have lower variance gradient estimators than \gls{IWAE}, except \gls{VIMCO}.
-%
 This is because $\phi$'s gradient estimators for \gls{WW} and \gls{WS} do not include the high-variance term \circled{1} in \cref{eq:iwae-reinforce}.
-%
 This is a necessary but not sufficient condition for efficient learning with other important factors being gradient direction and the ability to escape local optima.
-%
 Employing the Concrete distribution gives low-variance gradients for $\phi$ to begin with, but the model learns poorly due to the high gradients bias (due to high temperature hyperparameter).
 
 In \cref{fig:gmm_init_near}, we initialize $\theta$ so that the mixture probabilities are constant.
@@ -216,6 +211,3 @@ Moreover, in the case of relaxed variables, the tightness of the derived relaxed
 This is a major issue in control flows: not only we have to evaluate all branches of the control flow, but the indicator variables that we multiply with outcomes of different branches become exponentially loose with the depth of the flow.
 
 
-% \section{List of acronyms}
-% \renewcommand{\glossarysection}[2][]{}
-% \printglossary[type=\acronymtype]

@@ -1,4 +1,3 @@
-% !tex root=./main.tex
 
 \section{Background}
 \vspace*{-1ex}
@@ -28,26 +27,18 @@ We also review control-variate and continuous-relaxation methods for gradient-va
 \end{align}
 When $K = 1$, this reduces to the \gls{VAE}~\citep{Kingma2014auto,Rezende2014stochastic}.
 \citet{Burda2016importance} show that $\ELBO_{\text{IS}}^K(\theta, \phi, x)$ is a lower bound on $\log p_\theta(x)$ and that increasing~$K$ leads to a tighter lower bound.
-%
 Further, tighter lower bounds arising from increasing~$K$ improve learning of the generative model, but impair learning of the inference network~\citep{Rainforth2018tighter}, as the signal-to-noise ratio of~\(\theta\)'s gradient estimator is $O(\sqrt{K})$ whereas~\(\phi\)'s is $O(1 / \sqrt{K})$.
-%
 Note that although \citet{Tucker2019doubly} solve this for reparameterizable distributions, the issue persists for discrete distributions.
-%
 Consequently, poor learning of the inference network, beyond a certain point (large~\(K\)), can actually impair learning of the generative model as well; a finding we explore in \cref{sec:experiments/gmm}.
 
 Optimizing the \gls{IWAE} objective using \gls{SGD} methods requires unbiased gradient estimators of $\ELBO_{\text{IS}}^K(\theta, \phi, x)$ with respect to $\theta$ and $\phi$~\citep{Robbins1951stochastic}.
-%
 $\nabla_\theta \ELBO_{\text{IS}}^K(\theta, \phi, x)$ is estimated by evaluating $\nabla_\theta \log \hat Z_K$ using samples $z_{1:K} \sim Q_\phi(\cdot \given x)$, where $\hat Z_K = \frac{1}{K} \sum_{k = 1}^K\! w_k$.
 $\nabla_\phi \!\ELBO_{\acrshort{IS}}^K\!(\theta, \phi, x)$ is estimated similarly for models with reparameterizable latents, discrete (and other non-reparameterizable) latents require the \acrshort{REINFORCE} gradient estimator~\citep{Williams1992simple}
-% which, given $z_{1:K} \sim Q_\phi(\cdot \given x)$, is:
-% For models with continuous latent variables $\nabla_\phi \ELBO_{\text{IS}}^K(\theta, \phi, x)$ is estimated similarly, however one must resort to the the \acrshort{REINFORCE} trick~\citep{Williams1992simple} estimator for models with discrete latents:
-% For models with discrete latent variables, $\nabla_\phi \ELBO_{\text{IS}}^K(\theta, \phi, x)$ is estimated using the \acrshort{REINFORCE} trick~\citep{Williams1992simple}
 \begin{align}
   \!\!\!\!g_{\acrshort{REINFORCE}}
   \!=\! \underbrace{\log \hat Z_K \nabla_\phi \log Q_\phi(z_{1:K} \given x)}_{\circled[5]{1}}
   \!+\! \underbrace{\nabla_\phi \log \hat Z_K}_{\circled[5]{2}}.\!\!
     \label{eq:iwae-reinforce}
-    % \left(\!\frac{1}{K} \sum_{k = 1}^K w_k\!\right) \left(\frac{1}{K} \sum_{k = 1}^K w_k\right)
 \end{align}
 
 \vspace*{-1ex}
@@ -56,39 +47,21 @@ $\nabla_\phi \!\ELBO_{\acrshort{IS}}^K\!(\theta, \phi, x)$ is estimated similarl
 \label{sec:background/control-variates}
 
 Since the gradient estimator in \cref{eq:iwae-reinforce} typically suffers from high variance, mainly due to the effect of \circled[5]{1}, a number of approaches have been developed to ameliorate the issue.
-%
 These can be broadly categorized into approaches that directly transform the discrete latent variables (continuous relaxations), or approaches that target improvement of the na\"ive \acrshort{REINFORCE} estimator (control variates).
 
 \paragraph{Continuous Relaxations:}%
-%
 Here, discrete variables are transformed to enable reparameterization~\citep{Kingma2014auto,Rezende2014stochastic}, helping reduce gradient-estimator variance.
-% sid: does the variance-reduction bit have a citation?
-%
 Approaches span the Gumbel distribution~\citep{Maddison2017concrete,Jang2017categorical}, spike-and-X transforms~\citep{Rolfe2016dvae}, overlapping exponentials~\citep{Vahdat2018dvaepp}, and generalized overlapping exponentials for tighter bounds~\citep{Vahdat2018dvaehash}.
 
 Besides difficulties inherent to such methods, such as tuning temperature parameters, or the suitability of undirected Boltzmann machine priors, these methods are not well suited for learning \glspl{SCFM} as they generate samples on the surface of a probability simplex rather than its vertices.
-%
 For example, sampling from a transformed Bernoulli distribution yields samples of the form \([\alpha, (1 - \alpha)]\) rather than simply 0 or 1---the latter form required for branching.
-%
 With relaxed samples, as illustrated in \cref{fig:exponential-all}, one would need to execute \emph{all} the exponentially many discrete-variable driven branches in the model, weighting each branch appropriately---something that can quickly become infeasible for even moderately complex models.
-%
 However, for purposes of comparison, for relatively simple \glspl{SCFM}, one could apply methods involving continuous relaxations, as demonstrated in \cref{sec:experiments/gmm}.
 
 \paragraph{Control Variates:}%
-%
 Here, approaches build on the \acrshort{REINFORCE} estimator for the \gls{IWAE} \gls{ELBO} objective, designing control-variate schemes to reduce the variance of the na\"ive estimator.
-%
 \Gls{VIMCO}~\citep{Mnih2016variational} eschews designing an explicit control variate, instead exploiting the particle set obtained in \gls{IWAE}.
-%
 It replaces \circled[5]{1} with
-  % g_{\acrshort{VIMCO}}^{\circled[2]{1}}
-  % &\!=\! \sum_{\ell = 1}^K \biggl(
-  % \underbrace{\log \hat Z_K}_{A}
-  % - \underbrace{\log \frac{1}{K} \biggl(e^{\frac{1}{K - 1} \!\!\sum\limits_{k \neq \ell} \!\log w_k}
-  % \!\!+ \sum_{k \neq \ell} w_k \biggr)\!}_{B}
-  % \biggr)\\
-  % &\quad \nabla_\phi \log q_\phi(z_\ell \given x),
-%
 \begin{align}
 \vspace*{-1ex}
   g_{\acrshort{VIMCO}}^{\circled[2]{1}}
@@ -98,30 +71,19 @@ It replaces \circled[5]{1} with
     + \sum_{\ell \neq k} w_\ell \biggr) \nonumber
 \vspace*{-1ex}
 \end{align}
-%
 where \(\Upsilon_{-k} \perp\hspace*{-6pt}\perp z_k\) and highly correlated with $\log \hat Z_K$.
 
 Finally, assuming $z_k$ is a discrete random variable with $C$ categories\footnote{The assumption is needed only for notational convenience. However, using more structured latents leads to difficulties in picking the control-variate architecture.}, \acrshort{REBAR}~\citep{Tucker2017rebar} and \acrshort{RELAX}~\citep{Grathwohl2018backpropagation} improve on \citet{Mnih2014neural} and \citet{Gu2016muprop}, replacing \circled[5]{1} as
-%
 \begin{align}
   g_{\acrshort{RELAX}}^{\circled[2]{1}}
   &= \biggl(\log \hat Z_K - c_\rho(\tilde g_{1:K}) \biggr) \nabla_\phi \log Q_\phi(z_{1:K} \given x) \nonumber \\
   &\quad+ \nabla_\phi c_\rho(g_{1:K}) - \nabla_\phi c_\rho(\tilde g_{1:K}),
 \end{align}
-%
 where $g_k$ is a $C$-dimensional vector of reparameterized Gumbel random variates, $z_k$ is a one-hot argmax function of $g_k$, and $\tilde g_k$ is a vector of reparameterized conditional Gumbel random variates conditioned on $z_k$.
 The conditional Gumbel random variates are a form of Rao-Blackwellization used to reduce variance.
 The control variate $c_\rho$, parameterized by $\rho$, is optimized to minimize the gradient variance estimates along with the main \gls{ELBO} optimization, leading to state-of-the-art performance on, for example, sigmoid belief networks~\citep{Neal1992connectionist}.
 The main difficulty in using this method is choosing a suitable family of $c_\rho$, as some choices lead to higher variance despite concurrent gradient-variance minimization.
 
-% Moreover, the objective for the concurrent optimization requires evaluating a Jacobian-vector product that induces an overhead of $O(D_\phi D_\rho)$~\tal{check this} where $D_\phi, D_\rho$ are number of inference network and control-variate parameters respectively.
 
 
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "main"
-%%% End:
 
-% LocalWords:  parameterized IWAE SGD ive Autoencoders ELBO VAE latents
-% LocalWords:  reparameterizable reparameterisation SCFM VIMCO reparameterized
-% LocalWords:  Gumbel argmax Blackwellization

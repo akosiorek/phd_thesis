@@ -5,12 +5,10 @@
 \subsection{Reconstructions}
 \begin{center}
 
-    % \includegraphics[width=\linewidth]{figures/SQAIR/mnist_rec/000037.png}
     \includegraphics[width=\linewidth]{figures/SQAIR/mnist_rec/000047.png}
     \includegraphics[width=\linewidth]{figures/SQAIR/mnist_rec/000050.png}
     \includegraphics[width=\linewidth]{figures/SQAIR/mnist_rec/000070.png}
     \includegraphics[width=\linewidth]{figures/SQAIR/mnist_rec/000074.png}
-    % \includegraphics[width=\linewidth]{figures/SQAIR/mnist_rec/000083.png}
     \includegraphics[width=\linewidth]{figures/SQAIR/mnist_rec/000087.png}
     \includegraphics[width=\linewidth]{figures/SQAIR/mnist_rec/000088.png}
     \includegraphics[width=\linewidth]{figures/SQAIR/mnist_rec/000098.png} 
@@ -20,27 +18,14 @@
 
 
 
-% \begin{figure}
-%     \centering
-%     % \includegraphics[width=\linewidth]{figures/SQAIR/mnist_samples_long/000002.png}
-%     % \includegraphics[width=\linewidth]{figures/SQAIR/mnist_samples_long/000003.png}
-%     % \includegraphics[width=\linewidth]{figures/SQAIR/mnist_samples_long/000005.png}
-%     % \includegraphics[width=\linewidth]{figures/SQAIR/mnist_samples_long/000011.png}
-%     % \includegraphics[width=\linewidth]{figures/SQAIR/mnist_samples_long/000012.png}
-%     \caption{Inputs and reconstructions of length $32$ from \gls{SQAIR} trained for ten time-steps}
-%     \label{fig:mnist_recs_long}
-% \end{figure}
 
 \begin{center}
-    % \includegraphics[width=\linewidth]{figures/SQAIR/vrnn_rec/000004.png}
-    % \includegraphics[width=\linewidth]{figures/SQAIR/vrnn_rec/000007.png}
     \includegraphics[width=\linewidth]{figures/SQAIR/vrnn_rec/000009.png}
     \includegraphics[width=\linewidth]{figures/SQAIR/vrnn_rec/000015.png}
     \includegraphics[width=\linewidth]{figures/SQAIR/vrnn_rec/000018.png}
     \includegraphics[width=\linewidth]{figures/SQAIR/vrnn_rec/000038.png}
     \includegraphics[width=\linewidth]{figures/SQAIR/vrnn_rec/000041.png}
     \includegraphics[width=\linewidth]{figures/SQAIR/vrnn_rec/000050.png}
-    % \includegraphics[width=\linewidth]{figures/SQAIR/vrnn_rec/000063.png}
     \includegraphics[width=\linewidth]{figures/SQAIR/vrnn_rec/000066.png}
     \captionof{figure}{Sequences of input (first row) and \textsc{conv}-\gls{VRNN} reconstructions. They are not temporally consistent. The reconstruction at time $t=1$ is typically of lower quality and often different than the rest of the sequence.}
     \label{fig:mnist_recs_vrnn}
@@ -61,16 +46,6 @@
     \label{fig:mnist_samples_additional}
 \end{center}
 
-% \begin{figure}
-%     \centering
-% %     \includegraphics[width=\linewidth]{figures/SQAIR/mnist_samples_long/000002.png}
-% %     \includegraphics[width=\linewidth]{figures/SQAIR/mnist_samples_long/000003.png}
-% %     \includegraphics[width=\linewidth]{figures/SQAIR/mnist_samples_long/000005.png}
-% %     \includegraphics[width=\linewidth]{figures/SQAIR/mnist_samples_long/000011.png}
-% %     \includegraphics[width=\linewidth]{figures/SQAIR/mnist_samples_long/000012.png}
-% %     \caption{Samples of length $32$ from \gls{SQAIR} trained for ten time-steps}
-%     \label{fig:mnist_samples_long}
-% \end{figure}
 
 \newpage
 \begin{center}
@@ -86,20 +61,11 @@
     \captionof{figure}{Samples from \textsc{conv}-\gls{VRNN}. They show lack of temporal consistency. Objects in the generated frames change between consecutive time-steps and they do not resamble digits from the training set.}
     \label{fig:mnist_samples_vrnn}
 \end{center}
-% \end{figure}
 
 \newpage
 \subsection{Conditional Generation}
 
 \begin{center}
-    % \includegraphics[width=\linewidth]{figures/SQAIR/mnist_cond_gen/000004.png}
-    % \includegraphics[width=\linewidth]{figures/SQAIR/mnist_cond_gen/000005.png}
-    % \includegraphics[width=\linewidth]{figures/SQAIR/mnist_cond_gen/000006.png}
-    % \includegraphics[width=\linewidth]{figures/SQAIR/mnist_cond_gen/000012.png}
-    % \includegraphics[width=\linewidth]{figures/SQAIR/mnist_cond_gen/000019.png}
-    % \includegraphics[width=\linewidth]{figures/SQAIR/mnist_cond_gen/000023.png}
-    % % \includegraphics[width=\linewidth]{figures/SQAIR/mnist_cond_gen/000026.png}
-    % \includegraphics[width=\linewidth]{figures/SQAIR/mnist_cond_gen/000030.png}
     \includegraphics[width=\linewidth]{figures/SQAIR/sqair_mnist_cond_gen_appendix}
     \captionof{figure}{Conditional generation from \gls{SQAIR}, which sees only the first three frames in every case. Top is the input sequence (and the remaining ground-truth), while bottom is reconstruction (first three time-steps) and then generation.}
     \label{fig:mnist_cond_gen_sqair}

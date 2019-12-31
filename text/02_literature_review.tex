@@ -1,39 +1,48 @@
-\chapter{Literature Review}
+\chapter{Background}
 \label{ch:lit_review}
 
 	Learning object-centric representations lies at the intersection of several areas of machine learning research. 
-	Concretely, these are \begin{inparaenum}[(1)\!]
-	\item relational reasoning, because having representations of objects can facilitate reasoning about their relations, but also because we can discover objects by analysing relations between different elements of a visual scene,
-	\item object detection and tracking, as these two areas of research focus on locating objects in images and videos, respectively,
-	\item representation learning, since the objective of our task it to learn representations, albeit ones that describe objects and not entire scenes, and finally
-	\item compositional generative modelling, because object-centric representations can be useful for this task, but also because this area of research is among the most-promising candidates for learning object-centric representations.
-	\end{inparaenum}
+	Concretely, these are
+	(1) relational reasoning, because we can discover objects by analysing relations between different elements of a visual scene; but also having explicit representations of objects can facilitate relational reasoning,
+	(2) object detection and tracking, as these two areas of research focus on locating objects in images and videos, respectively,
+	(3) representation learning, since our task is to learn representations, albeit ones that describe objects and not entire scenes, and finally
+	(4) compositional generative modelling, because object-centric representations can be useful for this task, but also because this area of research is among the most-promising candidates for learning object-centric representations in the absence of labels.
+	%
 	We now describe these four areas in their dedicated sections, starting with relational reasoning.
+	The purpose here is to provide overviews (but not exhaustive surveys) of those fields.
 
 
 \section{Relational Reasoning}
 \label{sec:relational_reasoning}
 
+    % definition
 	We define relational reasoning as making inferences about a group of entities such as physical objects with certain properties (\!\eg shape, mass) that exist in a shared context.
-	 Importantly, we can make inferences about relations between any objects in a group, or we can use the knowledge of such relations to answer other (externally-posed) questions about the entities\footnote{Note that such answer can depend on the shared context, which can affect how objects relate to each other.}.
-	 This definition closely follows that of \ak{fix this reference to be Battaglia et.\ al.} \cite{Battaglia2018relnets}, who also present an overview of this field of research. 
-	 A typical example of relational reasoning is that of inferring which object in a scene is the biggest, or counting all objects made of metal \citep{Santoro2017}.
-	 In a more complicated example, agents can learn the relations between objects in the environment, and use some objects to indirectly interact with other objects, which constitutes tool use \citep{Baker2019tooluse}.
-	 If the existence and/or type of relations between objects are known, one can use this knowledge to build a \gls{GNN} \citep{Schlichtkrull2017relgraph} whose structure reflects these relations, and where different types of relations can be processed by dedicated neural modules.
-	 If the number of entities is too large, or if relations only between neighbouring entities are known, one can process the graph of entities iteratively using message passing.
-	 Alternatively, especially if relations between all objects exist or if their nature is not known, one could consider self-attention \citep{Vaswani17}, which performs relational reasoning on a fully-connected graph of entities.
-	 The downside is the quadratic computational complexity (in the number of entities) of this approach.
-	 Fortunately, this can be improved to linear computational complexity by using inducing points \citep{Lee2019set} or local self-attention \citep{Ramachandran2019standalone}.
+	Importantly, we can make inferences about relations between any objects in a group, or we can use the knowledge of such relations to answer other (externally-posed) questions about the entities\footnote{Note that such answer can depend on the shared context, which can affect how objects relate to each other.}.
+	This definition closely follows that of \cite{Battaglia2018relnets}, who also present an overview of this field of research. 
+	% examples
+	A typical example of relational reasoning is that of inferring which object in a scene is the biggest, or counting all objects made of metal \citep{Santoro2017}.
+	In a more complicated example, agents can learn the relations between objects in the environment, and use some objects to indirectly interact with other objects, which constitutes tool use \citep{Baker2019tooluse}.
+	
+	% methods 
+	Reasoning about relations requires comparing different entities to each other.
+    \cite{Santoro2017} introduced the relation network, which embeds every pair of present entities separately, sums all pair embeddings, to finally arrive at a single embedding that describes all the entities.
+    This approach resembles the DeepSet approach for encoding sets \citep{Zaheer2017}, with the difference that it considers all pairs of entities explicitly.
+    Recently introduced self-attention \citep{Vaswani17} can also be used to compare entities to each other and facilitates\eg clustering, see \cite{Lee2019set}, which is a clear improvement on the DeepSet method.
+    We use self-attention in \Cref{ch:mohart} to consider relations between different objects and improve multi-object tracking.
+    More generally, relation networks and self-attention can be seen as \glspl{GNN} operating on a fully-connected graph of entities.
+    Both approaches scale quadratically in the number of entities, and are therefore not suited for large numbers of entities. 
+    If the existence and/or type of relations between entities is know, one can build a special-purpose \gls{GNN} \citep{Schlichtkrull2017relgraph} that is cheaper to evaluate and potentially more expressive.
+    Alternatively, one could construct a nearest-neighbour graph \citep{Ramachandran2019standalone} or introduce inducing points \citep{Lee2019set}, which results in linear computation complexity.
 	 
-	 Relational reasoning can be useful for inferring which parts of the scene constitute objects, but in order to reason about relations, one has to know what entities are present in the scene. 
-	 Typically, this data is not available and one has to resort to heuristic solutions.
-	 \cite{Santoro2017} use a \gls{CNN} to embed an image into a feature map and assumes that each location in this feature map can correspond to an object. 
-	 They then consider pairwise relations between every pair of locations.
-	 \cite{Battaglia2016,Baker2019tooluse} assume access to the ground-truth state of different entities,
-	 and \cite{Yi2019cleverer} use \textsc{mask r-cnn} \citep{He2017maskrcnn} for segmenting out different objects before feeding them into a relational reasoning module.
-	 More generally, one can use any object detection, segmentation, or region proposal\footnote{Regions of interest need not correspond to objects.} algorithm to identify \textit{interesting} parts of the scene and supply information about their whereabouts and appearance to a relational reasoning module.
-	 In the context of timeseries, it is useful to know temporal characteristics of objects, which can be provided by object tracking algorithms.
-	 Therefore, we now discuss object detection and tracking methods, and their suitability for relational reasoning applications.
+	% how do we get entities to reason about?
+	Relational reasoning can be useful for inferring which parts of the scene constitute objects, but in order to reason about relations, one has to know what entities are present in the scene. 
+	Typically, this data is not available and one has to resort to heuristic solutions.
+	\cite{Santoro2017} use a \gls{CNN} to embed an image into a feature map and assumes that each location in this feature map can correspond to an object. 
+	They then consider pairwise relations between every pair of locations.
+	\cite{Battaglia2016,Baker2019tooluse} assume access to the ground-truth state of different entities, and \cite{Yi2019cleverer} use \textsc{mask r-cnn} \citep{He2017maskrcnn} for segmenting out different objects before feeding them into a relational reasoning module.
+	More generally, one can use any object detection, segmentation, or region proposal\footnote{Regions of interest need not correspond to objects.} algorithm to identify \textit{interesting} parts of the scene and supply information about their whereabouts and appearance to a relational reasoning module.
+	In the context of timeseries, it is useful to know temporal characteristics of objects, which can be provided by object tracking algorithms.
+	Therefore, we now discuss object detection and tracking methods, and their suitability for relational reasoning applications.
 	 
 \section{Object Detection and Tracking}
 \label{sec:object_det_track}
@@ -41,21 +50,24 @@
 	Object detection and tracking have been of long-standing interest to the computer vision community;
 	both problems are typically addressed in a supervised manner, where object bounding boxes and/or segmentation masks and often additional labels are provided as a part of the training data.
 	\paragraph{Object detection}
-	A user of object detection algorithms is interested in knowing how many objects there are in an image, where they are and often what they are. 
+	% definition
+	In object detection the user is interested in knowing how many objects there are in an image, where they are and often what they are. 
+	% first approaches
 	Historically, this problem has been typically addressed by matching patterns within a sliding window.
 	For example, the seminal work of \cite{Viola2001face} uses a cascade of simple filters found with boosting \citep{Schapire1999boosting} that are matched against small image patches at every possible image location to find faces.
-	This is computationally expensive, and recent state-of-the-art approaches use \gls{CNN}s to predict locations in which objects might exist.
-	Next, algorithms evaluate every location separately, possibly predicting some additional attributes like object class in \textsc{rcnn} \citep{Girshick2013rcnn,Ren2015fasterrcnn} or the corresponding segmentation mask in \textsc{mask-rcnn} \citep{He2017maskrcnn}.
+	% recent methods
+	This is computationally expensive, and recent state-of-the-art approaches use \gls{CNN}s to predict locations in which objects might exist \citep{Redmon15}.
+	Some algorithms employ additional post-processing, where they evaluate every object proposal separately, possibly predicting some additional attributes like object class in \textsc{rcnn} \citep{Girshick2013rcnn,Ren2015fasterrcnn} or the corresponding segmentation mask in \textsc{mask-rcnn} \citep{He2017maskrcnn}.
 	
-	In terms of relational reasoning, these methods provide segmentation masks or bounding boxes and often a class label.
-	Moreover, one could extract the hidden representation of the \gls{CNN} to use it as an input to a relational reasoning module.
+	Object detection can be useful for relational reasoning because it can provide segmentation masks or bounding boxes and often additional features such as class labels.
+	Moreover, one could extract hidden representations of the \gls{CNN} and use it as an input to a relational reasoning module.
 	There is no guarantee that these features would contain any useful information for this task, however, since the decision of whether object exists at any particular location is made independently of other locations.
-	Additionally, the majority of object detection algorithms are supervised, which constraints their use cases to modalities for which large labelled datasets exists.
+	Additionally, the majority of object detection algorithms are supervised, which constraints their use to modalities for which large labelled datasets exist.
 	The last two properties strongly contrast with unsupervised object detection methods,\eg \gls{AIR} of \cite{Eslami2016air}, which needs no labels to train, but which also generates latent variables that are highly informative of discovered objects.
-	\gls{AIR} has been recently scaled to hundreds of objects and applied to Atari games \citep{Crawford2019spair} and enabled to infer the posterior distribution over object appearance exactly with sum-product networks \citep{Stelzner2019supair}.
+	\gls{AIR} has been recently scaled to hundreds of objects and applied to Atari games \citep{Crawford2019spair,Jiang2019scalor} and enabled to infer the posterior distribution over object appearance exactly with sum-product networks \citep{Stelzner2019supair}.
 	We provide an extension of \gls{AIR} to image sequences in \Cref{ch:sqair}.
-	Also applicable to relational reasoning are compositional generative algorithms, which in effect perform image segmentation without supervision.
-	These are further discussed in \Cref{sec:gen_modelling}.
+	Also applicable to relational reasoning are compositional generative models, which in effect perform image segmentation without supervision.
+	These are further discussed in \Cref{sec:repr_learning}.
 	
 	\paragraph{Object tracking}
 	The task of object tracking is to estimate the location of an object of interest in a video frame, and to maintain that estimate over time as the video progresses.
@@ -65,7 +77,7 @@
 	
 %	
 %
-	\textbf{Single-object tracking} commonly uses Siamese networks \citep{Valmadre2017,Held2016goturn}, first introduced in \citep{Bromley1993siamese,Schmidhuber1993dicovering}.
+	\textbf{Single-object tracking} commonly uses Siamese networks \citep{Valmadre2017,Held2016goturn}, first introduced in \cite{Bromley1993siamese,Schmidhuber1993dicovering}.
 	These approaches typically work by comparing a source patch containing the object of interest to patches at several locations in the target image.
 	The highest-scoring patch in the target image is deemed to match the source patch, and its centre is taken as the new position of the tracked object.
 	In order to handle scale differences, the source patch is compared to the target image at several different scales.
@@ -78,7 +90,7 @@
 	Moreover, since these methods do not aggregate information through time, they are unable to inform about object intent or its motion.
 	This is in contrast to end-to-end tracking approaches, where models do estimate object state and learn to anticipate position and appearance changes.
 	More specifically, Siamese networks can be seen as an \gls{RNN} unrolled over two time-steps.
-	Recently, we used an \gls{RNN} with an attention mechanism in the \textsc{hart} model (\Cref{ch:hart}) to predict bounding boxes for single objects, while robustly modelling their motion and appearance.
+	In \Cref{ch:hart}, we describe \textsc{hart}---a model that uses an \gls{RNN} with an attention mechanism to predict bounding boxes for single objects, while robustly modelling their motion and appearance.
 	\textsc{Hart} is based on \textsc{ratm} \citep{Kahou2015ratm}, but decouples attention and bounding-box prediction and features an additional attention mechanism.
 	At the time, \textsc{hart} was the best-performing \gls{RNN}-based tracker, outperfomed only by the concurrently developed \textsc{re3} of \cite{Gordon2018re3}, which is also based on an \gls{RNN}, but is not end-to-end due to the use of hard attention for cropping.
 	\textsc{Hart} was extended to handle \textsc{rgbd} inputs in \cite{Danesh2019deep}. 
@@ -88,57 +100,46 @@
 %
 	\textbf{Multi-object tracking} is typically attained by detecting objects and performing data association on bounding-boxes in order to link them into coherent trajectories \citep{Zhang2008,Milan2014,Bae2017confidence,Keuper2018motion}, which differs considerably from the single-object tracking paradigm.
 	Many approaches additionally use motion models and appearance to improve data association, see\eg \cite{Bewley2016sort}.
-	While recent approaches replace some steps of this method with learned elements \citep{Schulter2017deepnf,Nam2016,Ning2017,Keuper2018motion,Bae2017confidence,Xiang2015}, no truly end-to-end multi-object tracking method exists, with the exception of unsupervised video-modelling models described in \Cref{sec:gen_modelling} and including \textsc{sqair} of \Cref{ch:sqair}.
+	While recent approaches replace some steps of this method with learned elements \citep{Schulter2017deepnf,Nam2016,Ning2017,Keuper2018motion,Bae2017confidence,Xiang2015},  not a single purly-vision-based end-to-end multi-object tracking method exists, with the exception of unsupervised video-modelling models described in \Cref{sec:repr_learning} and including \textsc{sqair} of \Cref{ch:sqair}.
 	
-%	\textbf{Discussion}
-%	Object detection and tracking algorithms can provide valuable information that can be used as input to relational reasoning algorithms, but the extracted information is typically limited to the the location and possibly the history of object locations.
-%	Given the location, it is possible to extract information about appearance and possibly other characteristics, but this requires complicated post-processing.
-	
-%	\cite{Schulter2017deepnf} used an end-to-end supervised approach that detects objects and performs data association.
-%	In the unsupervised setting, where the training data consists of only images or videos, the dominant approach is to distill the inductive bias of spatial consistency into a discriminative model.  \cite{Cho2015unsupervised} detect single objects and their parts in images, and \cite{Kwak2015unsupervised,Xiao2016track} incorporate temporal consistency to better track single objects.
-%	\Gls{SQAIR} is unsupervised and hence it does not rely on bounding boxes nor additional labels for training, while being able to learn arbitrary motion and appearance models similarly to \textsc{hart} \citep{Kosiorek2017hierch}.
-%	At the same time, is inherently multi-object and performs data association implicitly (\textit{cf}. \Cref{app:algo}).
-%	Unlike the other unsupervised approaches, temporal consistency is baked into the model structure of \gls{SQAIR} and further enforced by lower \gls{KL} divergence when an object is tracked.
-	
-%	\paragraph{End-to-End Tracking} A newly established and much less explored stream of work approaches tracking in an end-to-end fashion. A key difficulty here is that extracting an image crop (according to bounding-boxes provided by a detector), is non-differentiable and results in high-variance gradient estimators.
-%	\citet{Kahou2015ratm} propose an end-to-end tracker with soft spatial-attention using a 2D grid of Gaussians instead of a hard bounding-box. \Gls{HART} draws inspiration from this idea, employs an additional attention mechanism, and shows promising performance on the real-world KITTI dataset \cite{Kosiorek2017hierch}.
-%	\Gls{HART}, which forms the foundation of this work, is explained in detail in \Cref{sec:method}. It has also been extended to incorporate depth information from \textsc{rgbd} cameras \cite{Danesh2019deep}. \citet{Gordon2018re3} propose an approach in which the crop corresponds to the scaled up previous bounding-box. This simplifies the approach, but does not allow the model to learn where to look---\ie no gradient is backpropagated through crop coordinates.
-%	To the best of our knowledge, there are no successful implementations of any such end-to-end approaches for multi-object tracking beyond \textsc{sqair} \citep{Kosiorek2018sqair}, which works only on datasets with static backgrounds. On real-world data, the only end-to-end approaches correspond to applying multiple single-object trackers in parallel---a method which does not leverage the potential of scene context or inter-object interactions. 
-	
-
 
 \section{Generative Modelling and Representation Learning}
 \label{sec:repr_learning}
 
-	Learning representations is the main topic of this thesis, and the last two sections show that one can learn representations by learning to detect and track objects, and that such representations can be used for relational reasoning purposes.
-	
+% 	Learning representations is the main topic of this thesis, and the previous two sections show that one can learn representations by learning to detect and track objects, and that such representations can be used for relational reasoning.
+    Representation learning and generative modelling are inherently tied, as representations we care about can be often obtained by posterior inference for an appropriate generative model. 
+    Since representation learning is the main topic of this thesis, we now briefly review these two areas.
+    
 	Formally, the goal of representation learning is to learn a concise representation $\bz \in \mathbb{Z}$, typically $\mathbb{Z} \subseteq \RR^d$, which summarizes information contained in some high-dimensional input $\bx \in \mathbb{X}$.
 	The usual requirements for the learned representations are to be low-dimensional and easy to use in downstream tasks:\eg it should be possible to classify images by using a linear classifier on $\bz$.
 	This is different from transfer learning, which can use similar methods to representation learning, but where the goal is to pre-train a feature extractor without supervision and fine-tune it on a target task using supervised data \citep{He2019moco,Devlin2019bert}.
 	
 	While there exists a plethora of representation learning methods, an exhaustive review of available approaches is beyond the scope of this work, and we are going to discuss some recent methods focused on 
-	\begin{inparaenum}[(i)]
-		\item generative modelling, and especially its 
-		\item disentangled and
-		\item compositional flavours, as well as
-		\item contrastive learning.
-	\end{inparaenum}
-	\AK{Say why those three.}
+		(i) generative modelling, and especially its 
+		(ii) disentangled and
+		(iii) compositional flavours,
+	as these are best suited for object-centric representation learning.
+	We note that there is a huge body of work on contrastive representation learning \citep{Oord2016cond,Tschannen2019onmi,Hjelm2019deepinfomax,He2019moco,Schmidhuber1992pm}, but it focuses on learning global representations.
+	The recent work from \cite{Kipf2019cswm} is a notable exception, and offers the first method to learn object-centric representations in this framework.
 %	The main categories of representation learning approaches relevant for this work are those that rely on contrastive learning, which can often be shown to maximise mutual information $\operatorname{I}(\bx, \bz)$ \citep{Tschannen2019onmi}, and those based on compositional generative modelling.
 	
 	\paragraph{Generative modelling}
 	In parametric\footnote{Nonparametric modelling is also possible, but is out of scope of this work.} generative modelling, the goal is to approximate the data distribution $\p{\bx}{}{\mathrm{data}}$ with a parametric distribution $\p{\bx}{}{\theta}$ with parameters $\theta$.
-	Recently, the most popular approaches revolve around the \gls{VAE} and \gls{GAN} frameworks as well as flow-based and autoregressive methods.
+	Recently, the most popular approaches have revolved around flow-based and autoregressive methods as well as the \gls{VAE} and \gls{GAN} frameworks.
 	
-	Of these, only \gls{VAE} is a viable candidate for representation learning, and we explain shortly why.
-	\Gls{GAN}s estimate the data distribution implicitly, and provide no usable features \citep{Radford2016gan,Goodfellow2014generative}.
-	The bidirectional \gls{GAN} equips a traditional \gls{GAN} with an encoder which can learn to extract good representations \citep{Donahue2017bigan, Donahue2019bigbigan}, but learning becomes unstable as is typical for \gls{GAN}s.
 	Flow-based models can provide an exact estimate of the data likelihood, but do not use latent variables \citep{Rezende2015flow,Dinh2016realnvp,Kingma2018glow}.
 	Since all data modelling is done by bijective transformations of some simple random variable, flow-based models cannot reduce the original data dimensionality, which is in contrast with our requirements.
-	Finally, autoregressive models need not use latent variables to model data well \citep{Uria2016nade,Oord2016wavenet}, and even if combined with latent variables, they often choose not to use them, therefore not learning useful representations \citep{Gulrajani2016pixelvae}.
+	Autoregressive models need not use latent variables to model data well \citep{Uria2016nade,Oord2016wavenet}, and even if combined with latent variables, they often choose not to use them, therefore not learning useful representations \citep{Gulrajani2016pixelvae}.
+	It follows that only \gls{VAE}s and \gls{GAN}s are viable candidates for representation learning.
+	However, vanilla \gls{GAN}s approximate the data distribution only implicitly by learning to appropriately transform a simple random variable, and posterior inference in these models is complicated and can be inefficient \citep{Bojanowski2017gan}.
+	Therefore, they do not provide any usable features \citep{Radford2016gan,Goodfellow2014generative}.
+	The bidirectional \gls{GAN} (\textsc{bigan}) equips a traditional \gls{GAN} with an encoder that approximates the posterior distribution over encodings and can therefore learn good representations \citep{Donahue2017bigan, Donahue2019bigbigan}.
+	Training of these models is poorly understood, however, as is the case with other \gls{GAN}-like models.
+	We note that this method is interesting and should be investigated in future, but is outside of scope of this work.
+	Finally, \gls{VAE}s are well understood and allow for joint training of approximate posterior inference and generative models.
 	
 	\Gls{VAE}s were first introduced in \cite{Rezende2014stochastic,Kingma2014auto} and model the data distribution by introducing a latent variable as $\p{\bx}{}{\theta} = \int \p{\bx}{\bz}{\theta} \p{\bz}{}{\theta} \dint \bz$.
-	Learning in a \Gls{VAE} is accomplished by maximizing the \gls{ELBO}, where $\q{\bz}{\bx}{\phi}$ approximates the true posterior distribution $\p{\bz}{\bx}{\theta}$:
+	Learning in a \gls{VAE} is accomplished by maximizing the \gls{ELBO}, where $\q{\bz}{\bx}{\phi}$ approximates the true posterior distribution $\p{\bz}{\bx}{\theta}$:
 %	\vspace{-1em}
 	\begin{equation}
 		\loss[\textsc{elbo}]{\bx; \theta, \phi} = 
@@ -146,7 +147,8 @@
 	\end{equation}
 	The approximate posterior $q$ can be used as an encoder that learns to extract representations from data.
 	While the majority of recent works on \gls{VAE}s focuses on improving density estimation as opposed to learning representations,\eg \cite{Kingma2016improving,Maale2019biva,Razavi2019vqvae2}, there are two streams of work, that of disentangled representation learning and compositional generative modelling, that are of interest to this thesis.
-	It is worth noting that \gls{VAE}s built upon autoencoding that was perhaps started with works on  Boltzmann and Helmholtz machines \addref and continued with discriminative autoencoders \addref.
+	
+% 	It is worth noting that \gls{VAE}s built upon earlier work on autoencoding, that was perhaps started with works on Boltzmann and Helmholtz machines \addref and continued with discriminative autoencoders \addref.
 	
 	\paragraph{Disentangled Representation Learning}
 	The majority of representation learning literature is concerned with learning \textit{global} representations.
@@ -154,75 +156,35 @@
 	Since we would like the learned representations to be easily readable (or usable),\eg by using linear predictors, it is desirable to have a representation with a compositional structure.
 	That is, the learned representation should be composed of a number of parts, with different parts being independent of each other and describing different factors of variations in the data.
 	Such representations are called \textit{disentangled}, though there exists no universally-agreed upon definition of this property.
-	The concept was introduced \AK{not sure if true} in \cite{Higgins2017betavae}, with the majority of approaches focused on \gls{VAE}-style models with an additional objective encouraging disentanglement \citep{Higgins2017betavae,Kim2018disentangling} or using specifically-structured decoders \citep{Watters2019broadcast}.
+	The concept was introduced in \cite{Higgins2017betavae}, with the majority of approaches focused on \gls{VAE}-style models with an additional objective encouraging disentanglement \citep{Higgins2017betavae,Kim2018disentangling} or using specifically-structured decoders \citep{Watters2019broadcast}.
 	
-	\ak{Recent studies show that learning disentangled representations can lead to more sample-efficient learning and better performance \cite{Sjord...}...}
+
 	
 	Learning object-centric representations means learning representations that separately describe each object in a scene, and as such is a subset of disentangled representation learning.
 	However, in disentangled representation literature there is no focus on separating the representation into specific parts corresponding to different objects; different objects and their properties are seen simply as different factors of variation in the data. 
+	
+	Recent studies show that learning disentangled representations can lead to more sample-efficient learning and better performance on downstream tasks \citep{Steenkiste2019disentangled}.
+	This finding is also confirmed for object-centric representations \citep{Veerapaneni2019op3}, which improve sample-efficiency in \gls{RL} tasks.
 	We now turn to compositional generative modelling, which tries to model data as a composition of effects caused by different latent variables.
 	
 	\paragraph{Compositional Generative Modelling}
 	In compositional generative models we are interested in cases where the data can be explained as a composition of effects caused by different latent variables.
 	In vision, that is in images and videos, this can often happen when different latent variables correspond to different objects present in the scene, hence leading to learning object-centric representations.
 	
-	air and extentions
+	\glsreset{AIR}\Gls{AIR} of \cite{Eslami2016air} was one of the first compositional generative models.
+	It learns a sequential inference procedure, which allows to decompose an input image into its constituent objects.
+	Compositionality in this model is achieved by creating an image by adding several local components, where every component occupies a rectangular, and usually small, part of the image canvas.
+	While it works well on images with simple backgrounds and non-overlapping objects, this model has trouble dealing with cluttered or noisy backgrounds, and therefore does not work on real-world images. \Gls{AIR} was extended to handle many more objects in \cite{Crawford2019spair} and to deal with simple backgrounds in \cite{Stelzner2019supair}.
 	
-	sqair and extensions
+	We noticed that learning in \gls{AIR} can be unstable in the sense that different training runs converge to vastly different solutions, and addressed this problem by introducing \gls{SQAIR} in \Cref{ch:sqair}, which extends \gls{AIR} to image sequences.
+	Once \gls{SQAIR} decomposes an image into objects, it prefers to keep that decomposition over subsequent frames, therefore introducing the notion of spatial consistency.
+	\Gls{SQAIR} was further extended to handle tens of objects in \cite{Crawford2020silot,Jiang2019scalor} and to handle fairly complicated non-constant backgrounds in \cite{Jiang2019scalor}.
 	
-	tagger + recurrent ladder
-	
-	nem and rnem
-	
-	monet, iodine, genesis
-
-	Learning decomposed representations of object appearance and position lies at the heart of our model.
-	This problem can be also seen as perceptual grouping, which involves modelling pixels as spatial mixtures of entities.
-	\cite{Greff2016tagger} and \cite{Greff2017neuralem} learn to decompose images into separate entities by iterative refinement of spatial clusters using either learned updates or the Expectation Maximization algorithm;
-	\cite{Ilin2017recurrentln} and \cite{Steenkiste2018} extend these approaches to videos, achieving very similar results to \gls{SQAIR}.
-	Perhaps the most similar work to ours is the concurrently developed model of \cite{Hsieh2018ddpae}.
-	The above approaches rely on iterative inference procedures, but do not exhibit the object-counting behaviour of \gls{SQAIR}.
-	For this reason, their computational complexities are proportional to the predefined maximum number of objects, while \gls{SQAIR} can be more computationally efficient by adapting to the number of objects currently present in an image.
-	
-	Another interesting line of work is the \textsc{gan}-based unsupervised video generation that decomposes motion and content \citep{Tulyakov2017mocogan,Denton2017unsupervised}. These methods learn interpretable features of content and motion, but deal only with single objects and do not explicitly model their locations. Nonetheless, adversarial approaches to learning structured probabilistic models of objects offer a plausible alternative direction of research.
-
-		[Video Prediction]
-	Many works on video prediction learn a deterministic model conditioned on the current frame to predict the future ones \citep{Ranzato2014video,Srivastava2015unsupervised}.
-	Since these models do not model uncertainty in the prediction, they can suffer from the multiple futures problem --- since perfect prediction is impossible, the model produces blurry predictions which are a mean of possible outcomes.
-	This is addressed in stochastic latent variable models trained using variational inference to generate multiple plausible videos given a sequence of images \citep{Babaeizadeh2017stochastic, Denton2018stochastic}.
-	Unlike \gls{SQAIR}, these approaches do not model objects or their positions explicitly, thus the representations they learn are of limited interpretability. 
-	
-	
-%	% contrastive stuff
-%	The second approach targets classification explicitly by minimizing mutual information (\textsc{mi})-based losses and directly learning class-assignment probabilities.
-%	\textsc{Iic} \citep{Ji2018iic} maximizes an exact estimator of \textsc{mi} between two discrete probability vectors describing (transformed) versions of the input image.
-%	DeepInfoMax \citep{Hjelm2019deepinfomax} relies on negative samples and maximizes \textsc{mi} between the predicted probability vector and its input via noise-contrastive estimation \citep{Gutmann2010nce}.
-%	This class of methods directly maximizes the amount of information contained in an assignment to discrete clusters and they hold state-of-the-art results on most unsupervised classification tasks.
-%	\textsc{Mi}-based methods suffer from typical drawbacks of mutual information estimation: they require heavy data augmentation and large batch sizes.
-%	This is in contrast to our method, which achieves comparable performance with batch size no bigger than 128 and with no data augmentation.
-	
-	
-%\textbf{Capsule Networks}\ \ 
-%Our work combines ideas from Transforming Autoencoders \citep{Hinton2011tae} and \textsc{em} Capsules \citep{Hinton2018capsule}.
-%Transforming autoencoders discover affine-aware capsule \textit{instantiation parameters} by training an autoencoder to predict an affine-transformed version of the input image from the original image plus an extra input, which explicitly represents the transformation.
-%By contrast, our model does not need any input other than the image.
-%
-%Both \textsc{em} Capsules and the preceding Dynamic Capsules \citep{Sabour2017capsule} use the poses of parts and learned part$\rightarrow$object relationships to vote for the poses of objects. When multiple parts cast very similar votes, the object is assumed to be present, which is facilitated by an interactive inference (routing) algorithm. Iterative routing is inefficient and has prompted further research. \cite{Wang2018optimization} formulated routing as an optimization of a clustering loss and a \textsc{kl}-divergence-based regularization term.  \cite{Zhang2018fast} proposed a weighted kernel density estimation-based routing method. \cite{Li2018encapsule} proposed approximating routing with two branches and sending feedback via optimal transport divergence between two distributions (lower and higher capsules). 
-%In contrast to prior work, we use objects to predicts parts rather than vice-versa, therefore we can dispense with iterative routing at inference time. The encoder of the \gls{OCAu} learns how to group parts into objects and it respects the single parent constraint, because it is trained using derivatives produced by a decoder that uses a mixture model of parts which assumes that each part must be explained by a single object. 
-%
-%Additionally, since it is the objects that predict parts, the parts are allowed to have fewer degrees-of-freedom in their poses than objects (as in the \gls{CCAu}). 
-%Inference is still possible, because the \gls{OCAu} encoder makes object predictions based on {\it all} the parts rather than an individual part.
-%
-%A further advantage of our version of capsules is that it can perform unsupervised learning. Previous versions of capsules used discriminative learning, though \cite{Rawlinson2018sparsecaps} used the reconstruction \gls{MLP} introduced in \cite{Sabour2017capsule} to train Dynamic Capsules without supervision and has shown that unsupervised training for capsule-conditioned reconstruction helps with generalization to \textsc{affnist} classification; we further improve on their results, \textit{cf}.\ \Cref{sec:ablation}.
-
-%
-%%spatial attention
-%A number of recent studies have demonstrated that visual content can be captured through a sequence of spatial glimpses or foveation \cite{Graves2014recurrent, Gregor2016towards}. Such a paradigm has the intriguing property that the computational complexity is proportional to the number of steps as opposed to the image size.
-%Furthermore, the fovea centralis in the retina of primates is structured with maximum visual acuity in the centre and decaying resolution towards the periphery, \citet{Olshausen2016foveal} show that if spatial attention is capable of zooming, a regular grid sampling is sufficient. 
-%\citet{Jaderberg2015} introduced the spatial transformer network (STN) which provides a fully differentiable means of transforming feature maps, conditioned on the input itself. \citet{Eslami2016air} use the STN as a form of attention in combination with a recurrent neural network (RNN) to sequentially locate and identify objects in an image. Moreover, \citet{Eslami2016air} use a latent variable to estimate the presence of additional objects, allowing the RNN to adapt the number of time-steps based on the input. 
-%Our spatial attention mechanism is based on the two dimensional Gaussian grid filters of  \cite{Kahou2015ratm} which is both fully differentiable and more biologically plausible than the STN.  
-%%While the aforementioned approaches use a regular sampling lattice which is far simpler than of the primate retina, \citet{Olshausen2016foveal} showed that complex sampling patterns are not required when attention is able to zoom-in on a region of interest. 
-%
-%%appearance attention with RNNs
-%Whilst focusing on a specific location has its merits, focusing on particular appearance features might be as important. A policy with feedback connections can learn to adjust filters of a convolutional neural network (CNN), thereby adapting them to features present in the current image and improving accuracy \cite{Stollenga2014}. \citet{Brabandere2016dfn} introduced dynamic filter network (DFN), where filters for a CNN are computed on-the-fly conditioned on input features, which can reduce model size without performance loss. \citet{Karl2017dvbf} showed that an input-dependent state transitions can be helpful for learning latent Markovian state-space system. While not the focus of this work, we follow this concept in estimating the expected appearance of the tracked object.
-
+	An alternative line of work explores modelling images with spatial Gaussian mixture models, first introduced in \cite{Greff2016tagger}.
+	In this work, as well as in its extension by \cite{Ilin2017recurrentln}, inference is deterministic and performed by a neural network.
+	\cite{Greff2017neuralem,Steenkiste2018rnem} extend this approach by using the \gls{EM} algorithm for inference, and then substitute parts of \gls{EM} with learned components to further improve performance.
+	\cite{Burgess2019monet} introduced \textsc{monet}, which is a similar model implemented as a \gls{VAE}, but where inference over some latent variables is deterministic.
+	Finally, \cite{Greff2019multi} introduce \textsc{iodine}, which improves upon \textsc{monet}'s inference mechanism by applying the iterative amortized variational inference framework \citep{Marino2018iavi}, where gradient updates are also replaced with learned components.
+	\textsc{Iodine} is much more computationally expensive, however.
+	Recently, we introduced \textsc{genesis} \citep{Engelcke2019genesis}, which is a \gls{VAE}, similarily to \textsc{monet}, but with a slightly modified graphical model.
+	\textsc{Genesis} is more computationally efficient than \textsc{monet} and performs on par or better than \textsc{iodine}.

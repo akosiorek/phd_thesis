@@ -1,4 +1,3 @@
-% !Tex root=./tb_icml_2018.tex
 
 \section{Empirical Confirmation}
 \label{sec:emp}
@@ -22,11 +21,6 @@ giving $\theta^* := \mu^* = \frac{1}{N} \sum_{n = 1}^N x^{(n)}$ and
 $\phi^* := (A^*, b^*)$, where $A^* = I / 2$ and $b^* = \mu^* / 2$. Though this will not be the
 case in general, for
 this particular problem, the optimal proposal is independent of $K$. 
-%This  will
-%not be the case in general unless the family of possible $q_{\phi}$ contains the the true
-%posteriors 
-%$p_{\theta}(z|x^{(n)})$.  
-%Further, even for this problem, 
 However, the expected gradients for the inference network still change with $K$.
 
 
@@ -37,7 +31,6 @@ However, the expected gradients for the inference network still change with $K$.
 		\includegraphics[width=\textwidth]{figures/tighter_bounds/b_conv}
 		\caption{Convergence of \gls{SNR} for inference network \label{fig:snr/b}}
 	\end{subfigure}
-%	\hfill
 	\begin{subfigure}[b]{0.4\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{figures/tighter_bounds/mu_conv}
@@ -65,15 +58,10 @@ gradients for \gls{IWAE}, where $M=1$ is held fixed and we increase $K$, and
 for \gls{VAE}, where $K=1$ is held fixed and we increase $M$.  In all cases we 
 calculated $10^4$ such estimates and used these samples to provide empirical estimates for, amongst other things, the
 mean and standard deviation of the estimator, and thereby an empirical estimate for the \gls{SNR}.
-%For the inference network, we predominantly focused on investigating the gradients of $b$.
 
 We start by examining the qualitative behavior of the different gradient estimators as $K$ increases as
 shown in Figure~\ref{fig:snr/hists}.  This shows histograms of the \gls{IWAE}  gradient estimators
 for a single parameter of the inference network (left) and generative network (right).
-%We see that,
-%as expected, the expectation of the gradients does not change with $M$:
-%the only effect of increasing $M$ is to
-%reduce the variance.  The effect of increasing $K$ is quite different.
 We first see in Figure~\ref{fig:snr/b_hist_iwae} that as $K$ increases, both the magnitude and the standard
 deviation of the estimator decrease for the inference network, 
 with the former decreasing faster.  This
@@ -96,9 +84,6 @@ The observed rates for the inference network (Figure~\ref{fig:snr/b})
 correspond to our theoretical results, with
 the suggested rates observed all the way back to $K=M=1$.  As expected, we see 
 that as $M$ increases, so does $\SNR_{M,K}(b)$, but as $K$ increases, $\SNR_{M,K}(b)$ reduces.
-%We thus find that in this scenario, $K$ should be kept as low as possible and
-%our computational budget should be focused exclusively on increasing $M$ (ignoring the fact
-%that we can also vary the number of epochs etc instead).
 
 In Figure~\ref{fig:snr/mu}, we see that
 the theoretical convergence for $\SNR_{M,K}(\mu)$
@@ -115,8 +100,6 @@ than the standard deviation.  Consequently, while the magnitude of this bias rem
 $\E [\Delta_{M,\infty}(\mu)]$, it is the predominant component in the true gradient and
 we see similar \gls{SNR} behavior as in the inference network.
 
-% $\SNR_{M,\infty}(\mu)$ typically has a smaller magnitude (and often opposite sign)
-% to $\SNR_{M,1}(\mu)$.
 Note that this does not mean that the 
 estimates are getting worse for the generative network.
 As we increase $K$ our bound is getting tighter and our estimates closer to
@@ -126,16 +109,7 @@ Appendix~\ref{sec:app:rmse} for more details.
 As we previously discussed, it is also the case that increasing $K$ could be beneficial for the inference network
 even if it reduces the \gls{SNR} by improving the direction of the expected gradient.
 However, as we will now show, the \gls{SNR} is, for this problem,
-%we will return to consider a metric that examines this
-%direction in Figure~\ref{fig:snr/extra_end}, where we will see that the \gls{SNR} seems to be 
 the dominant effect for the inference network.
-%The question of what the optimal target is for updating the inference network 
-%is somewhat more subjective than for the generative network,
-%even if we presume we can
-%evaluate the gradients exactly.  We know that
-%the optimum is the same if the family of $q_{\phi}$ contains the posterior, but this may not always be
-%the case, while the optimization surface may vary away from the optimum.  We leave investigation of
-%this question for future work.  
 
 \begin{figure*}[t]
 	\centering
