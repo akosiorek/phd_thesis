@@ -1,120 +1,119 @@
 \chapter{Introduction}
 \label{ch:introduction}
 %
-%	- objects are important and occur in many applications
+%    - objects are important and occur in many applications
 %   - many models learn about objets only implicitly
 
-	Our natural environments are filled with objects, and we interact with objects all the time: when driving a car, we need to think about other cars and pedestrians; opening a door often requires using a key.
-	Objects are inherently of interest to us, and what follows is that they are also of interest to computer vision and machine learning communities.
-	While there exists a vast body of literature on object detection and tracking (see\eg \cite{Liu2018deepod,Ciaparrone2019deepmot} for respective reviews), these two problems are typically solved using enormous amounts of human-labelled data. 
-	The resulting models allow locating objects in images and tracking them in videos, but offer no further information about object behaviour, its intent, or its relationship with the environment and other objects.
-	It is possibly for this reason that the majority of machine learning models for other tasks reported in the literature do not explicitly rely on object detection or tracking.
-	Instead, these models treat objects only implicitly and gain knowledge about objects as a by-product of solving the main task, which can be playing Atari games \citep{Mnih2013dqn}, visual question answering \citep{Malinowski2015vqn}, image captioning \citep{Xu2015show}, or many others.
-	Meanwhile, it has been verified that having disentangled representations\footnote{That is, representations in which different parts of the representation vector encode different factors of variation present in the dataset.} of the scene can lead to faster learning and better performance \citep{Steenkiste2019disentangled}.
-	Similarly, having explicit representations of different objects in the scene---a kind of disentanglement---can lead to faster learning and more accurate predictive models \citep{Veerapaneni2019op3}. 
- 	Explicit object representations can also be used with relational reasoning modules, and therefore improve results on a wide variety of tasks ranging from comparing objects \citep{Santoro2017} to learning to use tools \citep{Baker2019tooluse}.
- 	Interestingly, we also know that humans (and other mammals) can learn about objects without any supervision \citep{Lambert2017cows}, contrary to current approaches to detection and tracking.
- 	Given the above findings, it is natural to ask whether it is possible to build a machine learning system that learns about objects from vision inputs and without human supervision, and ideally one that can provide more information about objects than just their location.
- 	Trying to answer this question is the main subject of this thesis.
- 
-    A very related question is that of ``what is an object?''.
-    While we have no clear answer in sight, the works presented in this thesis can be seen as different attempts at finding an empirical definition of what an object might be.
-    We revisit this question at the end of this thesis, in \Cref{sec:what_are_objects}, where we try to delve deeper into the nature of objects in images and videos.
- 	
- 	In order to answer this question, we begin by reviewing the existing literature in \Cref{ch:lit_review}. 
- 	Since the subject of learning object-centric representations overlaps with
- 		(1) relational reasoning,
- 		(2) object detection and tracking,
- 		(3) representation learning and disentanglement, and
- 		(4) generative modelling, we devote separate sections to each of these areas. 
-	Moreover, each of the following chapters, that is \Cref{ch:hart,ch:mohart,ch:sqair,ch:sca} contain additional related work sections that investigate literature that is most relevant to each of the respective chapters.
- 	
- 	Specifically, we start the overview of related works in \Cref{ch:lit_review} by reviewing relational reasoning algorithms, where we discuss pros and cons of different methods, and show that these methods rely on having access to some description of entities of interest,\eg ground-truth object state.
- 	If that description is not available explicitly, it is often provided by a heuristic which can lead to sub-optimal results and increased computational cost.
- 	We then change our focus to object detection and tracking algorithms, which could, in principle, be used to provide entity descriptions for relational reasoning. In practice this is not the case, however---even though these approaches can provide the object location and sometimes their class, they typically do not estimate object state\footnote{State can have a very broad meaning. What we mean here is a sufficient statistic of the object's future behaviour conditioned on the environment, or an internal Markovian state of that object, if such a state exists.} and therefore cannot provide any additional information about the detected or tracked objects.
- 	This could still be better than using heuristic approaches but is far from using the ground-truth object state.
- 	Next, we survey representation learning and disentangled representations literature.
- 	The goal of representation learning is to learn to encode an input into a low-dimensional variable that contains relevant information about that input.
- 	If this representation is disentangled, then using such a variable in downstream tasks can be much easier and more interpretable.
- 	Under some circumstances, different objects could be described by different parts of that variable, which would constitute object-centric representations.
- 	We show, however, that the community is interested in disentangling properties describing visual scenes in general, without particular focus on objects.
- 	Finally, we turn to generative models, and show that the majority of approaches do not focus on representation learning, but there are some that do, and they sometimes use object-centric representations.
- 	 
- 	Having talked about the relevant literature, we go back to our original question. 
- 	We begin by simplifying it and asking what does it take to learn object representations end-to-end, but with using supervision?
-	\Cref{ch:hart} describes \textsc{HART}---a biologically-inspired single-object tracking algorithm, which uses two-stream processing and a hierarchy of attention mechanisms to single out the tracked object from its surroundings. 
-	More specifically, it employs a \gls{RNN} to predict how the position and appearance of the object is going to change in the next time-step. 
-	This knowledge enables extracting a small \textit{attention glimpse} that is likely to contain the object, as well as extracting the relevant features from this glimpse using a top-down attention mechanism.
-	To solve this task, the state of the \gls{RNN} has to contain information about the object motion, its appearance, and its interactions with the environment, and meets the requirements of an object-centric representation.
-	
- 	While tracking single objects might be enough in some scenarios, it is often desirable to track multiple objects at the same time.
- 	In \Cref{ch:mohart} we extend \textsc{hart} to multiple object tracking.
- 	To do so, we run multiple trackers in parallel and use a self-attention mechanism to facilitate communication between the trackers. This approach achieves better tracking performance in the presence of global motion (\!\eg when the camera moves), when objects occlude each other or when they affect each others' trajectory---for example to avoid collisions. 
- 	
- 	In \Cref{ch:sqair} we go back to the original question, and build a system capable of generative modelling of multiple moving objects, which is learnt without any human supervision. 
- 	Using this system, we can detect and track objects as well as predict their future trajectories. 
- 	We apply it to videos from static \textsc{cctv} cameras, where it allows to detect and track pedestrians without supervision.
- 
-  	Finally, in \Cref{ch:sca} we build a deterministic generative model of images that has in-built knowledge of 2D geometry and can compose objects from their parts, and images from objects.
-  	  This embedded knowledge allows it to learn what parts belong to which objects, and what are their typical geometric configurations.
-  	    In some cases, this is sufficient for learning to classify objects without any supervision.
- 	
- 	\Cref{ch:discussion} discusses implications of our work and possible future research directions, as well as inherent limitations that approaches of this kind face. 
- 	 It is worth noting that \Cref{ch:hart,ch:mohart,ch:sqair,ch:sca} are self-contained and based on the following publications:
- 	 
-   	\begin{enumerate}
-        \item \fullcite{Kosiorek2017hierch},
-        \item \fullcite{Fuchs2019mohart},
-        \item \fullcite{Kosiorek2018sqair},
-        \item \fullcite{Kosiorek2019stacked}.
- 	\end{enumerate}
- 	 
- 	
- 	\section{Works Omitted from the Thesis and Developed in the Course of This DPhil}
+Our natural environments are filled with objects, and we interact with objects all the time: when driving a car, we need to think about other cars and pedestrians; opening a door often requires using a key.
+Objects are inherently of interest to us, and what follows is that they are also of interest to computer vision and machine learning communities.
+While there exists a vast body of literature on object detection and tracking (see\eg \cite{Liu2018deepod,Ciaparrone2019deepmot} for respective reviews), these two problems are typically solved using enormous amounts of human-labelled data. 
+The resulting models allow locating objects in images and tracking them in videos but offer no further information about object behaviour, its intent, or its relationship with the environment and other objects.
+It is possibly for this reason that the majority of machine learning models for other tasks reported in the literature do not explicitly rely on object detection or tracking.
+Instead, these models treat objects only implicitly and gain knowledge about objects as a by-product of solving the main task, which can be playing Atari games \citep{Mnih2013dqn}, visual question answering \citep{Malinowski2015vqn}, image captioning \citep{Xu2015show}, or many others.
+Meanwhile, it has been verified that having disentangled representations\footnote{That is, representations in which different parts of the representation vector encode different factors of variation present in the dataset.} of the scene can lead to faster learning and better performance \citep{Steenkiste2019disentangled}.
+Similarly, having explicit representations of different objects in the scene---a kind of disentanglement---can lead to faster learning and more accurate predictive models \citep{Veerapaneni2019op3}. 
+Explicit object representations can also be used with relational reasoning modules, and therefore improve results on a wide variety of tasks ranging from comparing objects \citep{Santoro2017} to learning to use tools \citep{Baker2019tooluse}.
+Interestingly, we also know that humans (and other mammals) can learn about objects without any supervision \citep{Lambert2017cows}, contrary to current approaches to detection and tracking.
+Given the above findings, it is natural to ask whether it is possible to build a machine learning system that learns about objects from vision inputs and without human supervision, and ideally one that can provide more information about objects than just their location.
+Trying to answer this question is the main subject of this thesis.
 
- 	\begin{enumerate}
- 	    \item \fullcite{Rainforth2018tighter}
- 	    \item \fullcite{Le2019rrws}
- 	    \item \fullcite{Lee2019set}
- 	    \item \fullcite{Engelcke2019genesis}
- 	    \item \fullcite{Fuchs2019stetho}
- 	    \item \fullcite{Xu2019metafun}
- 	    \item \fullcite{Dhir2017bayesian}
- 	\end{enumerate}
- 	
- 	
- 	
-	
-%	Typical machine learning use cases might involve (1) object detection and (2) tracking, (3) comparing objects with each other, (4) navigation in a cluttered environment, and (5) tool use \addref.
-%	
-%	Given how often reasoning about objects occurs in machine learning applications, one could think that there exist myriad models dealing with objects explicitly, and that objects might even be a structural component in many of these models.
-%	
-%	This is, however, not the case, and objects are usually neglected.
-%	As an example, consider the three following applications: (1) learning to play Atari games \citep{dqn}, (2) visual question answering \citep{na}, and (3) image captioning \citep{image_caption}. 
-%	Each of these applications requires learning about objects:\eg it is impossible to play Pong without knowing there the pads and the ball are, and it is difficult to describe an image without knowing what objects it contains.
-%	Despite this, models used for these tasks are comprised of a \gls{CNN} followed by either a fully-connected or a recurrent network neural network, and are not structured at all\footnote{What we mean by structure here is similar to a structure of a graphical model, where all variables and dependencies between them are explicit.}.
-%	It follows that objects have to be represented implicitly in these models.
-%	Acquiring such implicit representations might be  computationally expensive in the sense that it might take many training cycles before such representations emerge. 
-%	Additionally, a significant part of the model might be devoted to extracting those representations. 
-%	In contrast, a structured model that describes objects explicitly might be smaller and could be trained faster.
-%	Such a model would still have to learn how to use such representations, but we conjecture that this is an easier task, as suggested by the relevant literature \addref.
-%	
-%	Therefore, in this work we propose adding a structure to a typical deep learning model.
-%	The typical model consists of a black-box neural network that consumes input (data) and produces output (answers), as shown in \Cref{fig:basic_arch}.
-%	Instead, we suggest splitting this neural network into two components: (a) object representations, and (b) relational reasoning, cf.\ \Cref{fig:object_arch}. 
-%	The first part should be able to parse the input and extract information about objects from it, ideally describing every object by a separate vector-valued variable\footnote{It should also encode information about the context.}.
-%	The second part can then reason about objects and their context explicitly, and produce the desired output.
-%	
-%	Before diving into specifics of these two blocks, it is interesting to see an example of an application where such structure can be helpful.
-%	
-%	describe openai hide and seek
-%	
-%	The above example uses the proposed general architecture, with an important twist.
-%	That is, instead of learning object-centric representations, the agents have access to the ground-truth state of the simulator.
-%	While this is probably the best possible description of the objects, it is also out of reach in the majority of tasks where we simply have no access to their ground-truth state.
-%	In practice, one has to infer object state from observations.
-%	Unfortunately, the literature on this topic is rather sparse, with the notable exceptions of \cite{Greff2016tagger,Greff2017neuralem,Burgess2019monet,Eslami2016air}, as well as the work described in this thesis.
-%	Relational reasoning, on the other hand, has been widely considered in recent literature, and there are many approaches for it, including relational networks \citep{Santoro2017}, self-attention \citep{Vaswani17,Lee2019set}, and graph neural networks \citep{gnns}.
-%	For this reason we do not discuss relational reasoning approaches, and leave the choice of an appropriate method to practitioners.
-%	
-	
+The very related question is that of ``what is an object?''.
+While we have no clear answer in sight, the works presented in this thesis can be seen as different attempts at finding an empirical definition of what an object might be.
+We revisit this question at the end of this thesis, in \Cref{sec:what_are_objects}, where we try to delve deeper into the nature of objects in images and videos.
+
+In order to answer this question, we begin by reviewing the existing literature in \Cref{ch:lit_review}. 
+Since the subject of learning object-centric representations overlaps with
+(1) relational reasoning,
+(2) object detection and tracking,
+(3) representation learning and disentanglement, and
+(4) generative modelling, we devote separate sections to each of these areas. 
+Moreover, each of the following chapters, that is \Cref{ch:hart,ch:mohart,ch:sqair,ch:sca} contain additional related work sections that investigate literature that is most relevant to each of the respective chapters.
+
+Specifically, we start the overview of related works in \Cref{ch:lit_review} by reviewing relational reasoning algorithms, where we discuss pros and cons of different methods and show that these methods rely on having access to some description of entities of interest,\eg ground-truth object state.
+If that description is not available explicitly, it is often provided by a heuristic which can lead to sub-optimal results and increased computational cost.
+We then change our focus to object detection and tracking algorithms, which could, in principle, be used to provide entity descriptions for relational reasoning. In practice, this is not the case, however---even though these approaches can provide the object location and sometimes their class, they typically do not estimate object state\footnote{State can have a very broad meaning. What we mean here is a sufficient statistic of the object's future behaviour conditioned on the environment, or an internal Markovian state of that object, if such a state exists.} and therefore cannot provide any additional information about the detected or tracked objects.
+This could still be better than using heuristic approaches but is far from using the ground-truth object state.
+Next, we survey representation learning and disentangled representations literature.
+The goal of representation learning is to learn to encode an input into a low-dimensional variable that contains relevant information about that input.
+If this representation is disentangled, then using such a variable in downstream tasks can be much easier and more interpretable.
+Under some circumstances, different objects could be described by different parts of that variable, which would constitute object-centric representations.
+We show, however, that the community is interested in disentangling properties describing visual scenes in general, without particular focus on objects.
+Finally, we turn to generative models and show that the majority of approaches do not focus on representation learning, but there are some that do, and they sometimes use object-centric representations.
+
+Having talked about the relevant literature, we go back to our original question. 
+We begin by simplifying it and asking what does it take to learn object representations end-to-end, but with using supervision?
+\Cref{ch:hart} describes \textsc{HART}---a biologically-inspired single-object tracking algorithm, which uses two-stream processing and a hierarchy of attention mechanisms to single out the tracked object from its surroundings. 
+More specifically, it employs a \gls{RNN} to predict how the position and appearance of the object are going to change in the next time-step. 
+This knowledge enables extracting a small \textit{attention glimpse} that is likely to contain the object, as well as extracting the relevant features from this glimpse using a top-down attention mechanism.
+To solve this task, the state of the \gls{RNN} has to contain information about the object motion, its appearance, and its interactions with the environment and meets the requirements of an object-centric representation.
+
+While tracking single objects might be enough in some scenarios, it is often desirable to track multiple objects at the same time.
+In \Cref{ch:mohart} we extend \textsc{hart} to multiple object tracking.
+To do so, we run multiple trackers in parallel and use a self-attention mechanism to facilitate communication between the trackers. This approach achieves better tracking performance in the presence of global motion (\!\eg when the camera moves), when objects occlude each other or when they affect each others' trajectory---for example, to avoid collisions. 
+
+In \Cref{ch:sqair}, we go back to the original question and build a system capable of generative modelling of multiple moving objects, which is learnt without any human supervision. 
+Using this system, we can detect and track objects as well as predict their future trajectories. 
+We apply it to videos from static \textsc{cctv} cameras, where it allows to detect and track pedestrians without supervision.
+
+Finally, in \Cref{ch:sca} we build a deterministic generative model of images that has in-built knowledge of 2D geometry and can compose objects from their parts, and images from objects.
+This embedded knowledge allows it to learn what parts belong to which objects, and what are their typical geometric configurations.
+In some cases, this is sufficient for learning to classify objects without any supervision.
+
+\Cref{ch:discussion} discusses the implications of our work and possible future research directions, as well as inherent limitations that approaches of this kind face. 
+It is worth noting that \Cref{ch:hart,ch:mohart,ch:sqair,ch:sca} are self-contained and based on the following publications:
+
+\begin{enumerate}
+	\item \fullcite{Kosiorek2017hierch},
+	\item \fullcite{Fuchs2019mohart},
+	\item \fullcite{Kosiorek2018sqair},
+	\item \fullcite{Kosiorek2019stacked}.
+\end{enumerate}
+
+
+\section{Works Omitted from the Thesis and Developed in the Course of This DPhil}
+
+\begin{enumerate}
+	\item \fullcite{Rainforth2018tighter}
+	\item \fullcite{Le2019rrws}
+	\item \fullcite{Lee2019set}
+	\item \fullcite{Engelcke2019genesis}
+	\item \fullcite{Fuchs2019stetho}
+	\item \fullcite{Xu2019metafun}
+	\item \fullcite{Dhir2017bayesian}
+\end{enumerate}
+
+
+
+
+%    Typical machine learning use cases might involve (1) object detection and (2) tracking, (3) comparing objects with each other, (4) navigation in a cluttered environment, and (5) tool use \addref.
+%    
+%    Given how often reasoning about objects occurs in machine learning applications, one could think that there exist myriad models dealing with objects explicitly and that objects might even be a structural component in many of these models.
+%    
+%    This is, however, not the case, and objects are usually neglected.
+%    As an example, consider the three following applications: (1) learning to play Atari games \citep{dqn}, (2) visual question answering \citep{na}, and (3) image captioning \citep{image_caption}. 
+%    Each of these applications requires learning about objects:\eg it is impossible to play Pong without knowing there the pads, and the ball are, and it is difficult to describe an image without knowing what objects it contains.
+%    Despite this, models used for these tasks are comprised of a \gls{CNN} followed by either a fully-connected or a recurrent network neural network, and are not structured at all\footnote{What we mean by structure here is similar to a structure of a graphical model, where all variables and dependencies between them are explicit.}.
+%    It follows that objects have to be represented implicitly in these models.
+%    Acquiring such implicit representations might be computationally expensive in the sense that it might take many training cycles before such representations emerge. 
+%    Additionally, a significant part of the model might be devoted to extracting those representations. 
+%    In contrast, a structured model that describes objects explicitly might be smaller and could be trained faster.
+%    Such a model would still have to learn how to use such representations, but we conjecture that this is an easier task, as suggested by the relevant literature \addref.
+%    
+%    Therefore, in this work we propose adding a structure to a typical deep learning model.
+%    The typical model consists of a black-box neural network that consumes input (data) and produces output (answers), as shown in \Cref{fig:basic_arch}.
+%    Instead, we suggest splitting this neural network into two components: (a) object representations, and (b) relational reasoning, cf.\ \Cref{fig:object_arch}. 
+%    The first part should be able to parse the input and extract information about objects from it, ideally describing every object by a separate vector-valued variable\footnote{It should also encode information about the context.}.
+%    The second part can then reason about objects and their context explicitly, and produce the desired output.
+%    
+%    Before diving into specifics of these two blocks, it is interesting to see an example of an application where such structure can be helpful.
+%    
+%    describe openai hide and seek
+%    
+%    The above example uses the proposed general architecture, with an important twist.
+%    That is, instead of learning object-centric representations, the agents have access to the ground-truth state of the simulator.
+%    While this is probably the best possible description of the objects, it is also out of reach in the majority of tasks where we simply have no access to their ground-truth state.
+%    In practice, one has to infer object state from observations.
+%    Unfortunately, the literature on this topic is rather sparse, with the notable exceptions of \cite{Greff2016tagger,Greff2017neuralem,Burgess2019monet,Eslami2016air}, as well as the work described in this thesis.
+%    Relational reasoning, on the other hand, has been widely considered in recent literature, and there are many approaches for it, including relational networks \citep{Santoro2017}, self-attention \citep{Vaswani17,Lee2019set}, and graph neural networks \citep{gnns}.
+%    For this reason we do not discuss relational reasoning approaches, and leave the choice of an appropriate method to practitioners.
+%    
