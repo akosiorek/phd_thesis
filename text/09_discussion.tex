@@ -2,19 +2,19 @@
 \label{ch:discussion}
 
 
-Learning object-centric representations is a relatively new subfield of machine learning, and has a potential of affecting a wide range of applications ranging from relational reasoning in images, through improving performance in locomotion tasks for\eg autonomous vehicles, to empowering multi-agent systems and dialogue agents.
-With few studies available to date, this thesis constitutes an early investigation into learning object-centric representations, and focuses on exploring different methods that can be used to this end.
+Learning object-centric representations is a relatively new subfield of machine learning. It has a potential of affecting a wide range of applications ranging from relational reasoning in images, through improving performance in locomotion tasks for\eg autonomous vehicles, to empowering multi-agent systems and dialogue agents.
+With few studies available to date, this thesis constitutes an early investigation into learning object-centric representations and focuses on exploring different methods that can be used to this end.
 
-In our investigations, we emphasize that learning object-representations from single images is an ill-posed problem, as there might exist many plausible decompositions of any image into scene components, where different components may or may not correspond to objects---this observation is corroborated by \cite{Burgess2019monet,Greff2019multi,Engelcke2019genesis}.
+In our investigations, we emphasise that learning object-representations from single images is an ill-posed problem, as there might exist many plausible decompositions of any image into scene components, where different components may or may not correspond to objects---this observation is corroborated by \cite{Burgess2019monet,Greff2019multi,Engelcke2019genesis}.
 Therefore, we argue that it is essential to incorporate powerful priors, inductive biases, or structural constraints that lead to favouring some particular decompositions.
 Interestingly, it is still unclear what constitutes an object, and it might not be possible to come up with a consistent definition suitable for all applications.
 Instead, it might be necessary to define objects with respect to a specific task or a utility function.
-In this thesis, we focus on predictability, where objects can be seen as \textit{minimal} regions in an image that are sufficient to predict properties of corresponding regions in future images\footnote{This is not obvious in \Cref{ch:sca}, which works with single images. However, in this chapter, the task is to discover geometric structure of objects, which can be used to synthesise those objects in different poses.}
+In this thesis, we focus on predictability, where objects can be seen as \textit{minimal} regions in an image that are sufficient to predict properties of corresponding regions in future images\footnote{This is not obvious in \Cref{ch:sca}, which works with single images. However, in this chapter, the task is to discover the geometric structure of objects, which can be used to synthesise those objects in different poses.}
 We also impose structural constraints of spatial (\Cref{ch:hart,ch:mohart,ch:sqair,ch:sca}) and temporal (\Cref{ch:hart,ch:mohart,ch:sqair}) consistency, which allows us to learn object-centric representations.
 It is unclear, however, if any of the explored avenues are sufficient or necessary conditions by themselves, which needs to be determined in further studies. 
 
 \section{Limitations of Investigated Approaches}
-Approaches investigated in this work are early attempts at learning object-centric representations, and they generally do not generalize to complex real-world data.
+Approaches investigated in this work are early attempts at learning object-centric representations, and they generally do not generalise to complex real-world data.
 The supervised-object trackers of \Cref{ch:hart,ch:mohart} work well on relatively small datasets with a limited number of classes, but so far we were not able to train them on large datasets containing hundreds of classes like \textsc{youtube8M} \citep{AbuElHaija2016y8m} or \textsc{imagenet-vid} \citep{Russakovsky2014imagenet}, and the reasons for this failure remain unknown.
 We hypothesise that this is partly due to \gls{RNN}'s preference for learning smooth functions, which then cannot accommodate quickly changing object locations contrary to detection- and matching-based trackers. 
 Additionally, our approaches are constrained to look at a relatively small region of the image, and the assumption is that this region contains the tracked object.
@@ -27,39 +27,39 @@ Fortunately, both of these drawbacks were addressed in \textsc{scalor} \citep{Ji
 However, the datasets used in \cite{Jiang2019scalor} are still relatively simple, with slow-moving objects and relatively simple scenes, and further evaluation on more challenging datasets should be undertaken by future research.
 
 \Gls{SCAu}, the capsule-based autoencoder described in \Cref{ch:sca}, learns geometric structure of objects from images containing simple objects and shows state-of-the-art unsupervised classification performance on \textsc{mnist} and \textsc{svhn}.
-As our experiments show, however, it does not generalize to real-world three dimensional objects on cluttered backgrounds in \textsc{cifar10}.
+As our experiments show, however, it does not generalise to real-world three-dimensional objects on cluttered backgrounds in \textsc{cifar10}.
 While the structure embedded in the decoder can help to learn good representations, too much structure or too rigid setup can hurt performance on more complicated data, which happens with \gls{SCAu}.
-In future work it would be interesting to investigate equally informative and less rigid forms of structure and inductive bias.
+In future work, it would be interesting to investigate equally informative and less rigid forms of structure and inductive bias.
 
 \section{Evaluating Object-Centric Representations}
 A good representation should be easy to access and informative about the input, but should not contain the entirety of information present in the input.
 For example, it is undesirable to preserve information about pixel noise in image representations.
-Currently, the most popular evaluation protocol for representation learning is to use learned representations as an input to a supervised linear classifier, and assess performance of that classifier; with some works using non-linear classification with an \gls{MLP} \citep{Henaff2019efficient} or with a \gls{SVM} \citep{Hjelm2019deepinfomax}.
+Currently, the most popular evaluation protocol for representation learning is to use learned representations as an input to a supervised linear classifier, and assess the performance of that classifier; with some works using non-linear classification with an \gls{MLP} \citep{Henaff2019efficient} or with a \gls{SVM} \citep{Hjelm2019deepinfomax}.
 While these protocols are useful for evaluating the efficacy of global (describing the whole input) representations, they are not particularly useful to evaluate object-centric or other local representations.
 This motivates the need for novel evaluation protocols that allow to asses how well object-centric latent variables reflect properties of objects they are supposed to represent.
 \cite{Eslami2016air} use a classifier to predict the sum of digits present in an image---an approach we also adopt in \Cref{ch:sqair}--- where the classifier takes concatenated latent variables extracted from that image; we adopt this approach in \Cref{ch:sqair}.
-This approach evaluates object representations only indirectly, since it is possible to obtain perfect classification score even with a global representation.
+This approach evaluates object representations only indirectly since it is possible to obtain a perfect classification score even with a global representation.
 \cite{Burgess2019monet,Greff2019multi} use the \gls{ARI} score to asses image segmentation produced by object-centric latent variables.
 This choice is criticised by 
 \cite{Engelcke2019genesis}, who show examples where \gls{AIR} cannot discriminate between badly- and well-segmented scenes.
-These metrics are informative of what is captured by different latent variables, but tell us nothing about how easy it is to access this information, since access is usually accomplished by a complicated neural network that acts as a decoder.
+These metrics are informative of what is captured by different latent variables, but tell us nothing about how easy it is to access this information since access is usually accomplished by a complicated neural network that acts as a decoder.
 Finally, \cite{Kipf2019cswm} proposes K-nearest-neighbour evaluation, where representations extracted at the current video frame are unrolled into the feature and compared to representations extracted from a future frame. The K here tells us how many representations from the dataset was closer to the target representation than the predicted one, and a low rank under this metric indicates good predictive performance.
-An ideal metric should take into account
-	(1) representation capability at the current time-step,
-	(2) future predictive capability,
-	(3) relational usefulness---is it possible to figure out relations between objects (spatial and otherwise) by looking at the representations alone?,
-	(4) readability---can we use linear classifiers to predict different properties of represented objects?
+An ideal metric should take into account:
+(1) representation capability at the current time-step,
+(2) future predictive capability,
+(3) relational usefulness---is it possible to figure out relations between objects (spatial and otherwise) by looking at the representations alone?
+(4) readability---can we use linear classifiers to predict different properties of represented objects?
 %
-The ability to take all of the above factors into account depends not only on the existence of respective metrics, but also of a dataset that contains appropriate ground-truth labels.
+The ability to take all of the above factors into account depends not only on the existence of respective metrics but also of a dataset that contains appropriate ground-truth labels.
 It would be immensely beneficial for this field of research to come up with such a dataset.
 
 \section{What are Objects, anyway?}
 \label{sec:what_are_objects}
 This thesis is about objects and their representations, but we have not stated what an object is. 
 While it is not machine learning that should develop such a definition, it is necessary to have a working definition for machine learning in order to be precise.
-Therefore, we posit that an object in an image or in a video is nothing but a set of pixels characterised by certain properties, and that objects in a single image or video coexist within a shared context.
-The context determines the nature of interaction of the objects and influences their behaviour.
-Moreover, objects should be conditionally independent of each other given the context.
+Therefore, we posit that an object in an image or in a video is nothing but a set of pixels characterised by certain properties and that objects in a single image or video coexist within a shared context.
+The context determines the nature of the interaction between the objects and influences their behaviour.
+Moreover, objects should be conditionally independent of each other, given the context.
 That is, they should not be informative of each other.
 Additionally, the total correlation between pixels belonging to one object should be high, and the total correlation between pixels belonging to different objects should be low.
 It is unclear what the total correlation between pixels belonging to an object and the context should be.
@@ -67,4 +67,4 @@ It is unclear what the total correlation between pixels belonging to an object a
 In a different view, an object can be seen as a spatio-temporal event.
 That is, if a video is analysed as a 6-dimensional signal (time, height, width, three colour channels), then objects can be seen to have a non-zero volume along the time, height and width axes.
 In this sense, discovering an object in a video is akin to discovering changes in any signal, and could be linked to anomaly or change-point detection.
-This then allows to extend object detection and object-centric representation learning to abstract events in\eg audio signals or motion data, and might allow using some of object detection techniques to discover temporal events.
+This then allows to extend object detection and object-centric representation learning to abstract events in\eg audio signals or motion data and might allow using some of object detection techniques to discover temporal events.
