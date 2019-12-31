@@ -1,0 +1,13 @@
+\section{Part Capsule Encoder with Attention-based Pooling}
+\label{app:attention_based_pooling}
+
+The \gls{PCAu} encoder consists of a \gls{CNN} followed by a bottom-up attention mechanism based on global-average pooling, which we call attention-based pooling. 
+When global-average pooling is typically used, a feature map with $d$ channels is averaged along its spatial dimensions resulting into a $d$-dimensional vector.
+This is useful for\eg counting features of a particular type, which can be useful for classification.
+In our case, we wanted to predict pose and existence of a particular part, with the constraint that this part can exist at at most one location in the image.
+In order to support this, we predict a $d+1$ dimensional feature map, where the additional dimension represents softmax logits for attention.
+Finally, we compute the weighted average of the feature map along its spatial dimensions, where the weights are given by the softmax.
+This allows to predict different part parameters at different locations and weigh them by the corresponding confidence.
+
+Concretely, for every part capsule $k$, we use the \gls{CNN} to predict a feature map $\bf{e}_k$ of $6 \text{\,(pose)} + 1 \text{\,(presence)} + c_z \text{\,(special features)}$ capsule parameters with spatial dimensions $h_e \times w_e$\,, as well as a single-channel attention mask $\bf{a}_k$.
+The final parameters for that capsule are computed as $\sum_{i} \sum_j \bf{e}_{k, i,j} \operatorname{softmax}(\bf{a})_{k,i,j}$, where $\operatorname{softmax}$ is along the spatial dimensions.

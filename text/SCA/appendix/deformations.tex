@@ -1,0 +1,8 @@
+\section{Modelling Deformable Objects}
+\label{app:deformations}
+
+Each object capsule votes for part capsules by contributing Gaussian votes to mixture models, where the centers of these Gaussians are a product of an object-viewer \gls{OV} matrix and an object-part \gls{OP} matrix, cf.\ \Cref{eq:op,eq:ov,eq:vkn,eq:component}.
+Importantly, the  $\textsc{op}_{k,n}$ matrices  are a sum of a static component $\textsc{op}_{k,n}^\mathrm{static}$, which represents the mean shape of an object, and a dynamic component $\textsc{op}_{k,n}^\mathrm{dynamic} = \MLP(\bc_k)$, which is a function of data, and can model deformations in objects' shape.
+If an object capsule is to specialise to a specific object class, it should learn its mean shape.
+Therefore we discourage large deformations, which also prevents an object capsule from modelling several objects at once.
+Concretely, we add the weighted Frobenius norm of the deformation matrix $\alpha||\textsc{op}_{k,n}^\mathrm{dynamic}||_F^2$ to the loss, where $\alpha$ is a weight set to a high value, typically $\alpha=10$ in our experiments.

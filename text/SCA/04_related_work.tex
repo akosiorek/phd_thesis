@@ -1,35 +1,47 @@
 \section{Related Work}
-\label{sec:related_work}
+\label{sec:sca_related_work}
 
-\textbf{Capsule Networks}\ \ 
+\paragraph{Capsule Networks}
 Our work combines ideas from Transforming Autoencoders \citep{Hinton2011tae} and \textsc{em} Capsules \citep{Hinton2018capsule}.
-Transforming autoencoders discover affine-aware capsule \textit{instantiation parameters} by training an autoencoder to predict an affine-transformed version of the input image from the original image plus an extra input, which explicitly represents the transformation.
+Transforming autoencoders discover affine-aware capsule \textit{instantiation parameters} by training an autoencoder to reconstruct an affine-transformed version of the original image.
+This model uses an additional input that explicitly represents the transformation, which is a form of supervision.
 By contrast, our model does not need any input other than the image.
 
-Both \textsc{em} Capsules and the preceding Dynamic Capsules \citep{Sabour2017capsule} use the poses of parts and learned part$\rightarrow$object relationships to vote for the poses of objects. When multiple parts cast very similar votes, the object is assumed to be present, which is facilitated by an interactive inference (routing) algorithm. Iterative routing is inefficient and has prompted further research. \cite{Wang2018optimization} formulated routing as an optimization of a clustering loss and a \textsc{kl}-divergence-based regularization term.  \cite{Zhang2018fast} proposed a weighted kernel density estimation-based routing method. \cite{Li2018encapsule} proposed approximating routing with two branches and sending feedback via optimal transport divergence between two distributions (lower and higher capsules). 
-In contrast to prior work, we use objects to predicts parts rather than vice-versa, therefore we can dispense with iterative routing at inference time. The encoder of the \gls{OCAu} learns how to group parts into objects and it respects the single parent constraint, because it is trained using derivatives produced by a decoder that uses a mixture model of parts which assumes that each part must be explained by a single object. 
+Both \textsc{em} Capsules and the preceding Dynamic Capsules \citep{Sabour2017capsule} use the poses of parts and learned part$\rightarrow$object relationships to vote for the poses of objects. When multiple parts cast very similar votes, the object is assumed to be present, which is facilitated by an interactive inference (routing) algorithm. 
+Iterative routing is inefficient and has prompted further research \citep{Wang2018optimization,Zhang2018fast,Li2018encapsule}.
+%Iterative routing is inefficient and has prompted further research. \cite{wang2018optimization} formulated routing as an optimization of a clustering loss and a \textsc{kl}-divergence-based regularization term.  \cite{zhang2018fast} proposed a weighted kernel density estimation-based routing method. \cite{encapsule} proposed approximating routing with two branches and sending feedback via optimal transport divergence between two distributions (lower and higher capsules). 
+In contrast to prior work, we use objects to predict parts rather than vice-versa; therefore we can dispense with iterative routing at inference time---every part is explained as a mixture of predictions from different objects, and can have only one parent.
+This regularizes the \gls{OCAu}'s encoder to respect the single parent constraint when learning to group parts into objects.
+% The encoder of the \gls{OCAu} learns how to group parts into objects, and it respects the single parent constraint because it is trained using derivatives produced by a decoder that uses a mixture model of parts which assumes that each part must be explained by a single object. 
 
-Additionally, since it is the objects that predict parts, the parts are allowed to have fewer degrees-of-freedom in their poses than objects (as in the \gls{CCAu}). 
-Inference is still possible, because the \gls{OCAu} encoder makes object predictions based on {\it all} the parts rather than an individual part.
+Additionally, since it is the objects that predict parts, the part poses can have fewer degrees-of-freedom than object poses (as in the \gls{CCAu}). 
+Inference is still possible because the \gls{OCAu} encoder makes object predictions based on {\it all} the parts.
+This is in contrast to each individual part making its own prediction, as was the case in previous works on capsules.
 
-A further advantage of our version of capsules is that it can perform unsupervised learning. Previous versions of capsules used discriminative learning, though \cite{Rawlinson2018sparsecaps} used the reconstruction \gls{MLP} introduced in \cite{Sabour2017capsule} to train Dynamic Capsules without supervision and has shown that unsupervised training for capsule-conditioned reconstruction helps with generalization to \textsc{affnist} classification; we further improve on their results, \textit{cf}.\ \Cref{sec:ablation}.
+A further advantage of our version of capsules is that it can perform unsupervised learning, whereas previous capsule networks used discriminative learning. 
+\cite{Rawlinson2018sparsecaps} is a notable exception and used the reconstruction \gls{MLP} introduced in \cite{Sabour2017capsule} to train Dynamic Capsules without supervision.
+Their results show that unsupervised training for capsule-conditioned reconstruction helps with generalization to \textsc{affnist} classification; we further improve on their results, \textit{cf}.\ \Cref{sec:ablation}.
 
-\textbf{Unsupervised Classification}\ \ 
+\paragraph{Unsupervised Classification}
 There are two main approaches to unsupervised object category detection in computer vision.
 The first one is based on representation learning and typically requires discovering clusters or learning a classifier on top of the learned representation.
-\cite{Eslami2016air,Kosiorek2018sqair} use an iterative procedure to infer a variable number of latent variables, one for every object in a scene, that are highly informative of object class, while \cite{Greff2019multi,Burgess2019monet} perform unsupervised instance-level segmentation in an iterative fashion.
-While similar to our work, these approaches cannot decompose objects into their constituent parts and do not provide explicit description of object shape (\!\eg templates and their poses in our model).
+\cite{Eslami2016air,Kosiorek2018sqair} use an iterative procedure to infer a variable number of latent variables, one for every object in a scene, that are highly informative of the object class, while \cite{Greff2019multi,Burgess2019monet} perform unsupervised instance-level segmentation in an iterative fashion.
+%\ak{the following is not true}\textcolor{red}{
+While similar to our work, these approaches cannot decompose objects into their constituent parts and do not provide an explicit description of object shape (\!\eg templates and their poses in our model).
+%}
 
 The second approach targets classification explicitly by minimizing mutual information (\textsc{mi})-based losses and directly learning class-assignment probabilities.
-\textsc{Iic} \citep{Ji2018iic} maximizes an exact estimator of \textsc{mi} between two discrete probability vectors describing (transformed) versions of the input image.
+\textsc{iic} \citep{Ji2018iic} maximizes an exact estimator of \textsc{mi} between two discrete probability vectors describing (transformed) versions of the input image.
 DeepInfoMax \citep{Hjelm2019deepinfomax} relies on negative samples and maximizes \textsc{mi} between the predicted probability vector and its input via noise-contrastive estimation \citep{Gutmann2010nce}.
-This class of methods directly maximizes the amount of information contained in an assignment to discrete clusters and they hold state-of-the-art results on most unsupervised classification tasks.
-\textsc{Mi}-based methods suffer from typical drawbacks of mutual information estimation: they require heavy data augmentation and large batch sizes.
+This class of methods directly maximizes the amount of information contained in an assignment to discrete clusters, and they hold state-of-the-art results on most unsupervised classification tasks.
+\textsc{Mi}-based methods suffer from typical drawbacks of mutual information estimation: they require massive data augmentation and large batch sizes.
 This is in contrast to our method, which achieves comparable performance with batch size no bigger than 128 and with no data augmentation.
 
-\textbf{Geometrical Reasoning}\ \ 
-Other attempts at incorporating geometrical knowledge into neural networks include exploiting equivariance properties of group transformations \citep{Cohen2016group} or new types of convolutional filters \citep{Oyallon2015deep,Kocvok2016cyclic}.
-Although they achieve significant parameter efficiency in handling rotations or reflections compared to standard \glspl{CNN}, these methods cannot handle additional degrees of freedom of affine transformations---like scale. \cite{Lenssen2018group} combined capsule networks with group convolutions to  guarantee equivariance and invariance in capsule networks.
+\paragraph{Geometrical Reasoning}
+Other attempts at incorporating geometrical knowledge into neural networks include exploiting equivariance properties of group transformations \citep{Cohen2016group} or new types of convolutional filters \citep{Mallat,Kocvok2016cyclic}.
+Although they achieve significant parameter efficiency in handling rotations or reflections compared to standard \glspl{CNN}, these methods cannot handle additional degrees of freedom of affine transformations---like scale. \cite{Lenssen2018group} combined capsule networks with group convolutions to guarantee equivariance and invariance in capsule networks.
 Spatial Transformers (\textsc{st}; \cite{Jaderberg2015}) apply affine transformations to the image sampling grid while steerable networks \citep{Cohen2016steerable,Jacobsen2017dynamic} dynamically change convolutional filters.
-These methods are similar to ours in the sense that transformation parameters are predicted by a neural network, but differ in the sense that \textsc{st} uses global transformations applied to the whole image while steerable networks use only local transformations.
+These methods are similar to ours in the sense that transformation parameters are predicted by a neural network but differ in the sense that \textsc{st} uses global transformations applied to the whole image while steerable networks use only local transformations.
 Our approach can use different global transformations for every object as well as local transformations for each of their parts.
+
+

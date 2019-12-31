@@ -1,35 +1,62 @@
 \section{Introduction}
-\Gls{CNN} work better than networks without weight-sharing because of their inductive bias: if a local feature is useful in one image location, the same feature is likely to be useful in other locations. It is tempting to exploit other effects of viewpoint changes by replicating features across scale, orientation and other affine degrees of freedom, but this quickly leads to cumbersome high-dimensional feature maps. %
 
-An alternative to replicating features across the non-translational degrees of freedom is to explicitly learn transformations between the natural coordinate frame of a whole object and the natural coordinate frames of each of its parts.   Computer graphics relies on such object$\rightarrow$part coordinate transformations to represent the geometry of an object in a viewpoint-invariant manner. Moreover, there is strong evidence that, unlike standard \gls{CNN}s, human vision also relies on coordinate frames: imposing an unfamiliar coordinate frame on a familiar object makes it difficult to recognize the object or its geometry \citep{Rock73, Hinton79}.
+\begin{wrapfigure}{r}{.3\textwidth}
+	\centering
+	\includegraphics[width=\linewidth]{SCA/tsne}
+	\caption{
+		\textsc{Scae}s learn to explain different object classes with separate object capsules, thereby doing unsupervised classification. 
+		Here, we show \textsc{tsne} embeddings of object capsule presence probabilities for $10000$ \textsc{mnist} digits.
+		Individual points are color-coded according to the corresponding digit class.
+	}
+	\label{fig:tsne}
+%	\vspace*{-2em}
+\end{wrapfigure}
 
-A neural system can learn to reason about transformation between objects, their parts and the viewer, but each of the transformations is likely to require different representation.
-An \gls{OP} is viewpoint-invariant and is naturally coded by learned weights.  
-The relationship of an object or part to the viewer changes with the viewpoint (it is viewpoint-equivariant) and is naturally coded using neural activations\footnote{
-    This may explain why accessing perceptual knowledge about objects, when they are not visible, requires creating a mental image of the object with a specific viewpoint.
+\Gls{CNN} work better than networks without weight-sharing because of their inductive bias: if a local feature is useful in one image location, the same feature is likely to be useful in other locations. It is tempting to exploit other effects of viewpoint changes by replicating features across scale, orientation and other affine degrees of freedom, but this quickly leads to cumbersome, high-dimensional feature maps.
+
+An alternative to replicating features across the non-translational degrees of freedom is to explicitly learn transformations between the natural coordinate frame of a whole object and the natural coordinate frames of each of its parts.   Computer graphics relies on such object$\rightarrow$part coordinate transformations to represent the geometry of an object in a viewpoint-invariant manner. Moreover, there is strong evidence that, unlike standard \gls{CNN}s, human vision also relies on coordinate frames: imposing an unfamiliar coordinate frame on a familiar object makes it challenging to recognize the object or its geometry \citep{Rock73, Hinton79}.
+
+A neural system can learn to reason about transformations between objects, their parts and the viewer, but each kind of transformation will likely need to be represented differently.
+An \gls{OP} is viewpoint-invariant, approximately constant and could be easily coded by learned weights.  
+The relative coordinates of an object (or a part) with respect to the viewer change with the viewpoint (they are viewpoint-equivariant), and could be easily coded with neural activations\footnote{
+	This may explain why accessing perceptual knowledge about objects, when they are not visible, requires creating a mental image of the object with a specific viewpoint.
 }.
-With this representation, pose of a single object is represented by its relationship to the viewer.
+
+With this representation, the pose of a single object is represented by its relationship to the viewer.
 Consequently, representing a single object does not necessitate replicating neural activations across space, unlike in \glspl{CNN}.
 It is only processing two (or more) different instances of the same type of object in parallel that requires spatial replicas of both model parameters and neural activations.
 
-In this paper we propose the \gls{SCAu}, which has two stages (\cref{fig:capsule_arch}). The first stage, the \gls{PCAu}, segments an image into constituent parts, infers their poses, and reconstructs each image pixel as a mixture of the pixels of transformed part templates.
-The second stage, the \gls{OCAu}, tries to organize discovered parts and their poses into a smaller set of objects that can explain the part poses using a separate mixture of predictions for each part. 
-Every object capsule contributes components to each of these mixtures by multiplying its pose---the \gls{OV}---by the relevant \glsreset{OP}\gls{OP}\footnote{The type of a part capsule may determine which, if any, of an object's parts contribute to the mixture used to model the pose of an already discovered part}.
+In this paper we propose the \gls{SCAu}, which has two stages (\cref{fig:capsule_arch}).
+The first stage, the \gls{PCAu}, segments an image into constituent parts, infers their poses, and reconstructs the image by appropriately arranging affine-transformed part templates.
+The second stage, the \gls{OCAu}, tries to organize discovered parts and their poses into a smaller set of objects.
+These objects then try to reconstruct the part poses using a separate mixture of predictions for each part. 
+Every object capsule contributes components to each of these mixtures by multiplying its pose---the \gls{OV}---by the relevant \glsreset{OP}\gls{OP}.
 
 Stacked Capsule Autoencoders (\Cref{sec:caps_decoders}) capture spatial relationships between whole objects and their parts when trained on unlabelled data.
-The vectors of presence probabilities for the object capsules tend to form tight clusters, and when we assign a class to each cluster we achieve state-of-the-art results for unsupervised classification on \textsc{svhn} (55\%) and near state-of-the-art on \textsc{mnist} (98.5\%), which can be further improved to 67\% and 99\%, respectively, by learning fewer than 300 parameters. We also present promising proof-of-concept results on \textsc{cifar10} (\Cref{sec:sca_experiments}).
-We describe related work in \Cref{sec:related_work} and discuss implications of our work and future  directions in \Cref{sec:sca_discussion}.
+The vectors of presence probabilities for the object capsules tend to form tight clusters (cf.\ \Cref{fig:tsne}), and when we assign a class to each cluster we achieve state-of-the-art results for unsupervised classification on \textsc{svhn} (55\%) and \textsc{mnist} (98.7\%), which can be further improved to 67\% and 99\%, respectively, by learning fewer than 300 parameters 
+(\Cref{sec:sca_experiments}).
+We describe related work in \Cref{sec:sca_related_work} and discuss implications of our work and future directions in \Cref{sec:sca_discussion}.
+The code is available at {\small \href{https://github.com/google-research/google-research/tree/master/stacked_capsule_autoencoders}{\texttt{github.com/google-research/google-research/tree/master/stacked\_capsule\_autoencoders}}}.
 
 \begin{figure}
-        \centering
-        \includegraphics[width=.68\linewidth]{figures/SCA/blocks_v4}
+    \centering
+%    \begin{minipage}[c]{0.68\linewidth}
+%        \centering
+        \includegraphics[width=.7\linewidth]{SCA/blocks_v4}
+        % \vspace*{-1.5em}
+%    \end{minipage}
+%    \hfill
+%    \begin{minipage}[c]{0.3\linewidth}
+%        \centering
         \caption{
             Stacked Capsule Autoencoder (\textsc{scae}):
+            % \arcfull{}{SCA}
             (a) \textit{part} capsules segment the input into parts and their poses. The poses are then used to reconstruct the input by affine-transforming learned templates.
             (b) \textit{object} capsules try to arrange inferred poses into objects, thereby discovering underlying structure.
             \textsc{scae} is trained by maximizing image and part log-likelihoods subject to sparsity constraints.
         }
         \label{fig:capsule_arch}
+        % \vspace*{-1.5em}
+%    \end{minipage}
+%    \vspace*{-.75em}
 \end{figure}
-
-

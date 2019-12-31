@@ -1,0 +1,7 @@
+\section{Constellation Capsule Sparsity}
+\label{app:constellation_caps_sparsity}
+
+We noticed that we can get better instance segmentation results in the constellation experiment when we add an additional sparsity loss, which says that every active object capsule should explain at least two parts.
+We say that an object capsule has `won' a part if it has the highest posterior mixing probability for that part among other object capsules.
+We then create binary labels for each of object capsules, where the label is $1$ if the capsule wins at least two parts and it is $0$ otherwise.
+The final loss takes the form of binary cross-entropy between the generated label and the prior capsule presence. This loss is used only for the stand-alone constellation model experiments on point data, \textit{cf}. \Cref{sec:constellation,sec:constellation_expr}.

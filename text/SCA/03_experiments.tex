@@ -1,63 +1,90 @@
 \section{Evaluation}
 \label{sec:sca_experiments}
 
+% \todo{\ak{}{this is where I left yesterday}}
 The decoders in the \gls{SCAu} use explicitly parameterised affine transformations
-that allow the encoders' inputs to be explained with a small set of transformed objects or parts. 
+that allow the encoders’ inputs to be explained with a small set of transformed objects or parts. 
 The following evaluations show how the embedded geometrical knowledge helps to discover patterns in data.
-Firstly, we show that the \gls{CCAu} discovers underlying structures in arrangements of constellations made of two-dimensional points, thereby performing instance-level segmentation.
+% Firstly, we perform instance-level segmentation on arrangements of simple constellations of two-dimensional points.
+% Firstly, we show that the \gls{CCAu} discovers underlying structures in arrangements of constellations made of two-dimensional points, thereby performing instance-level segmentation.
+Firstly, we show that the \gls{CCAu} discovers underlying structures in sets of two-dimensional points, thereby performing instance-level segmentation.
 Secondly, we pair an \gls{OCAu} with a \gls{PCAu} and investigate whether the resulting \gls{SCAu} can discover structure in real images.
 Finally, we present an ablation study that shows which components of the model contribute to the results.
 
 \subsection{Discovering Constellations}
 \label{sec:constellation_expr}
-We create arrangements of constellations online, where every input example consists of up to 11 two-dimensional points belonging to up to three different constellations (two squares and a triangle) as well as binary variables indicating presence of the points (points can be missing).
+
+% Dataset:
+We create arrangements of constellations online, where every input example consists of up to 11 two-dimensional points belonging to up to three different constellations (two squares and a triangle) as well as binary variables indicating the presence of the points (points can be missing).
 Each constellation is included with probability $0.5$ and undergoes a similarity transformation, whereby it is randomly scaled, rotated by up to 180\textdegree\ and shifted.
-Finally, every input example is normalized such that all points lie within $\interval{-1, 1}^2$.
+Finally, every input example is normalised such that all points lie within $\interval{-1, 1}^2$.
 Note that we use sets of points, and not images, as inputs to our model.
 
+% Baseline:
 We compare the \gls{CCAu} against a baseline that uses the same encoder but a simpler decoder: the decoder uses the capsule parameter vector $\bc_k$ to directly predict the location, precision and presence probability of each of the four points as well as the presence probability of the whole corresponding constellation. 
 Implementation details are listed in 
 \Cref{app:constellation_model}.
 
-Both models are trained unsupervised by maximizing the part log-likelihood.
+% Results:
+Both models are trained unsupervised by maximising the part log-likelihood.
 We evaluate them by trying to assign each input point to one of the object capsules.
 To do so, we assign every input point to the object capsule with the highest posterior probability for this point, \textit{cf}. \Cref{sec:constellation}, and compute segmentation accuracy (\!\ie the true-positive rate).
 
-The \gls{CCAu} consistently achieves below $4\%$ error with the best model achieving $2.8\%$, while the best baseline achieved $26\%$ error using the same budget for hyperparameter search.
+The \gls{CCAu} consistently achieves\footnote{This result requires using an additional sparsity loss described in \Cref{app:constellation_caps_sparsity}; without it the \gls{CCAu} achieves around $10\%$ error.} below $4\%$ error with the best model achieving $2.8\%$
+% \todo{\ak{if we remove the special-purpose sparsity cost, the error increases to about 10\%, which does not look nice.}}
+, while the best baseline achieved $26\%$ error using the same budget for hyperparameter search.
 This shows that wiring in an inductive bias towards modelling geometric relationships can help to bring down the error by an order of magnitude—at least in a toy setup where each set of points is composed of familiar constellations that have been independently transformed.
 
-\subsection{Unsupervised Class Discovery}
+\subsection{Unsupervised Class Discovery in Images}
 \label{sec:cls_experiments}
 
-\begin{table}
-\centering
-    \caption{
-        Unsupervised classification results in \% with (standard deviation) are averaged over 5 runs. Methods based on mutual information are shaded. Results marked with $\mathcal{y}$ use data augmentation, ${\mathcal{r}}$ use \textsc{imagenet}-pretrained features instead of images, while ${\mathcal{x}}$ are taken from \cite{Ji2018iic}. We highlight the best results and those that are are within its 98\% confidence interval according to a two-sided t test.
-    }
-    \label{tab:results}
-    {\small
-    \begin{tabular}{@{}llll@{}}
-        Method & \textsc{mnist} & \textsc{cifar10} & \textsc{svhn} \\
-        \midrule
-        \textsc{kmeans} (\cite{Haeusser2018adc}) & 53.49 & 20.8 & 12.5 \\
-        \textsc{Ae} (\cite{Bengio2007greedy})$^{\mathcal{x}}$ & 81.2 & 31.4 & - \\
-        \textsc{Gan} (\cite{Radford2016gan})$^{\mathcal{x}}$ & 82.8 & 31.5 & - \\
-        \rowcolor[HTML]{EFEFEF} 
-        \textsc{Imsat} (\cite{Hu2017imsat})$^{\mathcal{y}, \mathcal{r}}$ & \textbf{98.4} (0.4) & 45.6 (0.8) & \textbf{57.3} (3.9) \\ 
-        \rowcolor[HTML]{EFEFEF} 
-        \textsc{Iic} \citep{Ji2018iic}$^{\mathcal{x}, \mathcal{y}}$ & \textbf{98.4} (0.6) & \textbf{57.6} (5.0) & - \\
-        \rowcolor[HTML]{EFEFEF} 
-        \textsc{Adc} \citep{Haeusser2018adc}$^\mathcal{y}$ & \textbf{98.7} (0.6) & 29.3 (1.5) & 38.6 (4.1) \\
-        \midrule
-        \textsc{max-act} (\gls{SCAu}) & \textbf{98.0 (.15)}  & 19.79 (1.0) & 49.07 (1.7) \\ 
-        \textsc{clust-nn} (\gls{SCAu}) & \textbf{98.5 (.11)} & 19.39 (1.5) & \textbf{53.0 (3.8)}\\ 
-        \textsc{lin-match} (\gls{SCAu}) & \textbf{98.5 (.10)} & 25.01 (1.0) & \textbf{55.33 (3.4)} \\ 
-        \textsc{lin-pred} (\gls{SCAu}) & \textbf{98.9 (.07)} & 33.48 (0.3) & \textbf{67.27 (4.5)} \\
-    \end{tabular}
-	}
-\end{table}
-To allow for multimodality in the appearance of objects of a specific class, we typically use more object capsules than the number of class labels. We expect that the vector of presence probabilities of object capsules should be highly informative of the class label.
-To test this hypothesis, we train \gls{SCAu} on \textsc{mnist}, \textsc{svhn} and \textsc{cifar10} and try to assign class labels to vectors of object capsule presences. This is done with one of the following methods: \textsc{max-act}: we search for a training example that maximally activates given object capsule and assign the corresponding label to this capsule; \textsc{cluster-nn}: we perform \textsc{kmeans} clustering into $C$ clusters and then find the training example that is the closest to each cluster’s centroid to assign a label to the cluster; \textsc{lin-match}: after finding 10 clusters\footnote{All considered datasets have 10 classes.} with \textsc{kmeans} we use bipartite graph matching \citep{Kuhn1955hungarian} to find the permutation of cluster indices that minimizes the classification error---this is standard practice in unsupervised classification, see\eg \cite{Ji2018iic};
+%\begin{table}
+%\centering
+%\begin{minipage}[c]{.28\linewidth}
+%    \centering
+%    \caption{
+%        Unsupervised classification results in \% with (standard deviation) are averaged over 5 runs. Methods based on mutual information are shaded. Results marked with $\mathcal{y}$ use data augmentation, ${\mathcal{r}}$ use \textsc{imagenet}-pretrained features instead of images, while ${\mathcal{x}}$ are taken from \cite{Ji2018iic}. We highlight the best results and those that are are within its 98\% confidence interval according to a two-sided t test.
+%    }
+%    \label{tab:results}
+%\end{minipage}
+%\hfill
+%\begin{minipage}[c]{.7\linewidth}
+%    \centering
+%    \small
+%    \begin{tabular}{@{}llll@{}}
+%        Method & \textsc{mnist} & \textsc{cifar10} & \textsc{svhn} \\
+%        \midrule
+%        \textsc{kmeans} (\cite{Haeusser2018adc}) & 53.49 & 20.8 & 12.5 \\
+%        \textsc{ae} (\cite{ae})$^{\mathcal{x}}$ & 81.2 & 31.4 & - \\
+%        \textsc{gan} (\cite{gan})$^{\mathcal{x}}$ & 82.8 & 31.5 & - \\
+%        \rowcolor[HTML]{EFEFEF} 
+%        \textsc{imsat} (\cite{Hu2017imsat})$^{\mathcal{y}, \mathcal{r}}$ & \textbf{98.4} (0.4) & 45.6 (0.8) & \textbf{57.3} (3.9) \\ 
+%        \rowcolor[HTML]{EFEFEF} 
+%        \textsc{Ji2018iic} \citep{Ji2018iic}$^{\mathcal{x}, \mathcal{y}}$ & \textbf{98.4} (0.6) & \textbf{57.6} (5.0) & - \\
+%        \rowcolor[HTML]{EFEFEF} 
+%        \textsc{Haeusser2018adc} \citep{Haeusser2018adc}$^\mathcal{y}$ & \textbf{98.7} (0.6) & 29.3 (1.5) & 38.6 (4.1) \\
+%        \midrule
+%        % \textsc{max-act} (\gls{SCAu}) & \textbf{98.0 (.15)}  & 19.79 (1.0) & 49.07 (1.7) \\ 
+%        % \textsc{clust-nn} (\gls{SCAu}) & \textbf{98.5 (.11)} & 19.39 (1.5) & \textbf{53.0 (3.8)}\\ 
+%        \gls{SCAu} (\textsc{lin-match}) & \textbf{98.7 (0.35)} & 25.01 (1.0) & \textbf{55.33 (3.4)} \\ 
+%        \gls{SCAu} (\textsc{lin-pred}) & \textbf{99.0 (0.07)} & 33.48 (0.3) & \textbf{67.27 (4.5)} \\
+%    \end{tabular}
+%\end{minipage}
+%%\vspace*{-.5em}
+%\end{table}
+
+
+We now turn to images in order to assess if our model can simultaneously learn to discover parts and group them into objects.
+To allow for multimodality in the appearance of objects of a specific class, we typically use more object capsules than the number of class labels. 
+It turns out that the vectors of presence probabilities form tight clusters as shown by their \textsc{tsne} embeddings \citep{Maaten2008tsne} in \Cref{fig:tsne}---note the large separation between clusters corresponding to different digits, and that only a few data points are assigned to the wrong clusters.
+Therefore, we expect object capsules presences to be highly informative of the class label.
+To test this hypothesis, we train \gls{SCAu} on \textsc{mnist}, \textsc{svhn}\footnote{We note that we tie the values of the alpha channel $T_m^a$ and the color values $T_m^c$ which leads to better results in the \textsc{svhn} experiments.} and \textsc{cifar10} and try to assign class labels to vectors of object capsule presences.
+This is done with one of the following methods: 
+% \todo{\ak{remove max-act and clust-nn; they do not add any value}}
+% \textsc{max-act}: we search for a training example that maximally activates given object capsule and assign the corresponding label to this capsule;
+% \textsc{cluster-nn}: we perform
+% \textsc{kmeans} clustering into $C$ clusters and then find the training example that is the closest to each cluster’s centroid to assign a label to the cluster;
+\textsc{lin-match}: after finding 10 clusters\footnote{All considered datasets have 10 classes.} with \textsc{kmeans} we use bipartite graph matching \citep{Kuhn1955hungarian} to find the permutation of cluster indices that minimizes the classification error---this is standard practice in unsupervised classification, see\eg \cite{Ji2018iic};
 \textsc{lin-pred}: we train a linear classifier with supervision given the presence vectors; this learns $K \times 10$ weights and $10$ biases, where $K$ is the number of object capsules, but it does not modify any parameters of the main model.
 
 In agreement with previous work on unsupervised clustering \citep{Ji2018iic,Hu2017imsat,Hjelm2019deepinfomax,Haeusser2018adc}, we train our models and report results on full datasets (\textsc{train}, \textsc{valid} and \textsc{test} splits).
@@ -68,7 +95,42 @@ We used sobel-filtered images as the reconstruction target for \textsc{svhn} and
 The \gls{OCAu} used 24, 32 and 64 object capsules, respectively.
 Further details on model architectures and hyper-parameter tuning are available in \Cref{app:models}.
 All results are presented in \Cref{tab:results}.
-\gls{SCAu} achieves competitive results in unsupervised object classification on \textsc{mnist} and \textsc{svhn} and under-performs slightly on \textsc{cifar10}, which is further discussed in \Cref{sec:sca_discussion}.
+\gls{SCAu} achieves state-of-the-art results in unsupervised object classification on \textsc{mnist} and \textsc{svhn} and under-performs on \textsc{cifar10} due to the inability to model backgrounds, which is further discussed in \Cref{sec:discussion}.
+
+\begin{table}
+	\centering
+%	\begin{minipage}[c]{.28\linewidth}
+%		\centering
+		\caption{
+			Unsupervised classification results in \% with (standard deviation) are averaged over 5 runs. Methods based on mutual information are shaded. Results marked with $\mathcal{y}$ use data augmentation, ${\mathcal{r}}$ use \textsc{imagenet}-pretrained features instead of images, while ${\mathcal{x}}$ are taken from \cite{Ji2018iic}. We highlight the best results and those that are are within its 98\% confidence interval according to a two-sided t test.
+		}
+		\label{tab:results}
+%	\end{minipage}
+%	\hfill
+%	\begin{minipage}[c]{.7\linewidth}
+		\centering
+%		\small
+		\begin{tabular}{@{}llll@{}}
+			Method & \textsc{mnist} & \textsc{cifar10} & \textsc{svhn} \\
+			\midrule
+			\textsc{kmeans} (\cite{Haeusser2018adc}) & 53.49 & 20.8 & 12.5 \\
+			\textsc{ae} (\cite{Bengio2007greedy})$^{\mathcal{x}}$ & 81.2 & 31.4 & - \\
+			\textsc{gan} (\cite{Radford2016gan})$^{\mathcal{x}}$ & 82.8 & 31.5 & - \\
+			\rowcolor[HTML]{EFEFEF} 
+			\textsc{imsat} (\cite{Hu2017imsat})$^{\mathcal{y}, \mathcal{r}}$ & \textbf{98.4} (0.4) & 45.6 (0.8) & \textbf{57.3} (3.9) \\ 
+			\rowcolor[HTML]{EFEFEF} 
+			\textsc{iic} \citep{Ji2018iic}$^{\mathcal{x}, \mathcal{y}}$ & \textbf{98.4} (0.6) & \textbf{57.6} (5.0) & - \\
+			\rowcolor[HTML]{EFEFEF} 
+			\textsc{adc} \citep{Haeusser2018adc}$^\mathcal{y}$ & \textbf{98.7} (0.6) & 29.3 (1.5) & 38.6 (4.1) \\
+			\midrule
+			% \textsc{max-act} (\gls{SCAu}) & \textbf{98.0 (.15)}  & 19.79 (1.0) & 49.07 (1.7) \\ 
+			% \textsc{clust-nn} (\gls{SCAu}) & \textbf{98.5 (.11)} & 19.39 (1.5) & \textbf{53.0 (3.8)}\\ 
+			\gls{SCAu} (\textsc{lin-match}) & \textbf{98.7 (0.35)} & 25.01 (1.0) & \textbf{55.33 (3.4)} \\ 
+			\gls{SCAu} (\textsc{lin-pred}) & \textbf{99.0 (0.07)} & 33.48 (0.3) & \textbf{67.27 (4.5)} \\
+		\end{tabular}
+%	\end{minipage}
+	%\vspace*{-.5em}
+\end{table}
 
 \subsection{Ablation study}
 \label{sec:ablation}
@@ -76,40 +138,10 @@ All results are presented in \Cref{tab:results}.
 an ablation study shows which model components are important and to what degree.
 We train \gls{SCAu} variants on \textsc{mnist} as well as a padded-and-translated $40\times40$ version of the dataset, where the original digits are translated up to 6 pixels in each direction.
 Trained models are tested on \textsc{test} splits of both datasets; additionally, we evaluate the model trained on the $40\times40$ \textsc{mnist} on the \textsc{test} split of \textsc{affnist} dataset.
-Testing on \textsc{affnist} shows whether the model can generalize to unseen viewpoints.
-This task was used by \cite{Rawlinson2018sparsecaps} to evaluate Sparse Unsupervised Capsules, which achieved $90.12\%$ accuracy. \Gls{SCAu} achieves $92.2\pm 0.59\%$, which indicates that it is better at viewpoint generalization.
+Testing on \textsc{affnist} shows whether the model can generalise to unseen viewpoints.
+This task was used by \cite{Rawlinson2018sparsecaps} to evaluate Sparse Unsupervised Capsules, which achieved $90.12\%$ accuracy. \Gls{SCAu} achieves $92.2\pm 0.59\%$, which indicates that it is better at viewpoint generalisation.
 We choose the \textsc{lin-match} performance metric, since it is the one favoured by the unsupervised classification community.
-\begin{table}
-\centering
-    \caption{
-        Ablation study on \textsc{mnist}. All used model components contribute to its final performance. \textsc{Affnist} results show out-of-distribution generalization properties and come from a model trained on $40\times40$ \textsc{mnist}. Numbers represent average \% and (standard deviation) over 10 runs. We highlight the best results and those that are are within its 98\% confidence interval according to a two-sided t test.
-    }
-    \label{tab:ablation}
-    {\small
-    \begin{tabular}{@{}lllll@{}}
-        & Method & \textsc{mnist} & $40\times40$ \textsc{mnist} & \textsc{affnist} \\
-        \midrule
-        &full model & \textbf{97.0 (.87)} & \textbf{98.5 (.1)} & \textbf{92.2 (.59)} \\
-        \midrule
-        & no posterior sparsity  & \textbf{96.7	(.7)} & \textbf{98.2	(.48)} & 87.6	(1.63) \\
-        a)& no prior sparsity  & 90.5 (7.56) & 94.0	(3.03) & 74.0	(4.94) \\
-        & no prior/posterior sparsity  &	63.0	(13.48) &	62.7	(10.46) & 40.7 (6.81)\\
-        \midrule
-        & no noise in object caps &	\textbf{96.4	(1.41)} &	\textbf{97.8	(.67)} &	\textbf{90.8	(2.97)}\\
-        b)& no noise in any caps &	84.8	(6.22) &	85.1	(13.13) &	76.3	(12.89)\\
-        &no noise in part caps	& 83.9	(7.57) &	80.2	(9.1) &	73	(9.04)\\
-        \midrule
-        c)& similarity transforms &	90.4	(13.78) &	\textbf{97.4	(.99)} &	\textbf{90.1	(2.62)}\\
-        &no deformations	& 87.6	(6.13) &	95.2	(1.04) &	87.6	(1.26)\\
-        \midrule
-        d)&\textsc{linear} part enc & \textbf{94.8	(3.0)} &	98.1	(.26)	& 76.3	(2.22)\\
-        &\textsc{conv} part enc &	\textbf{96.3	(.85)} &	\textbf{97.8	(.95)} &	80.1	(2.58)\\
-        \midrule
-        e)& \gls{MLP} enc for object caps	& 73.0	(6.34) &	70.3	(11.2) &	52.5	(11.29)\\
-        f)& no special features &	63.1	(10.55) &	66.9	(23.59) &	50.5	(18.26)\\
-    \end{tabular}
-	}
-\end{table}
+
 Results are split into several groups and shown in \Cref{tab:ablation}.
 We describe each group in turn.
 Group a) shows that sparsity losses introduced in \Cref{sec:losses} increase model performance, but that the posterior loss might not be necessary.
@@ -118,8 +150,84 @@ Group c) shows that using similarity (as opposed to affine) transforms in the de
 
 Group d) evaluates the type of the part-capsule encoder.
 The \textsc{linear} encoder entails a \gls{CNN} followed by a fully-connected layer, while the \textsc{conv} encoder predicts one feature map for every capsule parameter, followed by global-average pooling. 
-The choice of part-capsule encoder seems not to matter much for within-distribution performance; however, our attention-based pooling does achieve much higher classification accuracy when evaluated on a different dataset, showing better generalization to novel viewpoints.
+The choice of part-capsule encoder seems not to matter much for within-distribution performance; however, our attention-based pooling (cf.\ \Cref{app:attention_based_pooling}) does achieve much higher classification accuracy when evaluated on a different dataset, showing better generalisation to novel viewpoints.
 
 Additionally, e) using Set Transformer as the object-capsule encoder is essential.
-We hypothesize that it is due to the natural tendency of Set Transformer to find clusters, as reported in \cite{Lee2019set}.
+We hypothesise that it is due to the natural tendency of Set Transformer to find clusters, as reported in \cite{Lee2019set}.
 Finally, f) using special features $\bz_m$ seems not less important---presumably due to effects the high-level capsules have on the representation learned by the primary encoder.
+
+% % old ablation study
+% \begin{table}
+% \centering
+% \begin{minipage}[c]{.24\linewidth}
+%     \caption{
+%         Ablation study on \textsc{mnist}. All used model components contribute to its final performance. \textsc{Affnist} results show out-of-distribution generalization properties and come from a model trained on $40\times40$ \textsc{mnist}. Numbers represent average \% and (standard deviation) over 10 runs. We highlight the best results and those that are are within its 98\% confidence interval according to a two-sided t test.
+%     }
+%     \label{tab:ablation}
+% \end{minipage}
+% \hfill
+% \begin{minipage}[c]{.75\linewidth}
+%     \small
+%     \begin{tabular}{@{}lllll@{}}
+%         & Method & \textsc{mnist} & $40\times40$ \textsc{mnist} & \textsc{affnist} \\
+%         \midrule
+%         &full model & \textbf{97.0 (.87)} & \textbf{98.5 (.1)} & \textbf{92.2 (.59)} \\
+%         \midrule
+%         & no posterior sparsity  & \textbf{96.7    (.7)} & \textbf{98.2    (.48)} & 87.6    (1.63) \\
+%         a)& no prior sparsity  & 90.5 (7.56) & 94.0    (3.03) & 74.0    (4.94) \\
+%         & no prior/posterior sparsity  &    63.0    (13.48) &    62.7    (10.46) & 40.7 (6.81)\\
+%         \midrule
+%         & no noise in object caps &    \textbf{96.4    (1.41)} &    \textbf{97.8    (.67)} &    \textbf{90.8    (2.97)}\\
+%         b)& no noise in any caps &    84.8    (6.22) &    85.1    (13.13) &    76.3    (12.89)\\
+%         &no noise in part caps    & 83.9    (7.57) &    80.2    (9.1) &    73    (9.04)\\
+%         \midrule
+%         c)& similarity transforms &    90.4    (13.78) &    \textbf{97.4    (.99)} &    \textbf{90.1    (2.62)}\\
+%         &no deformations    & 87.6    (6.13) &    95.2    (1.04) &    87.6    (1.26)\\
+%         \midrule
+%         d)&\textsc{linear} part enc & \textbf{94.8    (3.0)} &    98.1    (.26)    & 76.3    (2.22)\\
+%         &\textsc{conv} part enc &    \textbf{96.3    (.85)} &    \textbf{97.8    (.95)} &    80.1    (2.58)\\
+%         \midrule
+%         e)& \gls{MLP} enc for object caps    & 73.0    (6.34) &    70.3    (11.2) &    52.5    (11.29)\\
+%         f)& no special features &    63.1    (10.55) &    66.9    (23.59) &    50.5    (18.26)\\
+%     \end{tabular}
+% \end{minipage}
+% \vspace*{-1em}
+% \end{table}
+% 
+% new ablation study
+\begin{table}
+	\centering
+%	\begin{minipage}[c]{.24\linewidth}
+		\caption{
+			Ablation study on \textsc{mnist}. All used model components contribute to its final performance. \textsc{Affnist} results show out-of-distribution generalization properties and come from a model trained on $40\times40$ \textsc{mnist}. Numbers represent average \% and (standard deviation) over 10 runs. We highlight the best results and those that are are within its 98\% confidence interval according to a two-sided t test.
+		}
+		\label{tab:ablation}
+%	\end{minipage}
+%	\hfill
+%	\begin{minipage}[c]{.75\linewidth}
+%		\small
+		\begin{tabular}{@{}lllll@{}}
+			& Method & \textsc{mnist} & $40\times40$ \textsc{mnist} & \textsc{affnist} \\
+			\midrule
+			&full model & \textbf{95.3 (4.65)} & \textbf{98.7 (0.35)} & \textbf{92.2 (0.59)} \\
+			\midrule
+			a)& no posterior sparsity  & \textbf{97.5 (1.55)} & \textbf{95.0    (7.20)} & \textbf{85.3    (11.67)} \\
+			& no prior sparsity  & 72.4 (22.39) & 88.2    (6.98) & 71.3    (5.46) \\
+			& no prior/posterior sparsity  &    84.7 (3.01) &    82.0 (5.46) & 59.0 (5.66)\\
+			\midrule
+			b)& no noise in object caps &    \textbf{96.7 (2.30)} &    \textbf{98.5 (0.12)} &    \textbf{93.5 (0.38)}\\
+			& no noise in any caps &    \textbf{93.1 (5.09)} &    78.5 (22.69) &    64.1 (26.74)\\
+			&no noise in part caps    & \textbf{93.9 (7.16)} &    82.8 (24.83) &    70.7 (25.96)\\
+			\midrule
+			c)& similarity transforms &    \textbf{97.5 (1.55)} &    95.9 (1.59) &    88.9 (1.58)\\
+			&no deformations    & 87.3 (21.48) &    87.2    (18.54) &    79.0    (22.44)\\
+			\midrule
+			d)&\textsc{linear} part enc & \textbf{98.0 (0.52)} &    63.2 (31.47)    & 50.8 (26.46)\\
+			&\textsc{conv} part enc &    \textbf{97.6 (1.22)} &    \textbf{97.8    (.98)} &    81.6    (1.66)\\
+			\midrule
+			e)& \gls{MLP} enc for object caps    & 27.1 (9.03) &    36.3    (3.70) &    25.29    (3.69)\\
+			f)& no special features &    90.7 (2.25) &    58.7 (31.60) &    44.5 (21.71)\\
+		\end{tabular}
+%	\end{minipage}
+	%\vspace*{-1em}
+\end{table}

@@ -1,12 +1,13 @@
-\section{Discussion}\vspace*{-5pt}
+\section{Discussion}
 \label{sec:sca_discussion}
-    The main contribution of our work is a novel method for representation learning, in which highly structured decoder networks are used to train one encoder network that can segment an image into parts and their poses and another encoder network that can compose the parts into coherent wholes.
-    Despite the fact that our training objective is not concerned with classification or clustering,
-    \gls{SCAu} is the only method that achieves competitive results in unsupervised object classification without relying on mutual information (\textsc{mi}).
-    This is significant, since unlike our method, \textsc{mi}-based methods require sophisticated data augmentation.
-    It may be possible to further improve results by using an \textsc{mi}-based loss to train \gls{SCAu}, where the vector of capsule probabilities could take the role of discrete probability vectors in \textsc{Ji2018iic} \citep{Iic}.
-    \gls{SCAu} under-performs on \textsc{cifar10}, which could be because of using fixed templates, which are not expressive enough to model real data.
-    This might be fixed by building deeper hierarchies of capsule autoencoders (\!\eg complicated scenes in computer graphics are modelled as deep trees of affine-transformed geometric primitives) as well as using input-dependent shape functions instead of fixed templates---both of which are promising directions for future work.
-    It may also be possible to make a much better \gls{PCAu} for learning the primary capsules by using a differentiable renderer in the generative model that reconstructs pixels from the primary capsules.
-    
-    Finally, the \gls{SCAu} could be the `figure' component of a mixture model that also includes a versatile `ground' component  that can be used to account for everything except the figure.  A complex image could then be analyzed using sequential attention to perceive one figure at a time. 
+
+The main contribution of our work is a novel method for representation learning, in which highly structured decoder networks are used to train one encoder network that can segment an image into parts and their poses and another encoder network that can compose the parts into coherent wholes.
+Even though our training objective is not concerned with classification or clustering,
+\gls{SCAu} is the only method that achieves competitive results in unsupervised object classification without relying on mutual information (\textsc{mi}).
+This is significant since, unlike our method, \textsc{mi}-based methods require sophisticated data augmentation.
+It may be possible to further improve results by using an \textsc{mi}-based loss to train \gls{SCAu}, where the vector of capsule probabilities could take the role of discrete probability vectors in \textsc{iic} \citep{Ji2018iic}.
+\gls{SCAu} under-performs on \textsc{cifar10}, which could be because of using fixed templates, which are not expressive enough to model real data.
+This might be fixed by building deeper hierarchies of capsule autoencoders (\!\eg complicated scenes in computer graphics are modelled as deep trees of affine-transformed geometric primitives) as well as using input-dependent shape functions instead of fixed templates---both of which are promising directions for future work.
+It may also be possible to make a much better \gls{PCAu} for learning the primary capsules by using a differentiable renderer in the generative model that reconstructs pixels from the primary capsules.
+
+Finally, the \gls{SCAu} could be the `figure' component of a mixture model that also includes a versatile `ground' component that can be used to account for everything except the figure.  A complex image could then be analyzed using sequential attention to perceive one figure at a time. 
