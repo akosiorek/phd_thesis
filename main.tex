@@ -22,7 +22,7 @@
 % the lines you don't want.
 
 
-%%%%% CHOOSE PAGE LAYOUT
+%%%%% CHOOSE  LAYOUT
 % The most common choices should be below.  You can also do other things, like replacing "a4paper" with "letterpaper", etc.
 
 % This one will format for two-sided binding (ie left and right pages have mirror s; blank pages inserted where needed):
@@ -263,6 +263,14 @@
 \input{text/HART/experiment}
 \input{text/HART/discussion}
 \input{text/HART/conclusion}
+\begin{subappendices}
+	\includepdf[
+	pages=-,
+	pagecommand={\pagestyle{fancy}},
+	offset=0mm -20mm,
+	addtotoc={1,section,1,Statement of Authorship,authorship_sqair}
+	]{figures/authorship/hart.pdf}
+\end{subappendices}
 
 \chapter{End-to-end Recurrent Multi-Object Tracking and Trajectory Prediction with Relational Reasoning}
 \label{ch:mohart}
@@ -271,10 +279,13 @@
 \chapter{Sequential Attend, Infer, Repeat: Generative Modelling of Moving Objects}
 \label{ch:sqair}
 \input{text/SQAIR/sqair}
+%\includepdf[pages=-,pagecommand={\thispagestyle{plain}}]{figures/authorship/sqair.pdf}
+%\addcontentsline{toc}{section}{Statement of Authorship}
 
 \chapter{Stacked Capsule Autoencoders}
 \label{ch:sca}
 \input{text/SCA/sca}
+\includepdf[pages=-,pagecommand={\thispagestyle{plain}}]{figures/authorship/scae.pdf}
 
 \input{text/09_discussion}
 

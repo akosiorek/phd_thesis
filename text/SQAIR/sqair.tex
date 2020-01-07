@@ -22,4 +22,10 @@
 	\newpage
 	\input{text/SQAIR/appendix/mnist_visual}
 	\input{text/SQAIR/appendix/duke_visual}
+	\includepdf[
+		pages=-,
+		pagecommand={\pagestyle{fancy}},
+		offset=0mm -20mm,
+		addtotoc={1,section,1,Statement of Authorship,authorship_sqair}
+		]{figures/authorship/sqair.pdf}
 \end{subappendices}
