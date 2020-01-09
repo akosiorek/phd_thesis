@@ -221,4 +221,4 @@ TSWLatexianTemp*
 
 .ipynb_checkpoints
 
-Oxford_Thesis.pdf
+*.mtc*

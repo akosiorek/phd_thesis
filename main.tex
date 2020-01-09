@@ -39,12 +39,12 @@
 % generating a PDF to send to the printer!
 
 % This adds a "DRAFT" footer to every normal page.  (The first page of each chapter is not a "normal" page.)
-\fancyfoot[C]{\emph{DRAFT Printed on \today}}  
+%\fancyfoot[C]{\emph{DRAFT Printed on \today}}  
 
 % This highlights (in blue) corrections marked with (for words) \mccorrect{blah} or (for whole
 % paragraphs) \begin{mccorrection} . . . \end{mccorrection}.  This can be useful for sending a PDF of
 % your corrected thesis to your examiners for review.  Turn it off, and the blue disappears.
-\correctionstrue
+%\correctionstrue
 
 
 %%%%% BIBLIOGRAPHY SETUP
@@ -256,21 +256,7 @@
 
 \chapter{Hierarchical Attentive Recurrent Tracking}
 \label{ch:hart}
-\input{text/HART/abstract} 
-\input{text/HART/intro}
-\input{text/HART/related_work}
-\input{text/HART/method}
-\input{text/HART/experiment}
-\input{text/HART/discussion}
-\input{text/HART/conclusion}
-\begin{subappendices}
-	\includepdf[
-	pages=-,
-	pagecommand={\pagestyle{fancy}},
-	offset=0mm -20mm,
-	addtotoc={1,section,1,Statement of Authorship,authorship_sqair}
-	]{figures/authorship/hart.pdf}
-\end{subappendices}
+\input{text/HART/hart}
 
 \chapter{End-to-end Recurrent Multi-Object Tracking and Trajectory Prediction with Relational Reasoning}
 \label{ch:mohart}
@@ -279,8 +265,6 @@
 \chapter{Sequential Attend, Infer, Repeat: Generative Modelling of Moving Objects}
 \label{ch:sqair}
 \input{text/SQAIR/sqair}
-%\includepdf[pages=-,pagecommand={\thispagestyle{plain}}]{figures/authorship/sqair.pdf}
-%\addcontentsline{toc}{section}{Statement of Authorship}
 
 \chapter{Stacked Capsule Autoencoders}
 \label{ch:sca}
